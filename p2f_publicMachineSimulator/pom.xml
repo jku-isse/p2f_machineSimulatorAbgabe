@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>machineSimulator</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>p2f_machineSimulator</name>
+	<description>This projects reprents a machine simulator for JKU-Linz in copperation with pro 2 future.</description>
+	<packaging>jar</packaging>
+
+	<!--The identifier of the parent POM -->
+	<parent>
+		<groupId>at.pro2future.shopfloors</groupId>
+		<artifactId>p2f_publicMavenParent</artifactId>
+		<version>1.0.0</version>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.milo</groupId>
+			<artifactId>sdk-client</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.milo</groupId>
+			<artifactId>sdk-server</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>at.pro2future.shopfloors</groupId>
+			<artifactId>fileHandling</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>at.pro2future.shopfloors</groupId>
+			<artifactId>p2f_publicCoreModel</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>at.pro2future.shopfloors</groupId>
+ 			<artifactId>engineadapter</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.ecore</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+    		<artifactId>junit-jupiter-api</artifactId>
+		</dependency>
+		
+		 <dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-log4j12</artifactId>
+	    </dependency>
+	</dependencies>
+</project>

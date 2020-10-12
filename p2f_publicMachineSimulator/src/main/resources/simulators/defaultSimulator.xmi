@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:at.pro2future.shopfloors.opcUaDefinition="http://at.pro2future/shopfloors/opcUaDefinition" xmlns:at.pro2future.shopfloors.processcore="http://at.pro2future/shopfloors/processcore" xmlns:at.pro2future.shopfloors.simulator="http://at.pro2future/shopfloors/simulator">
+  <at.pro2future.shopfloors.simulator:MachineSimulator name="DefaultSimulator">
+    <opcuaserverinterface nodes="/4"/>
+    <instanceinformation displayName="Simualtor Test" host="localhost" port="2000"/>
+    <stateMachine ID="_akW40AHYEeu4pY1c6G0DUw" DisplayName="MainProcess">
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_akXf4AHYEeu4pY1c6G0DUw" DisplayName="Sets a welding tool" ModifiedVariable="/9" rhs="/11"/>
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_akXf4QHYEeu4pY1c6G0DUw" DisplayName="Start welding" ModifiedVariable="/13/@Parameters.0" rhs="/8"/>
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_akXf4gHYEeu4pY1c6G0DUw" DisplayName="Stop welding" ModifiedVariable="/13/@Parameters.0" rhs="/12"/>
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_akXf4wHYEeu4pY1c6G0DUw" DisplayName="To start position" ModifiedVariable="/9" rhs="/10"/>
+    </stateMachine>
+    <actions xsi:type="at.pro2future.shopfloors.simulator:MsWriteAction" opcuaclientinterface="/5" reactsTo="/13">
+      <processOpcUaMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/6/@hasComponent.0" parameter="/13/@Parameters.0"/>
+    </actions>
+  </at.pro2future.shopfloors.simulator:MachineSimulator>
+  <at.pro2future.shopfloors.opcUaDefinition:MsNodeId Identifier="ACED0005737200416F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E55496E7465676572A156BE65D94722920200014A000576616C7565787200406F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E554E756D626572959C1BC3979AF2BD020000787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000000000000C" namespaceIndex="0" allowOverrideNamespaceIndex="false"/>
+  <at.pro2future.shopfloors.opcUaDefinition:MsNodeId Identifier="ACED0005737200416F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E55496E7465676572A156BE65D94722920200014A000576616C7565787200406F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E554E756D626572959C1BC3979AF2BD020000787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000000000001B" namespaceIndex="0" allowOverrideNamespaceIndex="false"/>
+  <at.pro2future.shopfloors.opcUaDefinition:MsNodeId Identifier="ACED0005737200416F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E55496E7465676572A156BE65D94722920200014A000576616C7565787200406F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E554E756D626572959C1BC3979AF2BD020000787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000000000004E" namespaceIndex="0" allowOverrideNamespaceIndex="false"/>
+  <at.pro2future.shopfloors.opcUaDefinition:MsObjectNode hasTypeDefinition="/7">
+    <nodeId Identifier="ACED000574000A4E4F44455F49445F3130" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+    <description locale="en" text="BaseFolder"/>
+    <displayName locale="en" text="BaseFolder"/>
+    <browseName namespaceIndex="0" name="BaseFolder"/>
+    <organizes xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsObjectNode" hasTypeDefinition="/6">
+      <nodeId Identifier="ACED00057400094E4F44455F49445F36" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+      <description locale="en" text="Root"/>
+      <displayName locale="en" text="Root"/>
+      <browseName namespaceIndex="0" name="Root"/>
+      <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000" dataType="/2" hasModellingRule="/3">
+        <nodeId Identifier="ACED00057400094E4F44455F49445F33" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+        <description locale="en" text="Speed"/>
+        <displayName locale="en" text="Speed"/>
+        <browseName namespaceIndex="0" name="Speed"/>
+      </hasComponent>
+      <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED00057400046E6F6E65" dataType="/1" hasModellingRule="/3">
+        <nodeId Identifier="ACED00057400094E4F44455F49445F34" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+        <description locale="en" text="Tool"/>
+        <displayName locale="en" text="Tool"/>
+        <browseName namespaceIndex="0" name="Tool"/>
+      </hasComponent>
+      <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsMethodNode" executable="true" userExecutalbe="true" method="public Variant[] testMethod(Variant[] test){     return new Variant[0]; }">
+        <nodeId Identifier="ACED00057400064D6574686F64" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+        <description locale="en" text="NullMethod"/>
+        <displayName locale="en" text="NullMethod"/>
+        <browseName namespaceIndex="0" name="NullMethod"/>
+      </hasComponent>
+    </organizes>
+  </at.pro2future.shopfloors.opcUaDefinition:MsObjectNode>
+  <at.pro2future.shopfloors.simulator:MsClientInterface>
+    <targetInstanceInformation displayName="Simualtor Test" host="localhost" port="2000"/>
+  </at.pro2future.shopfloors.simulator:MsClientInterface>
+  <at.pro2future.shopfloors.opcUaDefinition:MsObjectTypeNode>
+    <nodeId Identifier="ACED00057400094E4F44455F49445F32" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+    <description locale="en" text="RootType"/>
+    <displayName locale="en" text="RootType"/>
+    <browseName namespaceIndex="0" name="RootType"/>
+    <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000" dataType="/2" hasModellingRule="/3">
+      <nodeId Identifier="ACED00057400094E4F44455F49445F37" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+      <description locale="en" text="Speed"/>
+      <displayName locale="en" text="Speed"/>
+      <browseName namespaceIndex="0" name="Speed"/>
+    </hasComponent>
+    <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED00057400046E6F6E65" dataType="/1" hasModellingRule="/3">
+      <nodeId Identifier="ACED00057400094E4F44455F49445F38" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+      <description locale="en" text="Tool"/>
+      <displayName locale="en" text="Tool"/>
+      <browseName namespaceIndex="0" name="Tool"/>
+    </hasComponent>
+    <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsMethodNode" executable="true" userExecutalbe="true" method="public Variant[] testMethod(Variant[] test){     return new Variant[0]; }">
+      <nodeId Identifier="ACED00057400094E4F44455F49445F39" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+      <description locale="en" text="NullMethod"/>
+      <displayName locale="en" text="NullMethod"/>
+      <browseName namespaceIndex="0" name="NullMethod"/>
+    </hasComponent>
+  </at.pro2future.shopfloors.opcUaDefinition:MsObjectTypeNode>
+  <at.pro2future.shopfloors.opcUaDefinition:MsObjectTypeNode>
+    <nodeId Identifier="ACED0005737200416F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E55496E7465676572A156BE65D94722920200014A000576616C7565787200406F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E554E756D626572959C1BC3979AF2BD020000787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000000000003D" namespaceIndex="0" allowOverrideNamespaceIndex="false"/>
+    <description locale="en" text="FolderType"/>
+    <displayName locale="en" text="FolderType"/>
+    <browseName namespaceIndex="0" name="FolderType"/>
+  </at.pro2future.shopfloors.opcUaDefinition:MsObjectTypeNode>
+  <at.pro2future.shopfloors.processcore:Constant Type="Integer" Name="five" Value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000005"/>
+  <at.pro2future.shopfloors.processcore:LocalVariable Type="String" Name="Tool" Value="ACED00057400046E6F6E65"/>
+  <at.pro2future.shopfloors.processcore:Constant Type="String" Name="None" Value="ACED00057400046E6F6E65"/>
+  <at.pro2future.shopfloors.processcore:Constant Type="String" Name="Welding" Value="ACED000574000777656C64696E67"/>
+  <at.pro2future.shopfloors.processcore:Constant Type="Integer" Name="zero" Value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000"/>
+  <at.pro2future.shopfloors.processcore:Event Name="Hello" Role="/14">
+    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="Integer" Name="Speed" Value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000"/>
+  </at.pro2future.shopfloors.processcore:Event>
+  <at.pro2future.shopfloors.processcore:Assignment Name="Looper"/>
+</xmi:XMI>
