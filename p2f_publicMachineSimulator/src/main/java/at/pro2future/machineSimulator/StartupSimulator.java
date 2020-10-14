@@ -29,20 +29,19 @@ public class StartupSimulator {
 			List<EObject> roots = pers.getShopfloorData();
 			root = (MachineSimulator) roots.get(0);
 			
-			OpcUaServerManager serverManager = new OpcUaServerManager(root.getInstanceinformation(), root.getOpcuaserverinterface());
+			OpcUaServerManager serverManager = new OpcUaServerManager(root.getInstanceInformation(), root.getOpcUaServerInterface());
 			serverManager.startup();
 					
 			P2fActionManager actionManager = new P2fActionManager(root.getActions(), serverManager.getOpcUaNamespaceManager().getUaBuilderFactory());
 			actionManager.startup();
 			
 			System.out.println("Pro2Future OpcUa Machine Simulator: successfully started.");
-
-
+			System.in.read();
 			Event event = root.getActions().get(0).getReactsTo();
 	        EventInstance testEvent = new EventInstance(event);
 	        testEvent.parameters = event.getParameters();
-	        //actionManager.getAdapterEventProvider().enqueueEvent(testEvent);
-	        
+	        event.getParameters().get(0).setValue(5);
+	        actionManager.getAdapterEventProvider().enqueueEvent(testEvent);
 	        System.out.println("Pro2Future OpcUa Machine Simulator: test event sent.");
 	        
 	        final CompletableFuture<Void> future2 = new CompletableFuture<>();

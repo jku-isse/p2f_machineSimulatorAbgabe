@@ -16,13 +16,12 @@ import OpcUaDefinition.MsObjectNode;
 import OpcUaDefinition.OpcUaDefinitionFactory;
 import at.pro2future.machineSimulator.converter.Converter;
 import at.pro2future.machineSimulator.converter.UaBuilderFactory;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class MsObjectNodeToObjectNodeConverter implements Converter<MsObjectNode, ObjectNode, OpcUaDefinitionFactory, UaBuilderFactory>{
 
 	@Override
 	public MsObjectNode createFrom(ObjectNode object, OpcUaDefinitionFactory factory) {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -34,8 +33,8 @@ public class MsObjectNodeToObjectNodeConverter implements Converter<MsObjectNode
 				.setBrowseName(new MsQualifiedNameToQualifiedName().createTo(msNode.getBrowseName(), factory)) 
 				.setDisplayName(new MsLocalizedTextToLocalizedTextConverter().createTo(msNode.getDisplayName(), factory)) 
 				.setDescription(new MsLocalizedTextToLocalizedTextConverter().createTo(msNode.getDescription(), factory))  
-				.setWriteMask(msNode.getWriteMask() == null ? null : UInteger.valueOf(msNode.getWriteMask())) 
-				.setUserWriteMask(msNode.getUserWriteMask() == null ? null : UInteger.valueOf(msNode.getUserWriteMask()))
+				.setWriteMask(msNode.getWriteMask() == null ? UInteger.valueOf(Integer.MAX_VALUE) : UInteger.valueOf(msNode.getWriteMask())) 
+				.setUserWriteMask(msNode.getUserWriteMask() == null ? UInteger.valueOf(Integer.MAX_VALUE) : UInteger.valueOf(msNode.getUserWriteMask()))
 				.setEventNotifier(UByte.valueOf(msNode.getEventNotifier()))
 				.setTypeDefinition(msObjectTypeNode.getNodeId())
 				.build();			

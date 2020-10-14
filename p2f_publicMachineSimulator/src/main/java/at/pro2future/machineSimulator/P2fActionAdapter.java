@@ -23,7 +23,7 @@ import at.pro2future.shopfloors.adapters.EventHandler;
 public class P2fActionAdapter implements EngineAdapter {
 	
 	private final MsAction action;
-	private final EventHandler actionHandler;
+	private EventHandler actionHandler;
 	private final OpcUaClientManager opcUaClientManager;
 	private AdapterEventProvider engine;
 	
@@ -35,15 +35,15 @@ public class P2fActionAdapter implements EngineAdapter {
 		return action;
 	}
 
-	public P2fActionAdapter(MsAction action,  UaBuilderFactory uaBuilderFactory) throws UaException {
+	public P2fActionAdapter(MsAction action, UaBuilderFactory uaBuilderFactory) throws UaException {
 		this.action = action;
-		this.opcUaClientManager = new OpcUaClientManager(action.getOpcuaclientinterface(), uaBuilderFactory);
+		this.opcUaClientManager = new OpcUaClientManager(action.getOpcUaClientInterface(), uaBuilderFactory);
 		
 		if(action instanceof MsWriteAction) {
 			this.actionHandler = new WriteVariableHandler(opcUaClientManager, (MsWriteAction)action);
 		}
 		else if(action instanceof MsReadAction) {
-			this.actionHandler = new ReadVariableHandler(opcUaClientManager, (MsReadAction)action);
+			new ReadVariableHandler(opcUaClientManager, this, (MsReadAction)action);
 		}
 		else  {
 			this.actionHandler = new CallMethodHandler(opcUaClientManager, (MsCallMethodAction)action);
@@ -65,7 +65,7 @@ public class P2fActionAdapter implements EngineAdapter {
 	@Override
 	public void registerWithEngine(AdapterEventProvider engine) {
 		this.engine = engine;
-		
+
 	}
 
 	@Override

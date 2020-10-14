@@ -8,14 +8,13 @@ import OpcUaDefinition.MsReferenceTypeNode;
 import OpcUaDefinition.OpcUaDefinitionFactory;
 import at.pro2future.machineSimulator.converter.Converter;
 import at.pro2future.machineSimulator.converter.UaBuilderFactory;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 
 public class MsReferenceTypeNodeToReferenceTypeNodeConverter implements Converter<MsReferenceTypeNode, ReferenceTypeNode, OpcUaDefinitionFactory, UaBuilderFactory>{
 
 	@Override
 	public MsReferenceTypeNode createFrom(ReferenceTypeNode object, OpcUaDefinitionFactory factory) throws Exception {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -25,8 +24,8 @@ public class MsReferenceTypeNodeToReferenceTypeNodeConverter implements Converte
 				new MsQualifiedNameToQualifiedName().createTo(msNode.getBrowseName(), factory),
 				new MsLocalizedTextToLocalizedTextConverter().createTo(msNode.getDisplayName(), factory),
 				new MsLocalizedTextToLocalizedTextConverter().createTo(msNode.getDescription(), factory),  
-				msNode.getWriteMask() == null ? null :UInteger.valueOf(msNode.getWriteMask()),
-				msNode.getUserWriteMask() == null ? null :UInteger.valueOf(msNode.getUserWriteMask()),
+				msNode.getWriteMask() == null ? UInteger.valueOf(Integer.MAX_VALUE) :UInteger.valueOf(msNode.getWriteMask()),
+				msNode.getUserWriteMask() == null ? UInteger.valueOf(Integer.MAX_VALUE) :UInteger.valueOf(msNode.getUserWriteMask()),
 				msNode.isIsAbstract(),
 				msNode.isSymmetric(),
 				new MsLocalizedTextToLocalizedTextConverter().createTo(msNode.getDisplayName(), factory)

@@ -34,7 +34,6 @@ public class P2fActionManager extends AbstractLifecycle {
 			msActionAdapters.add(new P2fActionAdapter(msAction, this.uaBuilderFactory));
 		}
 	}
-	
 
 	@Override
 	public void onStartup() {

@@ -6,20 +6,20 @@ import org.eclipse.milo.opcua.sdk.server.nodes.UaVariableNode;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
+import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UByte;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UInteger;
 
 import OpcUaDefinition.MsPropertyNode;
 import OpcUaDefinition.OpcUaDefinitionFactory;
 import at.pro2future.machineSimulator.converter.Converter;
 import at.pro2future.machineSimulator.converter.UaBuilderFactory;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 
 public class MsPropertyNodeToPropertyNodeConverter implements Converter<MsPropertyNode, VariableNode, OpcUaDefinitionFactory, UaBuilderFactory>{
 
 	@Override
 	public MsPropertyNode createFrom(VariableNode object, OpcUaDefinitionFactory factory) throws Exception {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -29,10 +29,12 @@ public class MsPropertyNodeToPropertyNodeConverter implements Converter<MsProper
 				.setBrowseName(new MsQualifiedNameToQualifiedName().createTo(msNode.getBrowseName(), factory)) 
 				.setDisplayName(new MsLocalizedTextToLocalizedTextConverter().createTo(msNode.getDisplayName(), factory)) 
 				.setDescription(new MsLocalizedTextToLocalizedTextConverter().createTo(msNode.getDescription(), factory))  
-				.setWriteMask(msNode.getWriteMask() == null ? null : UInteger.valueOf(msNode.getWriteMask())) 
-				.setUserWriteMask(msNode.getUserWriteMask() == null ? null : UInteger.valueOf(msNode.getUserWriteMask()))
+				.setWriteMask(msNode.getWriteMask() == null ? UInteger.valueOf(Integer.MAX_VALUE) : UInteger.valueOf(msNode.getWriteMask())) 
+				.setUserWriteMask(msNode.getUserWriteMask() == null ? UInteger.valueOf(Integer.MAX_VALUE) : UInteger.valueOf(msNode.getUserWriteMask()))
 				.setValue(new DataValue(new Variant(msNode.getValue())))
-				.setDataType(new MsNodeIdToNodeIdConverter().createTo(msNode.getNodeId(), factory))
+				.setDataType(new MsNodeIdToNodeIdConverter().createTo(msNode.getDataType(), factory))
+				.setAccessLevel(UByte.valueOf(msNode.getAccessLevel()))
+				.setUserAccessLevel(UByte.valueOf(msNode.getUserAccessLevel()))
 				//.setValueRank(msNode.getValueRank())
 				.setHistorizing(msNode.isHistorizing())
 				.build();

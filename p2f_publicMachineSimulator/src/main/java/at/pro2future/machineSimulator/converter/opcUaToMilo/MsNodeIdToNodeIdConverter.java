@@ -12,13 +12,12 @@ import OpcUaDefinition.MsNodeId;
 import OpcUaDefinition.OpcUaDefinitionFactory;
 import at.pro2future.machineSimulator.converter.Converter;
 import at.pro2future.machineSimulator.converter.UaBuilderFactory;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class MsNodeIdToNodeIdConverter implements Converter<MsNodeId, NodeId, OpcUaDefinitionFactory, UaBuilderFactory> {
 
 	@Override
 	public MsNodeId createFrom(NodeId object, OpcUaDefinitionFactory factory) throws Exception {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

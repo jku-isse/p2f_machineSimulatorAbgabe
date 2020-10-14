@@ -6,13 +6,12 @@ import OpcUaDefinition.MsQualifiedName;
 import OpcUaDefinition.OpcUaDefinitionFactory;
 import at.pro2future.machineSimulator.converter.Converter;
 import at.pro2future.machineSimulator.converter.UaBuilderFactory;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class MsQualifiedNameToQualifiedName implements Converter<MsQualifiedName, QualifiedName, OpcUaDefinitionFactory, UaBuilderFactory> {
 
 	@Override
 	public MsQualifiedName createFrom(QualifiedName object, OpcUaDefinitionFactory factory) throws Exception {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

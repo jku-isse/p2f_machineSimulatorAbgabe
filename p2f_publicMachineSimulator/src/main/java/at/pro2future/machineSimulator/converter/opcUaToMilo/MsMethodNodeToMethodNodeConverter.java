@@ -12,14 +12,12 @@ import OpcUaDefinition.OpcUaDefinitionFactory;
 import at.pro2future.machineSimulator.converter.Converter;
 import at.pro2future.machineSimulator.converter.UaBuilderFactory;
 import at.pro2future.machineSimulator.methodService.OpcUaMethodInvocationHandler;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 
 public class MsMethodNodeToMethodNodeConverter implements Converter<MsMethodNode, MethodNode, OpcUaDefinitionFactory, UaBuilderFactory>{
 
 	@Override
 	public MsMethodNode createFrom(MethodNode object, OpcUaDefinitionFactory factory) throws Exception {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -29,8 +27,8 @@ public class MsMethodNodeToMethodNodeConverter implements Converter<MsMethodNode
 				.setBrowseName(new MsQualifiedNameToQualifiedName().createTo(msNode.getBrowseName(), factory)) 
 				.setDisplayName(new MsLocalizedTextToLocalizedTextConverter().createTo(msNode.getDisplayName(), factory)) 
 				.setDescription(new MsLocalizedTextToLocalizedTextConverter().createTo(msNode.getDescription(), factory))  
-				.setWriteMask(msNode.getWriteMask() == null ? null : UInteger.valueOf(msNode.getWriteMask())) 
-				.setUserWriteMask(msNode.getUserWriteMask() == null ? null : UInteger.valueOf(msNode.getUserWriteMask()))
+				.setWriteMask(msNode.getWriteMask() == null ? UInteger.valueOf(Integer.MAX_VALUE) : UInteger.valueOf(msNode.getWriteMask())) 
+				.setUserWriteMask(msNode.getUserWriteMask() == null ? UInteger.valueOf(Integer.MAX_VALUE) : UInteger.valueOf(msNode.getUserWriteMask()))
 				.setExecutable(msNode.getExecutable())
 				.setUserExecutable(msNode.getUserExecutalbe())
 				.build();
@@ -62,6 +60,7 @@ public class MsMethodNodeToMethodNodeConverter implements Converter<MsMethodNode
 				.dataType(new MsNodeIdToNodeIdConverter().createTo(msVariableNode.getNodeId(), factory))				
 				.description(new MsLocalizedTextToLocalizedTextConverter().createTo(msVariableNode.getDescription(), factory))
 				.valueRank(msVariableNode.getValueRank())
+				
 				.build();	
 				
 		return arguement;

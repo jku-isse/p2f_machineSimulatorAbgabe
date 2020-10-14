@@ -16,14 +16,12 @@ import OpcUaDefinition.MsViewNode;
 import OpcUaDefinition.OpcUaDefinitionFactory;
 import at.pro2future.machineSimulator.converter.Converter;
 import at.pro2future.machineSimulator.converter.UaBuilderFactory;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 
 public class MsNodeToNodeConverter implements Converter<MsNode, Node, OpcUaDefinitionFactory, UaBuilderFactory>{
 
 	@Override
 	public MsNode createFrom(Node object, OpcUaDefinitionFactory factory) {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

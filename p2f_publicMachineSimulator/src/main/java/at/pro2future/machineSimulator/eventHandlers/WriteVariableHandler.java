@@ -4,6 +4,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
+import org.eclipse.milo.opcua.stack.core.types.builtin.StatusCode;
 import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
 
 import ProcessCore.Assignment;
@@ -14,7 +15,6 @@ import Simulator.ProcessOpcUaMapping;
 import Simulator.ProcessOpcUaVariableMapping;
 import at.pro2future.machineSimulator.OpcUaClientManager;
 import at.pro2future.shopfloors.adapters.EventInstance;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 
 public class WriteVariableHandler extends BaseEventHandler {
@@ -50,12 +50,14 @@ public class WriteVariableHandler extends BaseEventHandler {
 				//TODO: only parameter name (generare namehashmap --> to improve performance).
 				if(EcoreUtil.equals(processOpcUaVariableMapping.getParameter(), processOpcUaVariableMapping.getParameter())) {
 					NodeId nodeId = getMsNodeIdToNodeIdConverter().createTo(processOpcUaVariableMapping.getVariableNode().getNodeId(), getOpcUaClientManager().getUaBuilderFactory());
-					getOpcUaClientManager().writeValues(nodeId, new DataValue(new Variant(parameter.getValue())));
+					
+					DataValue dataValue = new DataValue(new Variant(parameter.getValue()));
+					getOpcUaClientManager().writeValues(nodeId, dataValue);
 				}
 			}
 		}
 		else {
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		}		
 	}
 

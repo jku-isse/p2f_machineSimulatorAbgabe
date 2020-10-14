@@ -1,14 +1,17 @@
 package at.pro2future.machineSimulator;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Function;
 
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.sdk.client.api.ServiceFaultListener;
 import org.eclipse.milo.opcua.sdk.client.api.config.OpcUaClientConfig;
 import org.eclipse.milo.opcua.sdk.client.api.identity.AnonymousProvider;
+import org.eclipse.milo.opcua.sdk.client.nodes.UaNode;
 import org.eclipse.milo.opcua.sdk.server.AbstractLifecycle;
 import org.eclipse.milo.opcua.stack.core.UaException;
 import org.eclipse.milo.opcua.stack.core.security.SecurityPolicy;
@@ -21,6 +24,8 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UInteger;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.ApplicationType;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.MessageSecurityMode;
 import org.eclipse.milo.opcua.stack.core.types.structured.ApplicationDescription;
+import org.eclipse.milo.opcua.stack.core.types.structured.CallMethodRequest;
+import org.eclipse.milo.opcua.stack.core.types.structured.CallMethodResult;
 import org.eclipse.milo.opcua.stack.core.types.structured.EndpointDescription;
 import org.eclipse.milo.opcua.stack.core.types.structured.ServiceFault;
 import org.eclipse.milo.opcua.stack.core.types.structured.UserTokenPolicy;
@@ -103,15 +108,26 @@ public class OpcUaClientManager extends AbstractLifecycle  {
 	}
 	
 
-	public void writeValues(NodeId nodeId, DataValue dataValue) throws UaException, InterruptedException, ExecutionException {
+	public void writeValues(NodeId nodeId, DataValue dataValue) throws UaException, InterruptedException, ExecutionException, TimeoutException {
 		CompletableFuture<StatusCode> f = this.opcUaClient.writeValue(nodeId, dataValue);
-
+		
         // ...but block for the results so we write in order
         StatusCode statusCode = f.get();
          
         if (statusCode.isBad()) {
            throw new UaException(statusCode);
         }
+	}
+	
+	public void callMethod(CallMethodRequest request) throws UaException, InterruptedException, ExecutionException, TimeoutException {
+		CompletableFuture<Object> future = this.opcUaClient.call(request).thenCompose( result -> {
+            StatusCode statusCode = result.getStatusCode();
+            if (statusCode.isBad()) {
+                throw new RuntimeException();
+             }
+            return null;
+        });
+		future.get();
 	}
 	
 	@Override

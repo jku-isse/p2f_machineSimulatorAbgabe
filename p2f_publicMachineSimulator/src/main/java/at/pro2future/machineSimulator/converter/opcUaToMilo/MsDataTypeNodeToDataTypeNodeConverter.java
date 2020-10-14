@@ -8,14 +8,14 @@ import OpcUaDefinition.MsDataTypeNode;
 import OpcUaDefinition.OpcUaDefinitionFactory;
 import at.pro2future.machineSimulator.converter.Converter;
 import at.pro2future.machineSimulator.converter.UaBuilderFactory;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 
 
 public class MsDataTypeNodeToDataTypeNodeConverter implements Converter<MsDataTypeNode, DataTypeNode, OpcUaDefinitionFactory, UaBuilderFactory>{
 
 	@Override
 	public MsDataTypeNode createFrom(DataTypeNode object, OpcUaDefinitionFactory factory) throws Exception {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -25,8 +25,8 @@ public class MsDataTypeNodeToDataTypeNodeConverter implements Converter<MsDataTy
 				new MsQualifiedNameToQualifiedName().createTo(msNode.getBrowseName(), factory),
 				new MsLocalizedTextToLocalizedTextConverter().createTo(msNode.getDisplayName(), factory),
 				new MsLocalizedTextToLocalizedTextConverter().createTo(msNode.getDescription(), factory),  
-				msNode.getWriteMask() == null ? null : UInteger.valueOf(msNode.getWriteMask()),
-				msNode.getUserWriteMask() == null ? null : UInteger.valueOf(msNode.getUserWriteMask()),
+				msNode.getWriteMask() == null ? UInteger.valueOf(Integer.MAX_VALUE) : UInteger.valueOf(msNode.getWriteMask()),
+				msNode.getUserWriteMask() == null ?  UInteger.valueOf(Integer.MAX_VALUE) : UInteger.valueOf(msNode.getUserWriteMask()),
 				msNode.isIsAbstract());
 
 
