@@ -14,6 +14,6 @@ public class OpcUaStringJavaFileObject  extends SimpleJavaFileObject {
 
 	  @Override
 	  public CharSequence getCharContent(boolean ignoreEncodingErrors) {
-	    return code;
+	    return this.code;
 	  }
 }

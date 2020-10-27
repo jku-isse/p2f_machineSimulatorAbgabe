@@ -1,7 +1,5 @@
 package at.pro2future.machineSimulator.converter.opcUaToMilo;
 
-import javax.naming.OperationNotSupportedException;
-
 import org.eclipse.milo.opcua.sdk.server.api.nodes.Node;
 import OpcUaDefinition.MsDataTypeNode;
 import OpcUaDefinition.MsDataVariableNode;
@@ -20,12 +18,12 @@ import at.pro2future.machineSimulator.converter.UaBuilderFactory;
 public class MsNodeToNodeConverter implements Converter<MsNode, Node, OpcUaDefinitionFactory, UaBuilderFactory>{
 
 	@Override
-	public MsNode createFrom(Node object, OpcUaDefinitionFactory factory) {
-		throw new UnsupportedOperationException();
+	public MsNode createFrom(Node object, OpcUaDefinitionFactory factory) throws ConvertionNotSupportedException {
+		throw new ConvertionNotSupportedException();
 	}
 
 	@Override
-	public Node createTo(MsNode msNode, UaBuilderFactory factory) throws Exception {
+	public Node createTo(MsNode msNode, UaBuilderFactory factory) throws ConvertionNotSupportedException {
 		
 		
 		if(msNode instanceof MsObjectNode) {
@@ -55,7 +53,7 @@ public class MsNodeToNodeConverter implements Converter<MsNode, Node, OpcUaDefin
 		else if(msNode instanceof MsReferenceTypeNode) {
 			return new MsReferenceTypeNodeToReferenceTypeNodeConverter().createTo((MsReferenceTypeNode)msNode, factory);
 		}
-		throw new OperationNotSupportedException();
+		throw new ConvertionNotSupportedException();
 	}
 	
 }

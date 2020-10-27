@@ -14,12 +14,12 @@ import at.pro2future.machineSimulator.converter.UaBuilderFactory;
 public class MsDataTypeNodeToDataTypeNodeConverter implements Converter<MsDataTypeNode, DataTypeNode, OpcUaDefinitionFactory, UaBuilderFactory>{
 
 	@Override
-	public MsDataTypeNode createFrom(DataTypeNode object, OpcUaDefinitionFactory factory) throws Exception {
-		throw new UnsupportedOperationException();
+	public MsDataTypeNode createFrom(DataTypeNode object, OpcUaDefinitionFactory factory) throws ConvertionNotSupportedException {
+		throw new ConvertionNotSupportedException();
 	}
 
 	@Override
-	public DataTypeNode createTo(MsDataTypeNode msNode, UaBuilderFactory factory) throws Exception {
+	public DataTypeNode createTo(MsDataTypeNode msNode, UaBuilderFactory factory) throws ConvertionNotSupportedException {
 		UaDataTypeNode uaDataTypeNode = factory.getUaDataTypeNode(
 				new MsNodeIdToNodeIdConverter().createTo(msNode.getNodeId(), factory),
 				new MsQualifiedNameToQualifiedName().createTo(msNode.getBrowseName(), factory),

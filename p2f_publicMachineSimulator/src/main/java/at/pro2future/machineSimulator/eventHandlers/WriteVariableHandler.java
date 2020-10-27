@@ -4,12 +4,10 @@ import java.util.List;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
-import org.eclipse.milo.opcua.stack.core.types.builtin.StatusCode;
 import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
 
-import ProcessCore.Assignment;
-import ProcessCore.Event;
 import ProcessCore.Parameter;
+import Simulator.MsAction;
 import Simulator.MsWriteAction;
 import Simulator.ProcessOpcUaMapping;
 import Simulator.ProcessOpcUaVariableMapping;
@@ -20,8 +18,11 @@ import at.pro2future.shopfloors.adapters.EventInstance;
 public class WriteVariableHandler extends BaseEventHandler {
 
 	private final MsWriteAction writeAction;
-	private EventInstance lastEvent; //TODO: move to base
 	
+	@Override
+	protected MsAction getMsAction() {
+		return this.writeAction;
+	}
 	
 	public WriteVariableHandler(OpcUaClientManager opcUaClientManager, MsWriteAction writeAction) {
 		super(opcUaClientManager);
@@ -30,17 +31,15 @@ public class WriteVariableHandler extends BaseEventHandler {
 	
 	@Override
 	public void handleEvent(EventInstance e) {
+		super.handleEvent(e);
 		
 		try {
-			for(ProcessOpcUaMapping processOpcUaMapping : writeAction.getProcessOpcUaMappings()) {
+			for(ProcessOpcUaMapping processOpcUaMapping : this.writeAction.getParameterMappings()) {
 				hanldeMapping(processOpcUaMapping, e.parameters);
 			}
 		} catch (Exception e1) {
 			throw new RuntimeException(e1);
-		}
-
-				
-		lastEvent = e;		
+		}	
 	}
 	
 	private void hanldeMapping(ProcessOpcUaMapping processOpcUaMapping, List<Parameter> parameters) throws Exception {
@@ -59,21 +58,6 @@ public class WriteVariableHandler extends BaseEventHandler {
 		else {
 			throw new UnsupportedOperationException();
 		}		
-	}
-
-	@Override
-	public EventInstance getEvent() {
-		return lastEvent;
-	}
-
-	@Override
-	public Event getEventType() {
-		return this.writeAction.getReactsTo();
-	}
-
-	@Override
-	public Assignment getRole() {
-		return this.writeAction.getReactsTo().getRole();
 	}
 
 }

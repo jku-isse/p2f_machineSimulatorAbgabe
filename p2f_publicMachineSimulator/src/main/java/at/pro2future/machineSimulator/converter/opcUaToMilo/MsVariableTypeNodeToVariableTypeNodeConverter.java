@@ -16,12 +16,12 @@ import at.pro2future.machineSimulator.converter.UaBuilderFactory;
 public class MsVariableTypeNodeToVariableTypeNodeConverter implements Converter<MsVariableTypeNode, VariableTypeNode, OpcUaDefinitionFactory, UaBuilderFactory>{
 
 	@Override
-	public MsVariableTypeNode createFrom(VariableTypeNode object, OpcUaDefinitionFactory factory) throws Exception {
-		throw new UnsupportedOperationException();
+	public MsVariableTypeNode createFrom(VariableTypeNode object, OpcUaDefinitionFactory factory) throws ConvertionNotSupportedException {
+		throw new ConvertionNotSupportedException();
 	}
 
 	@Override
-	public VariableTypeNode createTo(MsVariableTypeNode msNode, UaBuilderFactory factory) throws Exception {
+	public VariableTypeNode createTo(MsVariableTypeNode msNode, UaBuilderFactory factory) throws ConvertionNotSupportedException {
 		UaVariableTypeNode uaVariableTypeNode = factory.getUaVariableTypeNode(
 				new MsNodeIdToNodeIdConverter().createTo(msNode.getNodeId(), factory),
 				new MsQualifiedNameToQualifiedName().createTo(msNode.getBrowseName(), factory),

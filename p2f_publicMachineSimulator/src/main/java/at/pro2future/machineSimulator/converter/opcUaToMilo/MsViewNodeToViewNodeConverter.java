@@ -14,12 +14,12 @@ import at.pro2future.machineSimulator.converter.UaBuilderFactory;
 public class MsViewNodeToViewNodeConverter implements Converter<MsViewNode, ViewNode, OpcUaDefinitionFactory, UaBuilderFactory>{
 
 	@Override
-	public MsViewNode createFrom(ViewNode object, OpcUaDefinitionFactory factory) throws Exception {
-		throw new UnsupportedOperationException();
+	public MsViewNode createFrom(ViewNode object, OpcUaDefinitionFactory factory) throws ConvertionNotSupportedException {
+		throw new ConvertionNotSupportedException();
 	}
 
 	@Override
-	public ViewNode createTo(MsViewNode msNode, UaBuilderFactory factory) throws Exception {
+	public ViewNode createTo(MsViewNode msNode, UaBuilderFactory factory) throws ConvertionNotSupportedException {
 		UaViewNode uaViewNode =factory.getUaViewNode(
 				new MsNodeIdToNodeIdConverter().createTo(msNode.getNodeId(), factory),
 				new MsQualifiedNameToQualifiedName().createTo(msNode.getBrowseName(), factory),

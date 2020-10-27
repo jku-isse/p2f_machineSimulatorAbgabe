@@ -16,7 +16,7 @@ import at.pro2future.shopfloors.interfaces.impl.FileDataSource;
 public class StartupSimulator {
 
 	public static void main(String[] args) {
-		FileDataSource pers = new FileDataSource("src/main/resources/simulators/defaultSimulator.xmi");
+		FileDataSource pers = new FileDataSource("src/main/resources/simulators/defaultSimulator.xmi"); 
 
 		//register the generated model/code with the following line
 		pers.registerPackage(SimulatorPackage.eNS_URI, SimulatorPackage.eINSTANCE);
@@ -36,13 +36,21 @@ public class StartupSimulator {
 			actionManager.startup();
 			
 			System.out.println("Pro2Future OpcUa Machine Simulator: successfully started.");
+			
+	        System.in.read();
+	        Event callMethodEvent = root.getActions().get(2).getRefersTo();
+	        EventInstance callMethodEventInstance = new EventInstance(callMethodEvent);
+	        callMethodEventInstance.parameters = callMethodEvent.getParameters();
+	        actionManager.getAdapterEventProvider().enqueueEvent(callMethodEventInstance);
+	        System.out.println("Pro2Future OpcUa Machine Simulator: call method event sent.");
+	        
 			System.in.read();
-			Event event = root.getActions().get(0).getReactsTo();
-	        EventInstance testEvent = new EventInstance(event);
-	        testEvent.parameters = event.getParameters();
-	        event.getParameters().get(0).setValue(5);
-	        actionManager.getAdapterEventProvider().enqueueEvent(testEvent);
-	        System.out.println("Pro2Future OpcUa Machine Simulator: test event sent.");
+			Event writeEvent = root.getActions().get(0).getRefersTo();
+	        EventInstance writeEventInstance = new EventInstance(writeEvent);
+	        writeEventInstance.parameters = writeEvent.getParameters();
+	        writeEvent.getParameters().get(0).setValue(5);
+	        actionManager.getAdapterEventProvider().enqueueEvent(writeEventInstance);
+	        System.out.println("Pro2Future OpcUa Machine Simulator: write event sent.");
 	        
 	        final CompletableFuture<Void> future2 = new CompletableFuture<>();
 	        Runtime.getRuntime().addShutdownHook(new Thread(() -> future2.complete(null)));

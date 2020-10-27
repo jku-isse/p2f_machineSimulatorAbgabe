@@ -32,19 +32,20 @@ public class OpcUaServerManager extends AbstractLifecycle  {
 	private OpcUaNamespaceManager opcUaNamespaceManager;
 	
 	public OpcUaNamespaceManager getOpcUaNamespaceManager() {
-		return opcUaNamespaceManager;
+		return this.opcUaNamespaceManager;
 	}
 	
 	public MsServerInterface getOpcUaServerInterface() {
-		return opcUaServerInterface;
+		return this.opcUaServerInterface;
 	}
 
 	public void setOpcUaServerInterface(MsInstanceInformation instanceInformation, MsServerInterface opcUaServerInterface) {
+		this.instanceInformation = instanceInformation;
 		this.opcUaServerInterface = opcUaServerInterface;
 	}
 	
 	public MsInstanceInformation getInstanceInformation() {
-		return instanceInformation;
+		return this.instanceInformation;
 	}
 
 	public void setInstanceInformation(MsInstanceInformation instanceInformation) {

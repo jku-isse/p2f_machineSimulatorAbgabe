@@ -10,12 +10,12 @@ import at.pro2future.machineSimulator.converter.UaBuilderFactory;
 public class MsQualifiedNameToQualifiedName implements Converter<MsQualifiedName, QualifiedName, OpcUaDefinitionFactory, UaBuilderFactory> {
 
 	@Override
-	public MsQualifiedName createFrom(QualifiedName object, OpcUaDefinitionFactory factory) throws Exception {
-		throw new UnsupportedOperationException();
+	public MsQualifiedName createFrom(QualifiedName object, OpcUaDefinitionFactory factory) throws ConvertionNotSupportedException {
+		throw new ConvertionNotSupportedException();
 	}
 
 	@Override
-	public QualifiedName createTo(MsQualifiedName object, UaBuilderFactory factory) throws Exception {
+	public QualifiedName createTo(MsQualifiedName object, UaBuilderFactory factory) throws ConvertionNotSupportedException {
 		return new QualifiedName(factory.getNamespaceIndex(), object.getName());
 	}
 

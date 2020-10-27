@@ -34,7 +34,7 @@ public class OpcUaMethodInvocationHandler extends AbstractMethodInvocationHandle
 	public OpcUaMethodInvocationHandler(UaMethodNode uaMethodNode, MsMethodNode msNode) {
 		super(uaMethodNode);
 		this.msNode = msNode;
-		compiledProgram = compile(this.msNode.getMethod());
+		this.compiledProgram = compile(this.msNode.getMethod());
 	}
 
 	private byte[] compile(String method) {

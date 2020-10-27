@@ -24,7 +24,7 @@ public class OpcUaNamespaceManager extends ManagedNamespace  {
 	private final SubscriptionModel subscriptionModel;
 	
 	public UaBuilderFactory getUaBuilderFactory() {
-		return uaBuilderFactory;
+		return this.uaBuilderFactory;
 	}
 	
 	public OpcUaNamespaceManager(OpcUaServer opcUaServer, MsServerInterface msServerInterface) {
@@ -38,10 +38,10 @@ public class OpcUaNamespaceManager extends ManagedNamespace  {
 	@Override
 	protected void onStartup() {
 		super.onStartup();
-		subscriptionModel.startup();
+		this.subscriptionModel.startup();
 		
 		
-		for(MsNode msNode : msServerInterface.getNodes()) {
+		for(MsNode msNode : this.msServerInterface.getNodes()) {
 			try {
 				Node node = instantiateUaNode(msNode);
 
@@ -72,28 +72,28 @@ public class OpcUaNamespaceManager extends ManagedNamespace  {
 	
 	@Override 
 	protected void onShutdown() {
-		subscriptionModel.shutdown();
+		this.subscriptionModel.shutdown();
 		super.onShutdown();
 	}
 	
 	@Override
 	public void onDataItemsCreated(List<DataItem> dataItems) {
-	    subscriptionModel.onDataItemsCreated(dataItems);		
+	    this.subscriptionModel.onDataItemsCreated(dataItems);		
 	}
 
 	@Override
 	public void onDataItemsModified(List<DataItem> dataItems) {
-		subscriptionModel.onDataItemsModified(dataItems);		
+		this.subscriptionModel.onDataItemsModified(dataItems);		
 	}
 
 	@Override
 	public void onDataItemsDeleted(List<DataItem> dataItems) {
-		subscriptionModel.onDataItemsDeleted(dataItems);		
+		this.subscriptionModel.onDataItemsDeleted(dataItems);		
 	}
 
 	@Override
 	public void onMonitoringModeChanged(List<MonitoredItem> monitoredItems) {
-		subscriptionModel.onMonitoringModeChanged(monitoredItems);		
+		this.subscriptionModel.onMonitoringModeChanged(monitoredItems);		
 	}
 	
 	protected void addReference(Reference reference) {

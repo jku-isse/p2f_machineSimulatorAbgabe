@@ -27,13 +27,13 @@ public class UaBuilderFactory {
 	private UaNodeContext nodeContext; 
 	
 	public UaNodeContext getNodeContext() {
-		return  nodeContext;
+		return  this.nodeContext;
 	}
 	
 	private int namespaceIndex;
 	
 	public int getNamespaceIndex() {
-		return namespaceIndex;
+		return this.namespaceIndex;
 	}
 	
 	public UaBuilderFactory(UaNodeContext nodeContext, int namespaceIndex) {
@@ -42,20 +42,20 @@ public class UaBuilderFactory {
 	}
 	
 	public UaObjectNodeBuilder getUaObjectNodeBuilder() {
-		return UaObjectNode.builder(nodeContext);
+		return UaObjectNode.builder(this.nodeContext);
 	}
 	
 	public UaObjectTypeNodeBuilder getUaObjectTypeNodeBuilder() {
-		return UaObjectTypeNode.builder(nodeContext);
+		return UaObjectTypeNode.builder(this.nodeContext);
 	}
 	
 	public UaVariableNodeBuilder getUaVariableNodeBuilder() {
-		return UaVariableNode.builder(nodeContext);
+		return UaVariableNode.builder(this.nodeContext);
 	}
 
 	
 	public UaMethodNodeBuilder getUaMethodNodeBuilder() {
-		return UaMethodNode.builder(nodeContext);
+		return UaMethodNode.builder(this.nodeContext);
 	}
 	
 	public ArgumentBuilder<?,?> getArgumentBuilder() {
@@ -72,7 +72,7 @@ public class UaBuilderFactory {
 	        Boolean containsNoLoops,
 	        UByte eventNotifier) {
 		
-		return new UaViewNode(nodeContext, nodeId, browseName, 
+		return new UaViewNode(this.nodeContext, nodeId, browseName, 
 			displayName, description, writeMask, userWriteMask, containsNoLoops,
 			eventNotifier);
 	}
@@ -88,7 +88,7 @@ public class UaBuilderFactory {
 		        Boolean isAbstract,
 		        Boolean symmetric,
 		        LocalizedText inverseName) {
-		return new UaReferenceTypeNode(nodeContext, nodeId, browseName, 
+		return new UaReferenceTypeNode(this.nodeContext, nodeId, browseName, 
 				displayName, description, writeMask, userWriteMask, isAbstract,
 				symmetric, inverseName);
 	}
@@ -101,7 +101,7 @@ public class UaBuilderFactory {
 	        UInteger writeMask,
 	        UInteger userWriteMask,
 	        boolean isAbstract) {
-		return new UaDataTypeNode(nodeContext, nodeId, browseName, 
+		return new UaDataTypeNode(this.nodeContext, nodeId, browseName, 
 			displayName, description, writeMask, userWriteMask, isAbstract);
 	}
 	
@@ -118,7 +118,7 @@ public class UaBuilderFactory {
 		        UInteger[] arrayDimensions,
 		        Boolean isAbstract) {
 		
-		return new UaVariableTypeNode(nodeContext, nodeId, browseName, displayName, description,
+		return new UaVariableTypeNode(this.nodeContext, nodeId, browseName, displayName, description,
 				writeMask, userWriteMask, value, dataType, valueRank, arrayDimensions, isAbstract);
 	}
 }

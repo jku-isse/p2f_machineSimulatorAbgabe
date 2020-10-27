@@ -2,8 +2,6 @@ package at.pro2future.machineSimulator.converter.opcUaToMilo;
 
 import java.util.UUID;
 
-import javax.naming.OperationNotSupportedException;
-
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UInteger;
@@ -16,12 +14,12 @@ import at.pro2future.machineSimulator.converter.UaBuilderFactory;
 public class MsNodeIdToNodeIdConverter implements Converter<MsNodeId, NodeId, OpcUaDefinitionFactory, UaBuilderFactory> {
 
 	@Override
-	public MsNodeId createFrom(NodeId object, OpcUaDefinitionFactory factory) throws Exception {
-		throw new UnsupportedOperationException();
+	public MsNodeId createFrom(NodeId object, OpcUaDefinitionFactory factory) throws ConvertionNotSupportedException {
+		throw new ConvertionNotSupportedException();
 	}
 
 	@Override
-	public NodeId createTo(MsNodeId object, UaBuilderFactory factory) throws Exception {
+	public NodeId createTo(MsNodeId object, UaBuilderFactory factory) throws ConvertionNotSupportedException {
 		int namespaceIndex = object.getNamespaceIndex();
 		Object indentifier = object.getIdentifier();
 		
@@ -45,7 +43,7 @@ public class MsNodeIdToNodeIdConverter implements Converter<MsNodeId, NodeId, Op
 		else if(indentifier instanceof UUID) {
 			return new NodeId(namespaceIndex, (UUID)object.getIdentifier());
 		}
-		throw new OperationNotSupportedException();	
+		throw new ConvertionNotSupportedException();	
 	}
 
 }

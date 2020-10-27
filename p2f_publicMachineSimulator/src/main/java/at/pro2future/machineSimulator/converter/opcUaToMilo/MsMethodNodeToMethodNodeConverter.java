@@ -16,12 +16,12 @@ import at.pro2future.machineSimulator.methodService.OpcUaMethodInvocationHandler
 public class MsMethodNodeToMethodNodeConverter implements Converter<MsMethodNode, MethodNode, OpcUaDefinitionFactory, UaBuilderFactory>{
 
 	@Override
-	public MsMethodNode createFrom(MethodNode object, OpcUaDefinitionFactory factory) throws Exception {
-		throw new UnsupportedOperationException();
+	public MsMethodNode createFrom(MethodNode object, OpcUaDefinitionFactory factory) throws ConvertionNotSupportedException {
+		throw new ConvertionNotSupportedException();
 	}
 
 	@Override
-	public MethodNode createTo(MsMethodNode msNode, UaBuilderFactory factory) throws Exception {
+	public MethodNode createTo(MsMethodNode msNode, UaBuilderFactory factory) throws ConvertionNotSupportedException {
 		UaMethodNode uaMethodNode = factory.getUaMethodNodeBuilder()
 				.setNodeId(new MsNodeIdToNodeIdConverter().createTo(msNode.getNodeId(), factory))
 				.setBrowseName(new MsQualifiedNameToQualifiedName().createTo(msNode.getBrowseName(), factory)) 
@@ -44,7 +44,7 @@ public class MsMethodNodeToMethodNodeConverter implements Converter<MsMethodNode
         return uaMethodNode;
 	}
 	
-	private Argument[] convertMsVariableNodeToArgument(EList<MsVariableNode> msVariableNodes, UaBuilderFactory factory) throws Exception {
+	private static Argument[] convertMsVariableNodeToArgument(EList<MsVariableNode> msVariableNodes, UaBuilderFactory factory) throws ConvertionNotSupportedException {
 		Argument[] arguments = new Argument[msVariableNodes.size()];
 		
 		for(int i = 0; i < msVariableNodes.size(); i++) {
@@ -54,7 +54,7 @@ public class MsMethodNodeToMethodNodeConverter implements Converter<MsMethodNode
 		return arguments;
 	}
 	
-	private Argument convertMsVariableNodeToArgument(MsVariableNode msVariableNode, UaBuilderFactory factory) throws Exception {
+	private static Argument convertMsVariableNodeToArgument(MsVariableNode msVariableNode, UaBuilderFactory factory) throws ConvertionNotSupportedException {
 		Argument arguement = Argument.builder()
 				.name(msVariableNode.getBrowseName().getName()) 
 				.dataType(new MsNodeIdToNodeIdConverter().createTo(msVariableNode.getNodeId(), factory))				

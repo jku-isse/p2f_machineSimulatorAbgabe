@@ -9,12 +9,12 @@ import at.pro2future.machineSimulator.converter.UaBuilderFactory;
 public class MsLocalizedTextToLocalizedTextConverter implements Converter<MsLocalizedText, LocalizedText, OpcUaDefinitionFactory, UaBuilderFactory>  {
 
 	@Override
-	public MsLocalizedText createFrom(LocalizedText object, OpcUaDefinitionFactory factory) throws Exception {
-		throw new UnsupportedOperationException();
+	public MsLocalizedText createFrom(LocalizedText object, OpcUaDefinitionFactory factory) throws ConvertionNotSupportedException {
+		throw new ConvertionNotSupportedException();
 	}
 
 	@Override
-	public LocalizedText createTo(MsLocalizedText object, UaBuilderFactory factory) throws Exception {
+	public LocalizedText createTo(MsLocalizedText object, UaBuilderFactory factory) throws ConvertionNotSupportedException {
 		return new LocalizedText(object.getLocale(), object.getText());
 	}
 

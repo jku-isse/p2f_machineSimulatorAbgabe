@@ -13,12 +13,12 @@ import at.pro2future.machineSimulator.converter.UaBuilderFactory;
 public class MsReferenceTypeNodeToReferenceTypeNodeConverter implements Converter<MsReferenceTypeNode, ReferenceTypeNode, OpcUaDefinitionFactory, UaBuilderFactory>{
 
 	@Override
-	public MsReferenceTypeNode createFrom(ReferenceTypeNode object, OpcUaDefinitionFactory factory) throws Exception {
-		throw new UnsupportedOperationException();
+	public MsReferenceTypeNode createFrom(ReferenceTypeNode object, OpcUaDefinitionFactory factory) throws ConvertionNotSupportedException {
+		throw new ConvertionNotSupportedException();
 	}
 
 	@Override
-	public ReferenceTypeNode createTo(MsReferenceTypeNode msNode, UaBuilderFactory factory) throws Exception {
+	public ReferenceTypeNode createTo(MsReferenceTypeNode msNode, UaBuilderFactory factory) throws ConvertionNotSupportedException {
 		UaReferenceTypeNode uaReferenceTypeNode = factory.getUaReferenceTypeNode(
 				new MsNodeIdToNodeIdConverter().createTo(msNode.getNodeId(), factory),
 				new MsQualifiedNameToQualifiedName().createTo(msNode.getBrowseName(), factory),
@@ -33,6 +33,7 @@ public class MsReferenceTypeNodeToReferenceTypeNodeConverter implements Converte
 		
 		factory.getNodeContext().getNodeManager().addNode(uaReferenceTypeNode);
                 
-        return uaReferenceTypeNode;	}
+        return uaReferenceTypeNode;
+	}
 
 }

@@ -18,12 +18,12 @@ import at.pro2future.machineSimulator.converter.UaBuilderFactory;
 public class MsObjectTypeNodeToObjectTypeNodeConverter implements Converter<MsObjectTypeNode, ObjectTypeNode, OpcUaDefinitionFactory, UaBuilderFactory>{
 
 	@Override
-	public MsObjectTypeNode createFrom(ObjectTypeNode object, OpcUaDefinitionFactory factory) throws Exception {
-		throw new UnsupportedOperationException();
+	public MsObjectTypeNode createFrom(ObjectTypeNode object, OpcUaDefinitionFactory factory) throws ConvertionNotSupportedException {
+		throw new ConvertionNotSupportedException();
 	}
 
 	@Override
-	public ObjectTypeNode createTo(MsObjectTypeNode msNode, UaBuilderFactory factory) throws Exception {
+	public ObjectTypeNode createTo(MsObjectTypeNode msNode, UaBuilderFactory factory) throws ConvertionNotSupportedException {
 		
 		UaObjectTypeNode uaObjectTypeNode = factory.getUaObjectTypeNodeBuilder()
 				.setNodeId(new MsNodeIdToNodeIdConverter().createTo(msNode.getNodeId(), factory))
@@ -50,7 +50,7 @@ public class MsObjectTypeNodeToObjectTypeNodeConverter implements Converter<MsOb
 			));
 		
 		for(MsNode component : msNode.getHasComponent()) {
-			UaNode uaNode = (UaNode) new MsNodeToNodeConverter().createTo((MsNode)component, factory);
+			UaNode uaNode = (UaNode) new MsNodeToNodeConverter().createTo(component, factory);
 			
 			uaObjectTypeNode.addComponent(uaNode);
 		}

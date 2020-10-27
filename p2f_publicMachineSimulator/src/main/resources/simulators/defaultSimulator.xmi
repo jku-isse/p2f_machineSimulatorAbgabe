@@ -3,15 +3,19 @@
   <at.pro2future.shopfloors.simulator:MachineSimulator name="DefaultSimulator">
     <opcUaServerInterface nodes="/4"/>
     <instanceInformation displayName="Simualtor Test" host="localhost" port="2000"/>
-    <stateMachine ID="_qDag0A5aEeuSa_fneXorsA" DisplayName="MainProcess">
-      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_qDbu8A5aEeuSa_fneXorsA" DisplayName="Sets a welding tool" ModifiedVariable="/9" rhs="/11"/>
-      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_qDbu8Q5aEeuSa_fneXorsA" DisplayName="Start welding" ModifiedVariable="/13/@Parameters.0" rhs="/8"/>
-      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_qDbu8g5aEeuSa_fneXorsA" DisplayName="Stop welding" ModifiedVariable="/13/@Parameters.0" rhs="/12"/>
-      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_qDbu8w5aEeuSa_fneXorsA" DisplayName="To start position" ModifiedVariable="/9" rhs="/10"/>
+    <stateMachine ID="_6KF-IBiaEeudyIlyZiplCQ" DisplayName="MainProcess">
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_6KHzUBiaEeudyIlyZiplCQ" DisplayName="Sets a welding tool" ModifiedVariable="/9" rhs="/11"/>
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_6KHzURiaEeudyIlyZiplCQ" DisplayName="Start welding" ModifiedVariable="/14/@Parameters.0" rhs="/8"/>
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_6KHzUhiaEeudyIlyZiplCQ" DisplayName="Stop welding" ModifiedVariable="/14/@Parameters.0" rhs="/12"/>
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_6KHzUxiaEeudyIlyZiplCQ" DisplayName="To start position" ModifiedVariable="/9" rhs="/10"/>
     </stateMachine>
-    <actions xsi:type="at.pro2future.shopfloors.simulator:MsWriteAction" opcUaClientInterface="/5" reactsTo="/13">
-      <processOpcUaMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/4/@organizes.0/@hasComponent.0" parameter="/13/@Parameters.0"/>
+    <actions xsi:type="at.pro2future.shopfloors.simulator:MsWriteAction" opcUaClientInterface="/5" refersTo="/14">
+      <parameterMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/4/@organizes.0/@hasComponent.0" parameter="/14/@Parameters.0"/>
     </actions>
+    <actions xsi:type="at.pro2future.shopfloors.simulator:MsReadAction" opcUaClientInterface="/5" refersTo="/15">
+      <parameterMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/4/@organizes.0/@hasComponent.1" parameter="/9"/>
+    </actions>
+    <actions xsi:type="at.pro2future.shopfloors.simulator:MsCallMethodAction" opcUaClientInterface="/5" refersTo="/16" callesMethod="/6/@hasComponent.2" objectContainingMethod="/4/@organizes.0"/>
   </at.pro2future.shopfloors.simulator:MachineSimulator>
   <at.pro2future.shopfloors.opcUaDefinition:MsNodeId Identifier="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B02000078700000000C" namespaceIndex="0" allowOverrideNamespaceIndex="false"/>
   <at.pro2future.shopfloors.opcUaDefinition:MsNodeId Identifier="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000006" namespaceIndex="0" allowOverrideNamespaceIndex="false"/>
@@ -84,8 +88,10 @@
   <at.pro2future.shopfloors.processcore:Constant Type="String" Name="None" Value="ACED00057400046E6F6E65"/>
   <at.pro2future.shopfloors.processcore:Constant Type="String" Name="Welding" Value="ACED000574000777656C64696E67"/>
   <at.pro2future.shopfloors.processcore:Constant Type="Integer" Name="zero" Value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000"/>
-  <at.pro2future.shopfloors.processcore:Event Name="Hello" Role="/14">
+  <at.pro2future.shopfloors.processcore:Assignment Name="DefaultAssignment"/>
+  <at.pro2future.shopfloors.processcore:Event Name="Speed Changed Event" Role="/13">
     <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="Integer" Name="Speed" Value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000"/>
   </at.pro2future.shopfloors.processcore:Event>
-  <at.pro2future.shopfloors.processcore:Assignment Name="Looper"/>
+  <at.pro2future.shopfloors.processcore:Event Name="Tool Changed Event" Role="/13"/>
+  <at.pro2future.shopfloors.processcore:Event Name="Call Method Event" Role="/13"/>
 </xmi:XMI>
