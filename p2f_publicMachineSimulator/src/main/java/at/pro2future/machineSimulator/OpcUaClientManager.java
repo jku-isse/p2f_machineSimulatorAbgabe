@@ -181,6 +181,7 @@ public class OpcUaClientManager extends AbstractLifecycle  {
             parameters
         );
         
+        
         List<UaMonitoredItem> items = this.subscription.createMonitoredItems(
                 TimestampsToReturn.Both,
                 Arrays.asList(request),
@@ -205,6 +206,21 @@ public class OpcUaClientManager extends AbstractLifecycle  {
 		return future;
 	}
 	
+
+	public CompletableFuture<Variant[]> subsribeToMethodCall(CallMethodRequest request) {
+		CompletableFuture<Variant[]> future = this.opcUaClient.call(request).thenCompose(result -> {
+            StatusCode statusCode = result.getStatusCode();
+            if (statusCode.isBad()) {
+                throw new RuntimeException();
+             }
+            
+            CompletableFuture<Variant[]> outputArguments = CompletableFuture.completedFuture(result.getOutputArguments());  
+            return outputArguments;
+        });
+		
+		return future;
+	}
+	
 	@Override
 	protected void onStartup() {
 		try {
@@ -212,6 +228,7 @@ public class OpcUaClientManager extends AbstractLifecycle  {
 			this.subscription = this.opcUaClient.getSubscriptionManager()
 			            .createSubscription(1000.0)
 			            .get();
+		    	 
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			throw new RuntimeException(e);
 		}	

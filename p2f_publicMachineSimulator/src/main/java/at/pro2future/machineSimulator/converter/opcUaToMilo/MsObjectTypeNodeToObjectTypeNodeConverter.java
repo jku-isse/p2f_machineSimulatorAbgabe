@@ -41,7 +41,7 @@ public class MsObjectTypeNodeToObjectTypeNodeConverter implements Converter<MsOb
 	            UaObjectNode::new
 	        );
 				
-		// Add the inverse SubtypeOf relationship.
+		// Add the inverse HasSubtype relationship.
 		uaObjectTypeNode.addReference(new Reference(
 				uaObjectTypeNode.getNodeId(),
 				Identifiers.HasSubtype,

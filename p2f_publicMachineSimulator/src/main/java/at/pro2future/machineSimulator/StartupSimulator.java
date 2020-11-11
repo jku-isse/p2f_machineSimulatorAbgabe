@@ -16,7 +16,7 @@ import at.pro2future.shopfloors.interfaces.impl.FileDataSource;
 public class StartupSimulator {
 
 	public static void main(String[] args) {
-		FileDataSource pers = new FileDataSource("src/main/resources/simulators/defaultSimulator.xmi"); 
+		FileDataSource pers = new FileDataSource("src/main/resources/simulators/" + args[0] + ".xmi"); 
 
 		//register the generated model/code with the following line
 		pers.registerPackage(SimulatorPackage.eNS_URI, SimulatorPackage.eINSTANCE);
@@ -36,13 +36,15 @@ public class StartupSimulator {
 			actionManager.startup();
 			
 			System.out.println("Pro2Future OpcUa Machine Simulator: successfully started.");
-			
-	        System.in.read();
-	        Event callMethodEvent = root.getActions().get(2).getRefersTo();
-	        EventInstance callMethodEventInstance = new EventInstance(callMethodEvent);
-	        callMethodEventInstance.parameters = callMethodEvent.getParameters();
-	        actionManager.getAdapterEventProvider().enqueueEvent(callMethodEventInstance);
-	        System.out.println("Pro2Future OpcUa Machine Simulator: call method event sent.");
+			boolean t = true;
+			while(true == t) {
+		        System.in.read();
+		        Event callMethodEvent = root.getActions().get(1).getRefersTo();
+		        EventInstance callMethodEventInstance = new EventInstance(callMethodEvent);
+		        callMethodEventInstance.parameters = callMethodEvent.getParameters();
+		        actionManager.getAdapterEventProvider().enqueueEvent(callMethodEventInstance);
+		        System.out.println("Pro2Future OpcUa Machine Simulator: call method event sent.");
+			}
 	        
 			System.in.read();
 			Event writeEvent = root.getActions().get(0).getRefersTo();
