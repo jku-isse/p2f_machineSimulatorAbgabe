@@ -80,7 +80,7 @@ public class OpcUaServerManager extends AbstractLifecycle  {
 	}
 	
 	private Set<EndpointConfiguration> createEndpointConfigurations(MsInstanceInformation instanceInformation){
-		Set<EndpointConfiguration> endpointConfigurations = new HashSet<EndpointConfiguration>();
+		Set<EndpointConfiguration> endpointConfigurations = new HashSet<>();
 		
 		endpointConfigurations.add(EndpointConfiguration.newBuilder()
 	                    .setBindAddress(instanceInformation.getHost())

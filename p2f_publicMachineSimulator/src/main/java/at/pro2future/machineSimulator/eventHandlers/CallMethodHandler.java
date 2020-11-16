@@ -5,22 +5,21 @@ import java.util.concurrent.CompletableFuture;
 import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
 import org.eclipse.milo.opcua.stack.core.types.structured.CallMethodRequest;
 
-import OpcUaDefinition.MsMethodNode;
 import Simulator.MsAction;
-import Simulator.MsCallMethodAction;
+import Simulator.MsMethodAction;
 import at.pro2future.machineSimulator.OpcUaClientManager;
 import at.pro2future.machineSimulator.converter.opcUaToMilo.MsNodeIdToNodeIdConverter;
 import at.pro2future.shopfloors.adapters.EventInstance;
 
 public class CallMethodHandler extends BaseEventHandler {
-	private final MsCallMethodAction callMethodAction;
+	private final MsMethodAction callMethodAction;
 	
 	@Override
 	protected MsAction getMsAction() {
 		return this.callMethodAction;
 	}
 	
-	public CallMethodHandler(OpcUaClientManager opcUaClientManager, MsCallMethodAction callMethodAction) {
+	public CallMethodHandler(OpcUaClientManager opcUaClientManager, MsMethodAction callMethodAction) {
 		super(opcUaClientManager);
 		this.callMethodAction = callMethodAction;
 	}

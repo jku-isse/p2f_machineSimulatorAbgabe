@@ -7,33 +7,33 @@
         <description locale="en" text="BaseFolder"/>
         <displayName locale="en" text="BaseFolder"/>
         <browseName namespaceIndex="0" name="BaseFolder"/>
-        <organizes xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsObjectNode" hasTypeDefinition="/22">
+        <organizes xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsObjectNode" hasTypeDefinition="/23">
           <nodeId Identifier="ACED000574000A4E4F44455F49445F3331" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
           <description locale="en" text="Root"/>
           <displayName locale="en" text="Root"/>
           <browseName namespaceIndex="0" name="Root"/>
           <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000" accessLevel="-1" userAccessLevel="-1" dataType="/5" hasModellingRule="/2">
             <nodeId Identifier="ACED000574000A4E4F44455F49445F3330" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
-            <description locale="en" text="Begin"/>
-            <displayName locale="en" text="Begin"/>
-            <browseName namespaceIndex="0" name="Begin"/>
+            <description locale="en" text="Run"/>
+            <displayName locale="en" text="Run"/>
+            <browseName namespaceIndex="0" name="Run"/>
           </hasComponent>
         </organizes>
       </nodes>
     </opcUaServerInterface>
     <instanceInformation displayName="MillingControl" host="localhost" port="3000"/>
-    <stateMachine ID="_ymqb0yR1EeuzVfi2ZJDixQ" DisplayName="MainProcess">
-      <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_ymqb1CR1EeuzVfi2ZJDixQ" DisplayName="Root loop">
+    <stateMachine ID="_qcCIkyfqEeulGaIkkYHJxg" DisplayName="MainProcess">
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_qcCIlCfqEeulGaIkkYHJxg" DisplayName="Root loop">
         <Condition xsi:type="at.pro2future.shopfloors.processcore:SimpleCondition" rhs="/7" lhs="/7"/>
-        <Body ID="_ymqb0iR1EeuzVfi2ZJDixQ" DisplayName="SubProcess">
-          <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_ymqb0SR1EeuzVfi2ZJDixQ" DisplayName="while beginInt null">
+        <Body ID="_qcCIkifqEeulGaIkkYHJxg" DisplayName="SubProcess">
+          <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_qcCIkSfqEeulGaIkkYHJxg" DisplayName="while _run == false">
             <Condition xsi:type="at.pro2future.shopfloors.processcore:SimpleCondition" rhs="/8" lhs="/15/@Parameters.0"/>
-            <Body ID="_ymqb0CR1EeuzVfi2ZJDixQ" DisplayName="EmptyProcess"/>
+            <Body ID="_qcCIkCfqEeulGaIkkYHJxg" DisplayName="EmptyProcess"/>
           </Steps>
           <Steps xsi:type="at.pro2future.shopfloors.processcore:EventSource" DisplayName="sendWorkpieceEvent Event Source" Event="/16"/>
           <Steps xsi:type="at.pro2future.shopfloors.processcore:EventSource" DisplayName="sendToolEvent Event Source" Event="/17"/>
           <Steps xsi:type="at.pro2future.shopfloors.processcore:EventSource" DisplayName="sendStartEvent Event Source" Event="/18"/>
-          <Steps xsi:type="at.pro2future.shopfloors.processcore:EventSource" DisplayName="sendStartEvent Event Source" Event="/18"/>
+          <Steps xsi:type="at.pro2future.shopfloors.processcore:EventSource" DisplayName="sendStopEvent Event Source" Event="/19"/>
           <Steps xsi:type="at.pro2future.shopfloors.processcore:EventSource" DisplayName="sendToolEvent Event Source" Event="/17"/>
           <Steps xsi:type="at.pro2future.shopfloors.processcore:EventSource" DisplayName="sendWorkpieceEvent Event Source" Event="/17"/>
         </Body>
@@ -43,13 +43,16 @@
       <parameterMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/0/@opcUaServerInterface/@nodes.0/@organizes.0/@hasComponent.0" parameter="/15/@Parameters.0"/>
     </actions>
     <actions xsi:type="at.pro2future.shopfloors.simulator:MsWriteAction" opcUaClientInterface="/12" refersTo="/16">
-      <parameterMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/19" parameter="/16/@Parameters.0"/>
+      <parameterMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/20" parameter="/16/@Parameters.0"/>
     </actions>
     <actions xsi:type="at.pro2future.shopfloors.simulator:MsWriteAction" opcUaClientInterface="/14" refersTo="/17">
-      <parameterMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/20" parameter="/17/@Parameters.0"/>
+      <parameterMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/21" parameter="/17/@Parameters.0"/>
     </actions>
     <actions xsi:type="at.pro2future.shopfloors.simulator:MsWriteAction" opcUaClientInterface="/14" refersTo="/18">
-      <parameterMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/21" parameter="/18/@Parameters.0"/>
+      <parameterMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/22" parameter="/18/@Parameters.0"/>
+    </actions>
+    <actions xsi:type="at.pro2future.shopfloors.simulator:MsWriteAction" opcUaClientInterface="/14" refersTo="/19">
+      <parameterMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/22" parameter="/19/@Parameters.0"/>
     </actions>
   </at.pro2future.shopfloors.simulator:MachineSimulator>
   <at.pro2future.shopfloors.opcUaDefinition:MsObjectTypeNode>
@@ -71,17 +74,20 @@
   <at.pro2future.shopfloors.simulator:MsClientInterface targetInstanceInformation="/11"/>
   <at.pro2future.shopfloors.simulator:MsInstanceInformation displayName="ToolControl" host="localhost" port="3020"/>
   <at.pro2future.shopfloors.simulator:MsClientInterface targetInstanceInformation="/13"/>
-  <at.pro2future.shopfloors.processcore:Event Name="BeginEvent" Role="/6">
-    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="Boolean" Name="beginInt" Value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787000"/>
+  <at.pro2future.shopfloors.processcore:Event Name="RunEvent" Role="/6">
+    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="Boolean" Name="_run" Value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787000"/>
   </at.pro2future.shopfloors.processcore:Event>
   <at.pro2future.shopfloors.processcore:Event Name="WorkpieceEvent" Role="/6">
-    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="String" Name="defaultToolInt" Value="ACED000574001044656661756C74576F726B7069656365"/>
+    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="String" Name="default_workpiece" Value="ACED000574001044656661756C74576F726B7069656365"/>
   </at.pro2future.shopfloors.processcore:Event>
   <at.pro2future.shopfloors.processcore:Event Name="ToolEvent" Role="/6">
-    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="String" Name="defaultWorkpieceInt" Value="ACED000574000B44656661756C74546F6F6C"/>
+    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="String" Name="default_tool" Value="ACED000574000B44656661756C74546F6F6C"/>
   </at.pro2future.shopfloors.processcore:Event>
   <at.pro2future.shopfloors.processcore:Event Name="StartEvent" Role="/6">
-    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="Boolean" Name="startInt" Value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787000"/>
+    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="Boolean" Name="_startEvent" Value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787001"/>
+  </at.pro2future.shopfloors.processcore:Event>
+  <at.pro2future.shopfloors.processcore:Event Name="StopEvent" Role="/6">
+    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="Boolean" Name="_stopEvent" Value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787000"/>
   </at.pro2future.shopfloors.processcore:Event>
   <at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode value="ACED0005740000" accessLevel="-1" userAccessLevel="-1" dataType="/3" hasModellingRule="/2">
     <nodeId Identifier="ACED000574000A4E4F44455F49445F3235" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
@@ -108,9 +114,9 @@
     <browseName namespaceIndex="0" name="RootType"/>
     <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000" accessLevel="-1" userAccessLevel="-1" dataType="/5" hasModellingRule="/2">
       <nodeId Identifier="ACED000574000A4E4F44455F49445F3332" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
-      <description locale="en" text="Begin"/>
-      <displayName locale="en" text="Begin"/>
-      <browseName namespaceIndex="0" name="Begin"/>
+      <description locale="en" text="Run"/>
+      <displayName locale="en" text="Run"/>
+      <browseName namespaceIndex="0" name="Run"/>
     </hasComponent>
   </at.pro2future.shopfloors.opcUaDefinition:MsObjectTypeNode>
 </xmi:XMI>

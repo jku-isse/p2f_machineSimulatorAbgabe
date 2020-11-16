@@ -7,7 +7,7 @@
         <description locale="en" text="BaseFolder"/>
         <displayName locale="en" text="BaseFolder"/>
         <browseName namespaceIndex="0" name="BaseFolder"/>
-        <organizes xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsObjectNode" hasTypeDefinition="/14">
+        <organizes xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsObjectNode" hasTypeDefinition="/15">
           <nodeId Identifier="ACED000574000A4E4F44455F49445F3139" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
           <description locale="en" text="Root"/>
           <displayName locale="en" text="Root"/>
@@ -34,23 +34,24 @@
       </nodes>
     </opcUaServerInterface>
     <instanceInformation displayName="ToolControl" host="localhost" port="3020"/>
-    <stateMachine ID="_ymZWEyR1EeuzVfi2ZJDixQ" DisplayName="MainProcess">
-      <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_ymZWFCR1EeuzVfi2ZJDixQ" DisplayName="Root loop">
+    <stateMachine ID="_qbzfEyfqEeulGaIkkYHJxg" DisplayName="MainProcess">
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_qbzfFCfqEeulGaIkkYHJxg" DisplayName="Root loop">
         <Condition xsi:type="at.pro2future.shopfloors.processcore:SimpleCondition" rhs="/7" lhs="/7"/>
-        <Body ID="_ymZWEiR1EeuzVfi2ZJDixQ" DisplayName="SubProcess">
-          <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_ymZWECR1EeuzVfi2ZJDixQ" DisplayName="while tool null">
+        <Body ID="_qbzfEifqEeulGaIkkYHJxg" DisplayName="SubProcess">
+          <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_qbzfECfqEeulGaIkkYHJxg" DisplayName="while _tool null">
             <Condition xsi:type="at.pro2future.shopfloors.processcore:SimpleCondition" rhs="/9" lhs="/11/@Parameters.0"/>
-            <Body ID="_ymYvASR1EeuzVfi2ZJDixQ" DisplayName="EmptyProcess"/>
+            <Body ID="_qby4ASfqEeulGaIkkYHJxg" DisplayName="EmptyProcess"/>
           </Steps>
-          <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_ymZWESR1EeuzVfi2ZJDixQ" DisplayName="while tool not null check started">
+          <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_qbzfESfqEeulGaIkkYHJxg" DisplayName="while _tool not null check _start">
             <Condition xsi:type="at.pro2future.shopfloors.processcore:SimpleCondition" Operator="neq" rhs="/9" lhs="/11/@Parameters.0"/>
-            <Body ID="_ymYvACR1EeuzVfi2ZJDixQ" DisplayName="CheckStartedProcess">
+            <Body ID="_qby4ACfqEeulGaIkkYHJxg" DisplayName="check_startProcess">
               <Steps xsi:type="at.pro2future.shopfloors.processcore:Decision" DisplayName="Start">
                 <Condition xsi:type="at.pro2future.shopfloors.processcore:SimpleCondition" rhs="/7" lhs="/12/@Parameters.0"/>
-                <If ID="_ymW50CR1EeuzVfi2ZJDixQ" DisplayName="Milling">
-                  <Steps xsi:type="at.pro2future.shopfloors.processcore:EventSource" DisplayName="isMillingInt Event Source" Event="/13"/>
+                <If ID="_qbwbwCfqEeulGaIkkYHJxg" DisplayName="Milling">
+                  <Steps xsi:type="at.pro2future.shopfloors.processcore:EventSource" DisplayName="MillingStartEvent Event Source" Event="/13"/>
+                  <Steps xsi:type="at.pro2future.shopfloors.processcore:EventSource" DisplayName="MillingStopEvent Event Source" Event="/14"/>
                 </If>
-                <Else ID="_ymYH8CR1EeuzVfi2ZJDixQ" DisplayName="EmptyProcess"/>
+                <Else ID="_qbyQ8CfqEeulGaIkkYHJxg" DisplayName="EmptyProcess"/>
               </Steps>
             </Body>
           </Steps>
@@ -65,6 +66,9 @@
     </actions>
     <actions xsi:type="at.pro2future.shopfloors.simulator:MsWriteAction" opcUaClientInterface="/10" refersTo="/13">
       <parameterMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/0/@opcUaServerInterface/@nodes.0/@organizes.0/@hasComponent.2" parameter="/13/@Parameters.0"/>
+    </actions>
+    <actions xsi:type="at.pro2future.shopfloors.simulator:MsWriteAction" opcUaClientInterface="/10" refersTo="/14">
+      <parameterMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/0/@opcUaServerInterface/@nodes.0/@organizes.0/@hasComponent.2" parameter="/14/@Parameters.0"/>
     </actions>
   </at.pro2future.shopfloors.simulator:MachineSimulator>
   <at.pro2future.shopfloors.opcUaDefinition:MsObjectTypeNode>
@@ -83,13 +87,16 @@
   <at.pro2future.shopfloors.processcore:LocalVariable Type="String" Name="nullString"/>
   <at.pro2future.shopfloors.simulator:MsClientInterface targetInstanceInformation="/0/@instanceInformation"/>
   <at.pro2future.shopfloors.processcore:Event Name="ToolChangedEvent" Role="/6">
-    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="String" Name="toolInt" Value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000"/>
+    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="String" Name="_tool" Value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000"/>
   </at.pro2future.shopfloors.processcore:Event>
   <at.pro2future.shopfloors.processcore:Event Name="StartEvent" Role="/6">
-    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="Boolean" Name="startInt" Value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787000"/>
+    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="Boolean" Name="_start" Value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787000"/>
   </at.pro2future.shopfloors.processcore:Event>
-  <at.pro2future.shopfloors.processcore:Event Name="IsMillingEvent" Role="/6">
-    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="Boolean" Name="isMillingInt" Value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787000"/>
+  <at.pro2future.shopfloors.processcore:Event Name="MillingStartEvent" Role="/6">
+    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="Boolean" Name="_millingStartEvent" Value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787001"/>
+  </at.pro2future.shopfloors.processcore:Event>
+  <at.pro2future.shopfloors.processcore:Event Name="MillingStopEvent" Role="/6">
+    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="Boolean" Name="_millingStopEvent" Value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787000"/>
   </at.pro2future.shopfloors.processcore:Event>
   <at.pro2future.shopfloors.opcUaDefinition:MsObjectTypeNode>
     <nodeId Identifier="ACED000574000A4E4F44455F49445F3135" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>

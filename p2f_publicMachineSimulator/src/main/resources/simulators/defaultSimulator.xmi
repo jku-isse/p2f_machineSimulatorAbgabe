@@ -34,11 +34,11 @@
       </nodes>
     </opcUaServerInterface>
     <instanceInformation displayName="Default Simulator" host="localhost" port="2000"/>
-    <stateMachine ID="_yij-8CR1EeuzVfi2ZJDixQ" DisplayName="MainProcess">
-      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_yiuXACR1EeuzVfi2ZJDixQ" DisplayName="Sets a welding tool" ModifiedVariable="/13" rhs="/15"/>
-      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_yiuXASR1EeuzVfi2ZJDixQ" DisplayName="Start welding" ModifiedVariable="/16" rhs="/12"/>
-      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_yiuXAiR1EeuzVfi2ZJDixQ" DisplayName="Stop welding" ModifiedVariable="/16" rhs="/17"/>
-      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_yiuXAyR1EeuzVfi2ZJDixQ" DisplayName="To start position" ModifiedVariable="/13" rhs="/14"/>
+    <stateMachine ID="_qX850CfqEeulGaIkkYHJxg" DisplayName="MainProcess">
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_qYFcsCfqEeulGaIkkYHJxg" DisplayName="Sets a welding tool" ModifiedVariable="/13" rhs="/15"/>
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_qYGDwCfqEeulGaIkkYHJxg" DisplayName="Start welding" ModifiedVariable="/16" rhs="/12"/>
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_qYGDwSfqEeulGaIkkYHJxg" DisplayName="Stop welding" ModifiedVariable="/16" rhs="/17"/>
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_qYGDwifqEeulGaIkkYHJxg" DisplayName="To start position" ModifiedVariable="/13" rhs="/14"/>
     </stateMachine>
     <actions xsi:type="at.pro2future.shopfloors.simulator:MsWriteAction" opcUaClientInterface="/10" refersTo="/18">
       <parameterMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/0/@opcUaServerInterface/@nodes.0/@organizes.0/@hasComponent.0" parameter="/16"/>
@@ -46,7 +46,7 @@
     <actions xsi:type="at.pro2future.shopfloors.simulator:MsReadAction" opcUaClientInterface="/10" refersTo="/19">
       <parameterMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/0/@opcUaServerInterface/@nodes.0/@organizes.0/@hasComponent.1" parameter="/13"/>
     </actions>
-    <actions xsi:type="at.pro2future.shopfloors.simulator:MsCallMethodAction" opcUaClientInterface="/10" refersTo="/20" callesMethod="/11/@hasComponent.2" objectContainingMethod="/0/@opcUaServerInterface/@nodes.0/@organizes.0"/>
+    <actions xsi:type="at.pro2future.shopfloors.simulator:MsMethodAction" opcUaClientInterface="/10" refersTo="/20" callesMethod="/11/@hasComponent.2" objectContainingMethod="/0/@opcUaServerInterface/@nodes.0/@organizes.0"/>
   </at.pro2future.shopfloors.simulator:MachineSimulator>
   <at.pro2future.shopfloors.opcUaDefinition:MsObjectTypeNode>
     <nodeId Identifier="ACED0005737200416F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E55496E7465676572A156BE65D94722920200014A000576616C7565787200406F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E554E756D626572959C1BC3979AF2BD020000787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000000000003D" namespaceIndex="0" allowOverrideNamespaceIndex="false"/>
@@ -88,9 +88,9 @@
     </hasComponent>
   </at.pro2future.shopfloors.opcUaDefinition:MsObjectTypeNode>
   <at.pro2future.shopfloors.processcore:Constant Type="Integer" Name="five" Value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000005"/>
-  <at.pro2future.shopfloors.processcore:LocalVariable Type="String" Name="Tool" Value="ACED00057400046E6F6E65"/>
+  <at.pro2future.shopfloors.processcore:LocalVariable Type="String" Name="_tool" Value="ACED00057400046E6F6E65"/>
   <at.pro2future.shopfloors.processcore:Constant Type="String" Name="None" Value="ACED00057400046E6F6E65"/>
-  <at.pro2future.shopfloors.processcore:Constant Type="String" Name="Welding" Value="ACED000574000777656C64696E67"/>
+  <at.pro2future.shopfloors.processcore:Constant Type="String" Name="_welding" Value="ACED000574000777656C64696E67"/>
   <at.pro2future.shopfloors.processcore:LocalVariable Type="Integer" Name="Speed" Value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000"/>
   <at.pro2future.shopfloors.processcore:Constant Type="Integer" Name="zero" Value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000"/>
   <at.pro2future.shopfloors.processcore:Event Name="Speed Changed Event" Role="/6"/>

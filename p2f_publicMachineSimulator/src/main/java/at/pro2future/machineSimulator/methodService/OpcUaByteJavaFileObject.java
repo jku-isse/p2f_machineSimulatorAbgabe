@@ -12,15 +12,15 @@ public class OpcUaByteJavaFileObject  extends SimpleJavaFileObject {
 	
 	  public OpcUaByteJavaFileObject(String name) {
 		  super(URI.create("bytes:///"+name + name.replaceAll("\\.", "/")), Kind.CLASS);
-		  byteArrayOutputStream = new ByteArrayOutputStream();
+		  this.byteArrayOutputStream = new ByteArrayOutputStream();
 	  }
 
     @Override
     public OutputStream openOutputStream() throws IOException {
-        return byteArrayOutputStream;
+        return this.byteArrayOutputStream;
     }
     
     public byte[] getBytes() {
-        return byteArrayOutputStream.toByteArray();
+        return this.byteArrayOutputStream.toByteArray();
     }
 }

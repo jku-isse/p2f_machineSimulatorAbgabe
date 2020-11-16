@@ -74,7 +74,7 @@ public class OpcUaMethodInvocationHandler extends AbstractMethodInvocationHandle
 
 	@Override
 	public Variant[] invoke(InvocationContext invocationContext, Variant[] inputValues) throws UaException {
-		OpcUaByteClassLoader classLoader = new OpcUaByteClassLoader(compiledProgram,  ClassLoader.getSystemClassLoader());
+		OpcUaByteClassLoader classLoader = new OpcUaByteClassLoader(this.compiledProgram,  ClassLoader.getSystemClassLoader());
 		
 		try {
 			Class<?> wrapperClass = Class.forName(CLASS_NAME, false, classLoader);

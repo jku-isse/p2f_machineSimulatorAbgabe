@@ -19,10 +19,10 @@ public class OpcUaByteClassLoader extends ClassLoader {
 	}
 	
 	public byte[] getByteArray() {
-		return byteArray;
+		return this.byteArray;
 	}
 	
     public Class<?> findClass(String name) {
-        return defineClass(name, byteArray, 0, byteArray.length);
+        return defineClass(name, this.byteArray, 0, this.byteArray.length);
     }
 }

@@ -22,15 +22,15 @@
       </nodes>
     </opcUaServerInterface>
     <instanceInformation displayName="WorkpieceControl" host="localhost" port="3040"/>
-    <stateMachine ID="_ymjHECR1EeuzVfi2ZJDixQ" DisplayName="MainProcess">
-      <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_ymjHESR1EeuzVfi2ZJDixQ" DisplayName="Root loop">
+    <stateMachine ID="_qb93IyfqEeulGaIkkYHJxg" DisplayName="MainProcess">
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_qb93JCfqEeulGaIkkYHJxg" DisplayName="Root loop">
         <Condition xsi:type="at.pro2future.shopfloors.processcore:SimpleCondition" rhs="/7" lhs="/7"/>
-        <Body ID="_ymigAiR1EeuzVfi2ZJDixQ" DisplayName="SubProcess">
-          <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_ymigACR1EeuzVfi2ZJDixQ" DisplayName="Wrokp null">
+        <Body ID="_qb93IifqEeulGaIkkYHJxg" DisplayName="SubProcess">
+          <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_qb93ICfqEeulGaIkkYHJxg" DisplayName="while _workpiece null">
             <Condition xsi:type="at.pro2future.shopfloors.processcore:SimpleCondition" rhs="/9" lhs="/11/@Parameters.0"/>
             <Body/>
           </Steps>
-          <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_ymigASR1EeuzVfi2ZJDixQ" DisplayName="Workp not null">
+          <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_qb93ISfqEeulGaIkkYHJxg" DisplayName="while _workpiece not null">
             <Condition xsi:type="at.pro2future.shopfloors.processcore:SimpleCondition" Operator="neq" rhs="/9" lhs="/11/@Parameters.0"/>
             <Body/>
           </Steps>
@@ -57,7 +57,7 @@
   <at.pro2future.shopfloors.processcore:LocalVariable Type="String" Name="nullString"/>
   <at.pro2future.shopfloors.simulator:MsClientInterface targetInstanceInformation="/0/@instanceInformation"/>
   <at.pro2future.shopfloors.processcore:Event Name="WorkpiceChangedEvent" Role="/6">
-    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="String" Name="workpieceInt" Value="ACED0005740000"/>
+    <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="String" Name="_workpiece" Value="ACED0005740000"/>
   </at.pro2future.shopfloors.processcore:Event>
   <at.pro2future.shopfloors.opcUaDefinition:MsObjectTypeNode>
     <nodeId Identifier="ACED000574000A4E4F44455F49445F3234" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>

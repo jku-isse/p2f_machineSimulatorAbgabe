@@ -10,7 +10,7 @@ import ProcessCore.AbstractCapability;
 import ProcessCore.Assignment;
 import ProcessCore.Parameter;
 import Simulator.MsAction;
-import Simulator.MsCallMethodAction;
+import Simulator.MsMethodAction;
 import Simulator.MsReadAction;
 import Simulator.MsWriteAction;
 import at.pro2future.machineSimulator.converter.UaBuilderFactory;
@@ -48,7 +48,7 @@ public class P2fActionAdapter extends AbstractLifecycle implements EngineAdapter
 			this.eventHandler = new ReadVariableHandler(this.opcUaClientManager, (MsReadAction)action, uaBuilderFactory);
 		}
 		else  {
-			this.eventHandler = new CallMethodHandler(this.opcUaClientManager, (MsCallMethodAction)action);
+			this.eventHandler = new CallMethodHandler(this.opcUaClientManager, (MsMethodAction)action);
 		}
 	}
 
