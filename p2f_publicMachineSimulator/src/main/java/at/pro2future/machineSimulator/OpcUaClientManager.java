@@ -45,7 +45,7 @@ import Simulator.MsInstanceInformation;
 import at.pro2future.machineSimulator.converter.UaBuilderFactory;
 
 /**
- * An OpcUaClient interface reprecents an interface to the server. It wraps the 
+ * An OpcUaClient interface represents an interface to the server. It wraps the 
  * functionalities of an {@link OpcUaClient} so that it suites for its usage
  * in the simulator.
  * 
@@ -119,6 +119,7 @@ public class OpcUaClientManager extends AbstractLifecycle  {
 		EndpointConfiguration endpointConfiguration = EndpointConfiguration.newBuilder()
 	        .setBindAddress(instanceInformation.getHost())
 	        .setBindPort(instanceInformation.getPort())
+	        .setPath(instanceInformation.getPath() == null ? "" : instanceInformation.getPath() )
 	        .setTransportProfile(TransportProfile.TCP_UASC_UABINARY)
 	        .addTokenPolicies(userTokenPolicies)
 	        .build();
@@ -196,7 +197,7 @@ public class OpcUaClientManager extends AbstractLifecycle  {
 		CompletableFuture<Variant[]> future = this.opcUaClient.call(request).thenCompose(result -> {
             StatusCode statusCode = result.getStatusCode();
             if (statusCode.isBad()) {
-                throw new RuntimeException();
+                throw new RuntimeException(statusCode.toString());
              }
             
             CompletableFuture<Variant[]> outputArguments = CompletableFuture.completedFuture(result.getOutputArguments());  

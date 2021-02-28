@@ -1,7 +1,7 @@
 package at.pro2future.machineSimulator.methodService.test;
 
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class DefaultMethodTest {
 		}
     }
     
-	private MsMethodNode initializeMsMethodNode(String browseName, String displayName, String description, String nodeId, Boolean userExecutable, List<MsVariableNode> inputArguments, List<MsVariableNode> outputArguments,
+	private static MsMethodNode initializeMsMethodNode(String browseName, String displayName, String description, String nodeId, Boolean userExecutable, List<MsVariableNode> inputArguments, List<MsVariableNode> outputArguments,
 			String method) {
 		MsMethodNode msMethodNode = OpcUaDefinitionFactory.eINSTANCE.createMsMethodNode();
 		MsQualifiedName browseNameNode = OpcUaDefinitionFactory.eINSTANCE.createMsQualifiedName();

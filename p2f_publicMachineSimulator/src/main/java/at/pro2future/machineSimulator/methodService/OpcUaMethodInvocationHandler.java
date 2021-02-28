@@ -3,7 +3,6 @@ package at.pro2future.machineSimulator.methodService;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-
 import javax.tools.DiagnosticCollector;
 import javax.tools.JavaCompiler;
 import javax.tools.JavaCompiler.CompilationTask;
@@ -24,7 +23,7 @@ import org.eclipse.milo.opcua.stack.core.types.structured.Argument;
 import OpcUaDefinition.MsMethodNode;
 
 /*From https://www.logicbig.com/tutorials/core-java-tutorial/java-se-compiler-api/compiler-api-memory-loader.html*/
-public class OpcUaMethodInvocationHandler extends AbstractMethodInvocationHandler{
+public class OpcUaMethodInvocationHandler extends AbstractMethodInvocationHandler {
 
 	private static final String CLASS_NAME = "WrapperClass";
 	private byte [] compiledProgram;
@@ -37,7 +36,7 @@ public class OpcUaMethodInvocationHandler extends AbstractMethodInvocationHandle
 		this.compiledProgram = compile(this.msNode.getMethod());
 	}
 
-	private byte[] compile(String method) {
+	private static byte[] compile(String method) {
 		//setup comiler and diagnostics
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
@@ -110,5 +109,7 @@ public class OpcUaMethodInvocationHandler extends AbstractMethodInvocationHandle
 		diagnosticInfos[0]  = new DiagnosticInfo(-1, -1, -1, -1, errorText, null, null);
 		throw new UaMethodException(StatusCode.BAD, null, diagnosticInfos);
 	}
+
+
 	
 }

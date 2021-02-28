@@ -3,29 +3,29 @@
   <at.pro2future.shopfloors.simulator:MachineSimulator name="ToolControl">
     <opcUaServerInterface>
       <nodes xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsObjectNode" hasTypeDefinition="/1">
-        <nodeId Identifier="ACED000574000A4E4F44455F49445F3233" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+        <nodeId Identifier="ACED000574000A4E4F44455F49445F3235" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
         <description locale="en" text="BaseFolder"/>
         <displayName locale="en" text="BaseFolder"/>
         <browseName namespaceIndex="0" name="BaseFolder"/>
         <organizes xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsObjectNode" hasTypeDefinition="/15">
-          <nodeId Identifier="ACED000574000A4E4F44455F49445F3139" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+          <nodeId Identifier="ACED000574000A4E4F44455F49445F3231" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
           <description locale="en" text="Root"/>
           <displayName locale="en" text="Root"/>
           <browseName namespaceIndex="0" name="Root"/>
           <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000" accessLevel="-1" userAccessLevel="-1" dataType="/3" hasModellingRule="/2">
-            <nodeId Identifier="ACED000574000A4E4F44455F49445F3136" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+            <nodeId Identifier="ACED000574000A4E4F44455F49445F3138" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
             <description locale="en" text="Tool"/>
             <displayName locale="en" text="Tool"/>
             <browseName namespaceIndex="0" name="Tool"/>
           </hasComponent>
           <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000" accessLevel="-1" userAccessLevel="-1" dataType="/5" hasModellingRule="/2">
-            <nodeId Identifier="ACED000574000A4E4F44455F49445F3137" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+            <nodeId Identifier="ACED000574000A4E4F44455F49445F3139" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
             <description locale="en" text="Start"/>
             <displayName locale="en" text="Start"/>
             <browseName namespaceIndex="0" name="Start"/>
           </hasComponent>
           <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000" accessLevel="-1" userAccessLevel="-1" dataType="/5" hasModellingRule="/2">
-            <nodeId Identifier="ACED000574000A4E4F44455F49445F3138" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+            <nodeId Identifier="ACED000574000A4E4F44455F49445F3230" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
             <description locale="en" text="IsMilling"/>
             <displayName locale="en" text="IsMilling"/>
             <browseName namespaceIndex="0" name="IsMilling"/>
@@ -34,24 +34,24 @@
       </nodes>
     </opcUaServerInterface>
     <instanceInformation displayName="ToolControl" host="localhost" port="3020"/>
-    <stateMachine ID="_qbzfEyfqEeulGaIkkYHJxg" DisplayName="MainProcess">
-      <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_qbzfFCfqEeulGaIkkYHJxg" DisplayName="Root loop">
+    <stateMachine ID="_VX5SM3oBEeuNxMPNQI86Vw" DisplayName="MainProcess">
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_VX5SNHoBEeuNxMPNQI86Vw" DisplayName="Root loop">
         <Condition xsi:type="at.pro2future.shopfloors.processcore:SimpleCondition" rhs="/7" lhs="/7"/>
-        <Body ID="_qbzfEifqEeulGaIkkYHJxg" DisplayName="SubProcess">
-          <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_qbzfECfqEeulGaIkkYHJxg" DisplayName="while _tool null">
+        <Body ID="_VX5SMnoBEeuNxMPNQI86Vw" DisplayName="SubProcess">
+          <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_VX5SMHoBEeuNxMPNQI86Vw" DisplayName="while _tool null">
             <Condition xsi:type="at.pro2future.shopfloors.processcore:SimpleCondition" rhs="/9" lhs="/11/@Parameters.0"/>
-            <Body ID="_qby4ASfqEeulGaIkkYHJxg" DisplayName="EmptyProcess"/>
+            <Body ID="_VX4EEXoBEeuNxMPNQI86Vw" DisplayName="EmptyProcess"/>
           </Steps>
-          <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_qbzfESfqEeulGaIkkYHJxg" DisplayName="while _tool not null check _start">
+          <Steps xsi:type="at.pro2future.shopfloors.processcore:HeadLoop" ID="_VX5SMXoBEeuNxMPNQI86Vw" DisplayName="while _tool not null check _start">
             <Condition xsi:type="at.pro2future.shopfloors.processcore:SimpleCondition" Operator="neq" rhs="/9" lhs="/11/@Parameters.0"/>
-            <Body ID="_qby4ACfqEeulGaIkkYHJxg" DisplayName="check_startProcess">
+            <Body ID="_VX4EEHoBEeuNxMPNQI86Vw" DisplayName="check_startProcess">
               <Steps xsi:type="at.pro2future.shopfloors.processcore:Decision" DisplayName="Start">
                 <Condition xsi:type="at.pro2future.shopfloors.processcore:SimpleCondition" rhs="/7" lhs="/12/@Parameters.0"/>
-                <If ID="_qbwbwCfqEeulGaIkkYHJxg" DisplayName="Milling">
+                <If ID="_VXzyoHoBEeuNxMPNQI86Vw" DisplayName="Milling">
                   <Steps xsi:type="at.pro2future.shopfloors.processcore:EventSource" DisplayName="MillingStartEvent Event Source" Event="/13"/>
                   <Steps xsi:type="at.pro2future.shopfloors.processcore:EventSource" DisplayName="MillingStopEvent Event Source" Event="/14"/>
                 </If>
-                <Else ID="_qbyQ8CfqEeulGaIkkYHJxg" DisplayName="EmptyProcess"/>
+                <Else ID="_VX3dAHoBEeuNxMPNQI86Vw" DisplayName="EmptyProcess"/>
               </Steps>
             </Body>
           </Steps>
@@ -99,24 +99,24 @@
     <Parameters xsi:type="at.pro2future.shopfloors.processcore:LocalVariable" Type="Boolean" Name="_millingStopEvent" Value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787000"/>
   </at.pro2future.shopfloors.processcore:Event>
   <at.pro2future.shopfloors.opcUaDefinition:MsObjectTypeNode>
-    <nodeId Identifier="ACED000574000A4E4F44455F49445F3135" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+    <nodeId Identifier="ACED000574000A4E4F44455F49445F3137" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
     <description locale="en" text="RootType"/>
     <displayName locale="en" text="RootType"/>
     <browseName namespaceIndex="0" name="RootType"/>
     <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000" accessLevel="-1" userAccessLevel="-1" dataType="/3" hasModellingRule="/2">
-      <nodeId Identifier="ACED000574000A4E4F44455F49445F3230" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+      <nodeId Identifier="ACED000574000A4E4F44455F49445F3232" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
       <description locale="en" text="Tool"/>
       <displayName locale="en" text="Tool"/>
       <browseName namespaceIndex="0" name="Tool"/>
     </hasComponent>
     <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000" accessLevel="-1" userAccessLevel="-1" dataType="/5" hasModellingRule="/2">
-      <nodeId Identifier="ACED000574000A4E4F44455F49445F3231" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+      <nodeId Identifier="ACED000574000A4E4F44455F49445F3233" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
       <description locale="en" text="Start"/>
       <displayName locale="en" text="Start"/>
       <browseName namespaceIndex="0" name="Start"/>
     </hasComponent>
     <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000" accessLevel="-1" userAccessLevel="-1" dataType="/5" hasModellingRule="/2">
-      <nodeId Identifier="ACED000574000A4E4F44455F49445F3232" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+      <nodeId Identifier="ACED000574000A4E4F44455F49445F3234" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
       <description locale="en" text="IsMilling"/>
       <displayName locale="en" text="IsMilling"/>
       <browseName namespaceIndex="0" name="IsMilling"/>

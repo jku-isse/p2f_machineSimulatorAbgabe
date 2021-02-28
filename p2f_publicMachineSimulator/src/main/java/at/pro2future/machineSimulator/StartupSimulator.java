@@ -2,6 +2,7 @@ package at.pro2future.machineSimulator;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import at.pro2future.shopfloors.interfaces.impl.FileDataSource;
 
 import org.eclipse.emf.ecore.EObject;
 import OpcUaDefinition.OpcUaDefinitionPackage;
@@ -11,7 +12,6 @@ import Simulator.MachineSimulator;
 import Simulator.MsReadAction;
 import Simulator.SimulatorPackage;
 import at.pro2future.shopfloors.adapters.EventInstance;
-import at.pro2future.shopfloors.interfaces.impl.FileDataSource;
 
 public class StartupSimulator {
 
@@ -29,7 +29,7 @@ public class StartupSimulator {
 			List<EObject> roots = pers.getShopfloorData();
 			root = (MachineSimulator) roots.get(0);
 			
-			OpcUaServerManager serverManager = new OpcUaServerManager(root.getInstanceInformation(), root.getOpcUaServerInterface());
+			OpcUaServerManager serverManager = new OpcUaServerManager(root);
 			serverManager.startup();
 					
 			P2fActionManager actionManager = new P2fActionManager(root.getActions(), serverManager.getOpcUaNamespaceManager().getUaBuilderFactory());
@@ -37,6 +37,7 @@ public class StartupSimulator {
 			
 			System.out.println("Pro2Future OpcUa Machine Simulator: successfully started.");
 			
+
 			for(int i = 0; i < root.getActions().size(); i++) {
 				if(!(root.getActions().get(i) instanceof MsReadAction)) {
 					System.in.read();

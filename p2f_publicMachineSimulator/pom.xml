@@ -2,9 +2,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>machineSimulator</artifactId>
+	<artifactId>p2f_publicMachineSimulator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>p2f_machineSimulator</name>
+	<name>p2f_publicMachineSimulator</name>
 	<description>This projects reprents a machine simulator for JKU-Linz in copperation with pro 2 future.</description>
 	<packaging>jar</packaging>
 
@@ -55,5 +55,6 @@
 		    <groupId>org.slf4j</groupId>
 		    <artifactId>slf4j-log4j12</artifactId>
 	    </dependency>
+	   
 	</dependencies>
 </project>

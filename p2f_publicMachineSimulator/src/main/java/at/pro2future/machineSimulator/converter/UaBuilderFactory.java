@@ -19,13 +19,11 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.QualifiedName;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UByte;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UInteger;
-import org.eclipse.milo.opcua.stack.core.types.structured.Argument;
-import org.eclipse.milo.opcua.stack.core.types.structured.Argument.ArgumentBuilder;
 
 public class UaBuilderFactory {
 
 	private UaNodeContext nodeContext; 
-	
+
 	public UaNodeContext getNodeContext() {
 		return  this.nodeContext;
 	}
@@ -35,6 +33,7 @@ public class UaBuilderFactory {
 	public int getNamespaceIndex() {
 		return this.namespaceIndex;
 	}
+	
 	
 	public UaBuilderFactory(UaNodeContext nodeContext, int namespaceIndex) {
 		this.nodeContext = nodeContext;
@@ -56,10 +55,6 @@ public class UaBuilderFactory {
 	
 	public UaMethodNodeBuilder getUaMethodNodeBuilder() {
 		return UaMethodNode.builder(this.nodeContext);
-	}
-	
-	public ArgumentBuilder<?,?> getArgumentBuilder() {
-		return Argument.builder();
 	}
 	
 	public UaViewNode getUaViewNode(

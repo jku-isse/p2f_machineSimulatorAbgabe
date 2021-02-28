@@ -12,16 +12,16 @@ import at.pro2future.machineSimulator.converter.opcUaToMilo.MsNodeIdToNodeIdConv
 import at.pro2future.shopfloors.adapters.EventInstance;
 
 public class CallMethodHandler extends BaseEventHandler {
-	private final MsMethodAction callMethodAction;
+	private final MsMethodAction methodAction;
 	
 	@Override
 	protected MsAction getMsAction() {
-		return this.callMethodAction;
+		return this.methodAction;
 	}
 	
-	public CallMethodHandler(OpcUaClientManager opcUaClientManager, MsMethodAction callMethodAction) {
+	public CallMethodHandler(OpcUaClientManager opcUaClientManager, MsMethodAction methodAction) {
 		super(opcUaClientManager);
-		this.callMethodAction = callMethodAction;
+		this.methodAction = methodAction;
 	}
 	
 	@Override
@@ -30,10 +30,10 @@ public class CallMethodHandler extends BaseEventHandler {
 		try {
 			
 			CallMethodRequest request = new CallMethodRequest(
-		            new MsNodeIdToNodeIdConverter().createTo(this.callMethodAction.getObjectContainingMethod().getNodeId(), getOpcUaClientManager().getUaBuilderFactory()),
-		            new MsNodeIdToNodeIdConverter().createTo(this.callMethodAction.getCallesMethod().getNodeId(), getOpcUaClientManager().getUaBuilderFactory()),
+		            new MsNodeIdToNodeIdConverter().createTo(this.methodAction.getObjectContainingMethod(), getOpcUaClientManager().getUaBuilderFactory()),
+		            new MsNodeIdToNodeIdConverter().createTo(this.methodAction.getCallesMethod(), getOpcUaClientManager().getUaBuilderFactory()),
 		            new Variant[]{}
-		        );
+		    );
 			
 			CompletableFuture<Variant[]> returnValues = getOpcUaClientManager().callMethod(request);
 			returnValues.get();

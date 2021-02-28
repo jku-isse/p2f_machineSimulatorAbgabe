@@ -15,17 +15,29 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.MessageSecurityMode;
 import org.eclipse.milo.opcua.stack.core.types.structured.BuildInfo;
 import org.eclipse.milo.opcua.stack.server.EndpointConfiguration;
+import org.eclipse.milo.opcua.stack.server.EndpointConfiguration.Builder;
 
-
+import Simulator.MachineSimulator;
 import Simulator.MsInstanceInformation;
-import Simulator.MsServerInterface;
 
-
+/**
+ * The server manager maintains the simulator configuration .
+ * 
+ * @author johannstoebich
+ *
+ */
 public class OpcUaServerManager extends AbstractLifecycle  {
 
 	//Configuration
-	private MsServerInterface opcUaServerInterface;
-	private MsInstanceInformation instanceInformation;
+	MachineSimulator machineSimulator;
+	
+	public MachineSimulator getMachineSimulator() {
+		return this.machineSimulator;
+	}
+	
+	public void setMachineSimulator(MachineSimulator machineSimulator) {
+		this.machineSimulator = machineSimulator;
+	}
 	
 	//Milo infrasturucture;
 	private OpcUaServer opcUaServer;
@@ -34,36 +46,14 @@ public class OpcUaServerManager extends AbstractLifecycle  {
 	public OpcUaNamespaceManager getOpcUaNamespaceManager() {
 		return this.opcUaNamespaceManager;
 	}
-	
-	public MsServerInterface getOpcUaServerInterface() {
-		return this.opcUaServerInterface;
-	}
 
-	public void setOpcUaServerInterface(MsInstanceInformation instanceInformation, MsServerInterface opcUaServerInterface) {
-		this.instanceInformation = instanceInformation;
-		this.opcUaServerInterface = opcUaServerInterface;
-	}
-	
-	public MsInstanceInformation getInstanceInformation() {
-		return this.instanceInformation;
-	}
+	public OpcUaServerManager(MachineSimulator machineSimulator) {
+		this.machineSimulator = machineSimulator;
 
-	public void setInstanceInformation(MsInstanceInformation instanceInformation) {
-		this.instanceInformation = instanceInformation;
-	}
-
-	public void setOpcUaServerInterface(MsServerInterface opcUaServerInterface) {
-		this.opcUaServerInterface = opcUaServerInterface;
-	}
-
-	public OpcUaServerManager(MsInstanceInformation instanceInformation, MsServerInterface opcUaServerInterface) {
-		this.opcUaServerInterface = opcUaServerInterface;
-		this.instanceInformation = instanceInformation;
-		
 		OpcUaServerConfig serverConfig = OpcUaServerConfig.builder()
 	            .setApplicationUri("")
-	            .setApplicationName(LocalizedText.english(instanceInformation.getDisplayName()))
-	            .setEndpoints(createEndpointConfigurations(instanceInformation))
+	            .setApplicationName(LocalizedText.english(machineSimulator.getInstanceInformation().getDisplayName()))
+	            .setEndpoints(createEndpointConfigurations(machineSimulator.getInstanceInformation()))
 	            .setBuildInfo(
 	                new BuildInfo(
 	                    "urn:eclipse:milo:example-server",
@@ -76,22 +66,29 @@ public class OpcUaServerManager extends AbstractLifecycle  {
 
 		this.opcUaServer = new OpcUaServer(serverConfig);
 
-		this.opcUaNamespaceManager = new OpcUaNamespaceManager(this.opcUaServer, opcUaServerInterface);
+		this.opcUaNamespaceManager = new OpcUaNamespaceManager(this.opcUaServer, 
+				machineSimulator.getOpcUaServerInterface());
 	}
 	
 	private Set<EndpointConfiguration> createEndpointConfigurations(MsInstanceInformation instanceInformation){
 		Set<EndpointConfiguration> endpointConfigurations = new HashSet<>();
 		
-		endpointConfigurations.add(EndpointConfiguration.newBuilder()
-	                    .setBindAddress(instanceInformation.getHost())
-	                    .setBindPort(instanceInformation.getPort())
-	                    .setTransportProfile(TransportProfile.TCP_UASC_UABINARY)
-	                    .setSecurityPolicy(SecurityPolicy.None)
-	                    .setSecurityMode(MessageSecurityMode.None)
-	                    .addTokenPolicies(
-	                    		org.eclipse.milo.opcua.sdk.server.api.config.OpcUaServerConfig.USER_TOKEN_POLICY_ANONYMOUS,
-	                    		org.eclipse.milo.opcua.sdk.server.api.config.OpcUaServerConfig.USER_TOKEN_POLICY_USERNAME,
-	                    		org.eclipse.milo.opcua.sdk.server.api.config.OpcUaServerConfig.USER_TOKEN_POLICY_X509)
+		Builder endpointConfigurationBuilder = EndpointConfiguration.newBuilder()
+				.setBindAddress(instanceInformation.getHost())
+				.setBindPort(instanceInformation.getPort())
+				.setTransportProfile(TransportProfile.TCP_UASC_UABINARY)
+				.setSecurityPolicy(SecurityPolicy.None)
+				.setSecurityMode(MessageSecurityMode.None)
+				.addTokenPolicies(
+						org.eclipse.milo.opcua.sdk.server.api.config.OpcUaServerConfig.USER_TOKEN_POLICY_ANONYMOUS,
+						org.eclipse.milo.opcua.sdk.server.api.config.OpcUaServerConfig.USER_TOKEN_POLICY_USERNAME,
+						org.eclipse.milo.opcua.sdk.server.api.config.OpcUaServerConfig.USER_TOKEN_POLICY_X509);
+		
+		if(instanceInformation.getPath() != null) {
+			endpointConfigurationBuilder.setPath(instanceInformation.getPath());
+		}
+		
+		endpointConfigurations.add(endpointConfigurationBuilder
 	                    .build());
 		
 		return endpointConfigurations;

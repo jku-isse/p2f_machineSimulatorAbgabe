@@ -1,5 +1,6 @@
 package at.pro2future.machineSimulator;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,15 +19,22 @@ import at.pro2future.machineSimulator.eventHandlers.BaseEventHandler;
 import at.pro2future.machineSimulator.eventHandlers.CallMethodHandler;
 import at.pro2future.machineSimulator.eventHandlers.HandlerCanNotBeCreatedException;
 import at.pro2future.machineSimulator.eventHandlers.ReadVariableHandler;
+import at.pro2future.machineSimulator.eventHandlers.ReceivedMethodCallEventHandler;
 import at.pro2future.machineSimulator.eventHandlers.WriteVariableHandler;
 import at.pro2future.shopfloors.adapters.AdapterEventProvider;
 import at.pro2future.shopfloors.adapters.EngineAdapter;
 import at.pro2future.shopfloors.adapters.EventHandler;
 
+/**
+ * An adapter can listen or send envents which have been  
+ * 
+ * @author johannstoebich
+ *
+ */
 public class P2fActionAdapter extends AbstractLifecycle implements EngineAdapter {
 	
 	private final MsAction action;
-	private final BaseEventHandler eventHandler;
+	private final List<BaseEventHandler> eventHandlers = new ArrayList<>();
 	private final OpcUaClientManager opcUaClientManager;
 	
 	public OpcUaClientManager getOpcUaClientManager() {
@@ -37,18 +45,31 @@ public class P2fActionAdapter extends AbstractLifecycle implements EngineAdapter
 		return this.action;
 	}
 
+	/**
+	 * Adapters an 
+	 * 
+	 * @param action
+	 * @param uaBuilderFactory
+	 * @throws UaException
+	 * @throws HandlerCanNotBeCreatedException
+	 */
 	public P2fActionAdapter(MsAction action, UaBuilderFactory uaBuilderFactory) throws UaException, HandlerCanNotBeCreatedException {
 		this.action = action;
 		this.opcUaClientManager = new OpcUaClientManager(action.getOpcUaClientInterface(), uaBuilderFactory);
 		
 		if(action instanceof MsWriteAction) {
-			this.eventHandler = new WriteVariableHandler(this.opcUaClientManager, (MsWriteAction)action);
+			this.eventHandlers.add(new WriteVariableHandler(this.opcUaClientManager, (MsWriteAction)action));
 		}
 		else if(action instanceof MsReadAction) {
-			this.eventHandler = new ReadVariableHandler(this.opcUaClientManager, (MsReadAction)action, uaBuilderFactory);
+			this.eventHandlers.add(new ReadVariableHandler(this.opcUaClientManager, (MsReadAction)action, uaBuilderFactory));
 		}
-		else  {
-			this.eventHandler = new CallMethodHandler(this.opcUaClientManager, (MsMethodAction)action);
+		else if(action instanceof MsMethodAction) {
+			this.eventHandlers.add(new CallMethodHandler(this.opcUaClientManager, (MsMethodAction)action));
+			this.eventHandlers.add(new ReceivedMethodCallEventHandler(this.opcUaClientManager, (MsMethodAction)action));
+		}
+		
+		if(this.eventHandlers.size() <= 0) {
+			throw new HandlerCanNotBeCreatedException("The action type of the action \"" + action + "\" has not been defined.");
 		}
 	}
 
@@ -66,26 +87,33 @@ public class P2fActionAdapter extends AbstractLifecycle implements EngineAdapter
 
 	@Override
 	public void registerWithEngine(AdapterEventProvider engine) {
-		if(this.eventHandler instanceof ReadVariableHandler) {
-			((ReadVariableHandler)this.eventHandler).setEngine(engine);
+		for(BaseEventHandler baseEventHandler : this.eventHandlers) {
+			if(baseEventHandler instanceof ReadVariableHandler) {
+				((ReadVariableHandler)baseEventHandler).setEngine(engine);
+			}
 		}
 	}
 
 	@Override
 	public List<EventHandler> getReceivedEvents() {
 		List<EventHandler> events = new LinkedList<>();
-		events.add(this.eventHandler);
+		for(BaseEventHandler baseEventHandler: this.eventHandlers) {
+			events.add(baseEventHandler);
+		}
 		return events;
 	}
 
 	@Override
 	protected void onStartup() {
-		this.eventHandler.startup();
-		
+		for(BaseEventHandler baseEventHandler : this.eventHandlers) {
+			baseEventHandler.startup();
+		}
 	}
 
 	@Override
 	protected void onShutdown() {
-		this.eventHandler.shutdown();
+		for(BaseEventHandler baseEventHandler : this.eventHandlers) {
+			baseEventHandler.shutdown();
+		}
 	}
 }
