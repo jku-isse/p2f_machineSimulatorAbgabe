@@ -1,5 +1,6 @@
 /**
- * This package contains the operations which allows to compile and invoke methods.
+ * This package contains the operations which allows to compile and invoke methods. This is due to the fact that opc-ua operation should be invoked on 
+ * an OPC-UA Server.
  *
  * @since 1.0
  * @author Johann Paul Stoebich

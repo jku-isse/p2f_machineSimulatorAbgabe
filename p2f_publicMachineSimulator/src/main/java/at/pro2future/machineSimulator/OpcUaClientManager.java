@@ -1,6 +1,5 @@
 package at.pro2future.machineSimulator;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -39,124 +38,150 @@ import org.eclipse.milo.opcua.stack.core.types.structured.ReadValueId;
 import org.eclipse.milo.opcua.stack.core.types.structured.ServiceFault;
 import org.eclipse.milo.opcua.stack.core.types.structured.UserTokenPolicy;
 import org.eclipse.milo.opcua.stack.server.EndpointConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Lists;
 
 import Simulator.MsClientInterface;
 import Simulator.MsInstanceInformation;
-import at.pro2future.machineSimulator.converter.UaBuilderFactory;
+import at.pro2future.machineSimulator.converter.IUaObjectAndBuilderProvider;
 
 /**
- * An OpcUaClient interface represents an interface to the server. It wraps the 
- * functionalities of an {@link OpcUaClient} so that it suites for its usage
- * in the simulator.
+ * The <code>OpcUaClientManager</code> contains the functionalities to connect to an OPC-UA Server. It wraps the 
+ * functionalities of an {@link OpcUaClient} for the usage in this simulator.
  * 
  * @author johannstoebich
  *
  */
 public class OpcUaClientManager extends AbstractLifecycle  {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(OpcUaClientManager.class); 
+    
+    private final OpcUaClient opcUaClient;
+    private final IUaObjectAndBuilderProvider uaObjectAndBuilderProvider;
+    private final MsClientInterface opcUaClientInterface;
+    private final CheckConnectionThread checkConnectionThread;
+    private UaSubscription subscription;
+    
+    /**
+     * This method returns the configuration of the client manager. 
+     * @return the configuration as {@link MsClientInterface}
+     */
+    public MsClientInterface getOpcUaClientInterface() {
+        return this.opcUaClientInterface;
+    }
+    
+    /**
+     * The factory used for converting the simulator conifg to OpcUa nodes.
+     * @return
+     */
+    public IUaObjectAndBuilderProvider getUaObjectAndBuilderProvider() {
+        return this.uaObjectAndBuilderProvider;
+    }
 
-	private final OpcUaClient opcUaClient;
-	private final UaBuilderFactory uaBuilderFactory;
-	private final MsClientInterface opcUaClientInterface;
-	private UaSubscription subscription;
-	private final List<UaMonitoredItem> monitoredItems = new ArrayList<>();
-	
-	/**
-	 * This method returns the configuration of the client manager.
-	 * @return the configuration as {@link MsClientInterface}
-	 */
-	public MsClientInterface getOpcUaClientInterface() {
-		return this.opcUaClientInterface;
-	}
-	
-	/**
-	 * The factory used for converting the simulator conifg to OpcUa nodes.
-	 * @return
-	 */
-	public UaBuilderFactory getUaBuilderFactory() {
-		return this.uaBuilderFactory;
-	}
-
-	/**
-	 * The client manger gets as configuration the so called {@link MsClientInterface} and a factory to transform parts of the configuration to Milo components.
-	 * 
-	 * @param opcUaClientInterface
-	 * @param uaBuilderFactory
-	 * @throws UaException
-	 */
-	public OpcUaClientManager(MsClientInterface opcUaClientInterface, UaBuilderFactory uaBuilderFactory) throws UaException {
-		OpcUaClientConfig clientConfig = OpcUaClientConfig.builder()
-	            //.setApplicationUri("")
-	            //.setApplicationName(LocalizedText.english(opcUaClientInterface.getTargetInstanceInformation().getDisplayName()))
-				.setApplicationName(LocalizedText.english("eclipse milo opc-ua client"))
+    /**
+     * The client manger gets as configuration the so called {@link MsClientInterface} and a factory to transform parts of the configuration to Milo components.
+     * 
+     * @param opcUaClientInterface
+     * @param uaBuilderFactory
+     * @throws UaException
+     */
+    public OpcUaClientManager(MsClientInterface opcUaClientInterface, IUaObjectAndBuilderProvider uaObjectAndBuilderProvider) throws UaException {
+        OpcUaClientConfig clientConfig = OpcUaClientConfig.builder()
+                //.setApplicationUri("")
+                //.setApplicationName(LocalizedText.english(opcUaClientInterface.getTargetInstanceInformation().getDisplayName()))
+                .setApplicationName(LocalizedText.english("eclipse milo opc-ua client"))
                 .setApplicationUri("urn:eclipse:milo:examples:client")
                 .setCertificate(null)
                 .setKeyPair(null)
-	            .setEndpoint(createEndpointConfiguration(opcUaClientInterface.getTargetInstanceInformation()))
-	            .setIdentityProvider(new AnonymousProvider())
-	            .setRequestTimeout(UInteger.valueOf(5000))	  
-	            .setConnectTimeout(UInteger.valueOf(5000))
-	            .build();
-		
-		this.opcUaClient = OpcUaClient.create(clientConfig);
-		
-		this.opcUaClient.addFaultListener(new ServiceFaultListener() {
-			
-			@Override
-			public void onServiceFault(ServiceFault serviceFault) {
-				System.out.println(serviceFault);
-				
-			}
-		});
-		this.uaBuilderFactory = uaBuilderFactory;
-		this.opcUaClientInterface = opcUaClientInterface;
-	}
-	
-	private EndpointDescription createEndpointConfiguration(MsInstanceInformation instanceInformation){	
-		UserTokenPolicy[] userTokenPolicies = new UserTokenPolicy[] { 
-				org.eclipse.milo.opcua.sdk.server.api.config.OpcUaServerConfig.USER_TOKEN_POLICY_ANONYMOUS};
-		
-		EndpointConfiguration endpointConfiguration = EndpointConfiguration.newBuilder()
-	        .setBindAddress(instanceInformation.getHost())
-	        .setBindPort(instanceInformation.getPort())
-	        .setPath(instanceInformation.getPath() == null ? "" : instanceInformation.getPath() )
-	        .setTransportProfile(TransportProfile.TCP_UASC_UABINARY)
-	        .addTokenPolicies(userTokenPolicies)
-	        .build();
-		
-		
-		ApplicationDescription applicationDescription = ApplicationDescription.builder()
-				.applicationType(ApplicationType.Server)
-				.gatewayServerUri(endpointConfiguration.getEndpointUrl())
-				.build();
-				
-		
-		EndpointDescription desc = EndpointDescription.builder()
-				.endpointUrl(endpointConfiguration.getEndpointUrl())
-				.transportProfileUri(TransportProfile.TCP_UASC_UABINARY.getUri())
-				.securityPolicyUri(SecurityPolicy.None.getUri())				
-				.securityMode(MessageSecurityMode.None)
-				.userIdentityTokens(userTokenPolicies)
-				.server(applicationDescription)
-				.build();
-		
-		return desc;
-	}
-	
-
-	public void writeValues(NodeId nodeId, DataValue dataValue) throws UaException, InterruptedException, ExecutionException {
-		CompletableFuture<StatusCode> f = this.opcUaClient.writeValue(nodeId, dataValue);
-		
+                .setEndpoint(createEndpointConfiguration(opcUaClientInterface.getInstanceInformation()))
+                .setIdentityProvider(new AnonymousProvider())
+                .setRequestTimeout(UInteger.valueOf(5000))      
+                .setConnectTimeout(UInteger.valueOf(5000))
+                .build();
+        
+        this.opcUaClient = OpcUaClient.create(clientConfig);
+        
+        this.opcUaClient.addFaultListener(new ServiceFaultListener() {
+            
+            @Override
+            public void onServiceFault(ServiceFault serviceFault) {
+                System.out.println(serviceFault);
+                
+            }
+        });
+        this.uaObjectAndBuilderProvider = uaObjectAndBuilderProvider;
+        this.opcUaClientInterface = opcUaClientInterface;
+        this.checkConnectionThread = new CheckConnectionThread();
+    }
+    
+    private EndpointDescription createEndpointConfiguration(MsInstanceInformation instanceInformation){    
+        UserTokenPolicy[] userTokenPolicies = new UserTokenPolicy[] { 
+                org.eclipse.milo.opcua.sdk.server.api.config.OpcUaServerConfig.USER_TOKEN_POLICY_ANONYMOUS};
+        
+        EndpointConfiguration endpointConfiguration = EndpointConfiguration.newBuilder()
+            .setBindAddress(instanceInformation.getHost())
+            .setBindPort(instanceInformation.getPort())
+            .setPath(instanceInformation.getPath() == null ? "" : instanceInformation.getPath() )
+            .setTransportProfile(TransportProfile.TCP_UASC_UABINARY)
+            .addTokenPolicies(userTokenPolicies)
+            .build();
+        
+        
+        ApplicationDescription applicationDescription = ApplicationDescription.builder()
+                .applicationType(ApplicationType.Server)
+                .gatewayServerUri(endpointConfiguration.getEndpointUrl())
+                .build();
+                
+        
+        EndpointDescription desc = EndpointDescription.builder()
+                .endpointUrl(endpointConfiguration.getEndpointUrl())
+                .transportProfileUri(TransportProfile.TCP_UASC_UABINARY.getUri())
+                .securityPolicyUri(SecurityPolicy.None.getUri())                
+                .securityMode(MessageSecurityMode.None)
+                .userIdentityTokens(userTokenPolicies)
+                .server(applicationDescription)
+                .build();
+        
+        return desc;
+    }
+    
+    /**
+     * This method writes a specific {@link DataValue} on a specific {@link NodeId}.
+     * 
+     * @param nodeId the <code>NodeId</code> which should be written.
+     * @param dataValue the <code>DataValue</code> which should be written.
+     * @throws UaException throws an exception when the specific server is not available.
+     * @throws InterruptedException thrown when a thread is waiting, sleeping, or otherwise occupied, and the thread is interrupted, either before or during the activity.
+     * @throws ExecutionException Exception thrown when attempting to retrieve the result of a task that aborted by throwing an exception. 
+     */
+    public void writeValues(NodeId nodeId, DataValue dataValue) throws UaException, InterruptedException, ExecutionException {
+        waitForConnection();
+        
+        CompletableFuture<StatusCode> f = this.opcUaClient.writeValue(nodeId, dataValue);
+        
         // ...but block for the results so we write in order
         StatusCode statusCode = f.get();
          
         if (statusCode.isBad()) {
            throw new UaException(statusCode);
         }
-	}
-	
-	public void subscribeValues(ReadValueId readValueId,  BiConsumer<UaMonitoredItem, DataValue>  callbackWhenValueChanged) throws InterruptedException, ExecutionException {
-
+    }
+    
+    /**
+     * Subscribes a callback to a value change. The id for which this method should subscribe will 
+     * be handed in by an {@link ReadValueId}. 
+     * 
+     * @param readValueId the <code>ReadValueId</code> for which the callback should subscribe.
+     * @param callbackWhenValueChanged the callback which will be registered. 
+     * @throws InterruptedException this exception occurs when an interrupt occurred.
+     * @throws ExecutionException Exception thrown when attempting to retrieve the result of a task that aborted by throwing an exception. 
+     * @return the identification of the subscription.
+     */
+    public UaMonitoredItem subscribeValues(ReadValueId readValueId, BiConsumer<UaMonitoredItem, DataValue>  callbackWhenValueChanged) throws InterruptedException, ExecutionException {
+        waitForConnection();
+        
         // IMPORTANT: client handle must be unique per item within the context of a subscription.
         // You are not required to use the UaSubscription's client handle sequence; it is provided as a convenience.
         // Your application is free to assign client handles by whatever means necessary.
@@ -177,24 +202,59 @@ public class OpcUaClientManager extends AbstractLifecycle  {
             (item, id) -> item.setValueConsumer(callbackWhenValueChanged);
             
         MonitoredItemCreateRequest request = new MonitoredItemCreateRequest(
-        	readValueId,
+            readValueId,
             MonitoringMode.Reporting,
             parameters
         );
         
-        
-        List<UaMonitoredItem> items = this.subscription.createMonitoredItems(
+        List<UaMonitoredItem> subscriptionItems = this.subscription.createMonitoredItems(
                 TimestampsToReturn.Both,
                 Arrays.asList(request),
                 itemCreationCallback
             ).get();
         
-        this.monitoredItems.addAll(items);
-	}
-	
+        assert subscriptionItems.size() == 1;
+        
+        return subscriptionItems.get(0);
+    }
+    
+    
+    /**
+     * Reads an value from a given server by using its <code>NodeId</code>. 
+     * 
+     * @param nodeId the id of the read value.
+     * @return the data value returned by this read action.
+     * 
+     * @throws ExecutionException 
+     * @throws InterruptedException 
+     */
+    public DataValue readValue(NodeId nodeId) throws InterruptedException, ExecutionException {
+        waitForConnection();
+        return this.opcUaClient.readValue(0, null, nodeId).get();
+    }
 
-	public CompletableFuture<Variant[]> callMethod(CallMethodRequest request) {
-		CompletableFuture<Variant[]> future = this.opcUaClient.call(request).thenCompose(result -> {
+    /**
+     * Unsubscription a specific subscription.
+     * 
+     * @param monitoredItem the <code>UaMonitoredItem</code> which should be unsubscribed.
+     * @throws InterruptedException this exception occurs when an interrupt occurred.
+     * @throws ExecutionException Exception thrown when attempting to retrieve the result of a task that aborted by throwing an exception. 
+     */
+    public void unsubscribeValues(UaMonitoredItem monitoredItem) throws InterruptedException, ExecutionException {
+        this.subscription.deleteMonitoredItems(Lists.newArrayList(monitoredItem));
+    }
+    
+    /**
+     * Calls a specific method given by a {@link CallMethodRequest}.
+     * @param callMethodRequest the  of the request which will be called.
+     * @return the result of the method call.
+     * @throws InterruptedException this exception occurs when an interrupt occurred.
+     * @throws ExecutionException Exception thrown when attempting to retrieve the result of a task that aborted by throwing an exception. 
+    */
+    public Variant[] createCallMethodRequest(CallMethodRequest callMethodRequest) throws InterruptedException, ExecutionException {
+        waitForConnection();
+        
+        CompletableFuture<Variant[]> future = this.opcUaClient.call(callMethodRequest).thenCompose(result -> {
             StatusCode statusCode = result.getStatusCode();
             if (statusCode.isBad()) {
                 throw new RuntimeException(statusCode.toString());
@@ -203,44 +263,85 @@ public class OpcUaClientManager extends AbstractLifecycle  {
             CompletableFuture<Variant[]> outputArguments = CompletableFuture.completedFuture(result.getOutputArguments());  
             return outputArguments;
         });
-		
-		return future;
-	}
-	
+        
+        return future.get();
+    }
+    
+    /**
+     * This method waits for a connection until it is alive.
+     */
+    protected void waitForConnection() {
+       while(!isConnectionAlive()) {
+           try {
+               LOGGER.warn("The thread " + Thread.currentThread().getId() + ":" + Thread.currentThread().getName() + " waits for an connection to " + OpcUaClientManager.this.opcUaClientInterface.getInstanceInformation().toString() + ".");
+               TimeUnit.SECONDS.sleep(10);
+           } catch (InterruptedException e) {
+            //check again whenever an interrupt occurs.
+           }
+       }
+    }
+    
+    /**
+     * This method test wheahter the client connection is alive.
+     * @return
+     */
+    protected synchronized boolean isConnectionAlive() {
+        try {
+           this.opcUaClient.getSession().get();
+        } catch (InterruptedException | ExecutionException e) {
+           return false;
+        }
+        return true;
+    }
+    
+    /**
+     * Connects this {@link  OpcUaClient} to an OpcUaServer.
+     */
+    @Override
+    protected void onStartup() {
+        this.checkConnectionThread.start();
+    }
 
-	public CompletableFuture<Variant[]> subsribeToMethodCall(CallMethodRequest request) {
-		CompletableFuture<Variant[]> future = this.opcUaClient.call(request).thenCompose(result -> {
-            StatusCode statusCode = result.getStatusCode();
-            if (statusCode.isBad()) {
-                throw new RuntimeException();
-             }
+    /**
+     * Disconnects this {@link  OpcUaClient} from an OpcUaServer.
+     */
+    @Override
+    protected void onShutdown() {
+        try {
+            this.checkConnectionThread.interrupt();
+            this.opcUaClient.disconnect().get(2000, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw new RuntimeException(e);
+        }        
+    }
+    
+    /**
+     * This method checks weather a connection has been established. If not, it will create a connection.
+     */
+    private class CheckConnectionThread extends Thread {
+        /**
+         * This method checks weather a connection has been established. If not, it will create a connection.
+         */
+        @Override
+        public void run() {
+            try {
+                while(!isInterrupted()) {
+                    if(!isConnectionAlive()) {
+                        try {
+                            OpcUaClientManager.this.opcUaClient.connect().get(60000, TimeUnit.MILLISECONDS);
+                            OpcUaClientManager.this.subscription = OpcUaClientManager.this.opcUaClient.getSubscriptionManager()
+                                    .createSubscription(1000.0)
+                                    .get();
+                        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                            LOGGER.warn("A connection could not be established: " + OpcUaClientManager.this.opcUaClientInterface.getInstanceInformation().toString());
+                        }
+                    }
+                    TimeUnit.SECONDS.sleep(10);
+                }
+            } catch (InterruptedException e) {
+                //shut down whenever an interrupt occures
+            }
             
-            CompletableFuture<Variant[]> outputArguments = CompletableFuture.completedFuture(result.getOutputArguments());  
-            return outputArguments;
-        });
-		
-		return future;
-	}
-	
-	@Override
-	protected void onStartup() {
-		try {
-			this.opcUaClient.connect().get(60000, TimeUnit.MILLISECONDS);
-			this.subscription = this.opcUaClient.getSubscriptionManager()
-			            .createSubscription(1000.0)
-			            .get();
-		    	 
-		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			throw new RuntimeException(e);
-		}	
-	}
-
-	@Override
-	protected void onShutdown() {
-		try {
-			this.opcUaClient.disconnect().get(2000, TimeUnit.MILLISECONDS);
-		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			throw new RuntimeException(e);
-		}		
-	}
+        }
+    }
 }

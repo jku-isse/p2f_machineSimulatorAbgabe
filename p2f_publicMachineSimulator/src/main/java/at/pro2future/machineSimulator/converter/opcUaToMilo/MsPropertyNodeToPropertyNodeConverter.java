@@ -11,41 +11,88 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UInteger;
 
 import OpcUaDefinition.MsPropertyNode;
 import OpcUaDefinition.OpcUaDefinitionFactory;
-import at.pro2future.machineSimulator.converter.Converter;
-import at.pro2future.machineSimulator.converter.UaBuilderFactory;
+import at.pro2future.machineSimulator.converter.ConversionFailureException;
+import at.pro2future.machineSimulator.converter.IConverter;
+import at.pro2future.machineSimulator.converter.IUaObjectAndBuilderProvider;
+import at.pro2future.machineSimulator.converter.ConvertionNotSupportedException;
 
+/**
+ * Converts a {@link #MsPropertyNode} to a {@link #VariableNode} and vice versa. The class uses the given 
+ * factories, the {@link #OpcUaDefinitionFactory} and the {@link #IUaObjectAndBuilderProvider} to perform the transformation.
+ *
+ */
+public class MsPropertyNodeToPropertyNodeConverter implements IConverter<MsPropertyNode, VariableNode, OpcUaDefinitionFactory, IUaObjectAndBuilderProvider>{
 
-public class MsPropertyNodeToPropertyNodeConverter implements Converter<MsPropertyNode, VariableNode, OpcUaDefinitionFactory, UaBuilderFactory>{
+    /**
+     * The singleton instance <code>MsPropertyNodeToPropertyNodeConverter<code> of the converter.
+     */
+    private static MsPropertyNodeToPropertyNodeConverter instance;
+    
+    /**
+     * Returns the only instance of this class.
+     * 
+     * @return the singleton instance of this class.
+     */
+    public static MsPropertyNodeToPropertyNodeConverter getInstance() {
+        if(instance == null) {
+            instance = new MsPropertyNodeToPropertyNodeConverter();
+        }
+        return instance;
+    }
+    
+    /**
+     * The singleton instance <code>MsPropertyNodeToPropertyNodeConverter<code> of the converter.
+     */
+    private MsPropertyNodeToPropertyNodeConverter() {
+    }
+    
+    /**
+     * Creates a {@link MsPropertyNode} from the given {@link VariableNode} by using an {@link OpcUaDefinitionFactory}.
+     * 
+     * @param object the <code>VariableNode</code> which should be converted.
+     * @param factory the factory which is able to create the <code>MsPropertyNode</code>.
+     * @return the corresponding <code>MsPropertyNode</code> object from the given <code>VariableNode</code> object.
+     * @throws ConvertionNotSupported if the conversion is not supported.
+     * @throws ConversionFailureException if an known incompatibility occurs.
+     */
+    @Override
+    public MsPropertyNode createSource(VariableNode object, OpcUaDefinitionFactory factory) throws ConvertionNotSupportedException, ConversionFailureException {
+        throw new ConvertionNotSupportedException();
+    }
 
-	@Override
-	public MsPropertyNode createFrom(VariableNode object, OpcUaDefinitionFactory factory) throws ConvertionNotSupportedException {
-		throw new ConvertionNotSupportedException();
-	}
-
-	@Override
-	public VariableNode createTo(MsPropertyNode msNode, UaBuilderFactory factory) throws ConvertionNotSupportedException {
-		UaVariableNode uaPropertyNode = factory.getUaVariableNodeBuilder()
-				.setNodeId(new MsNodeIdToNodeIdConverter().createTo(msNode.getNodeId(), factory))
-				.setBrowseName(new MsQualifiedNameToQualifiedName().createTo(msNode.getBrowseName(), factory)) 
-				.setDisplayName(new MsLocalizedTextToLocalizedTextConverter().createTo(msNode.getDisplayName(), factory)) 
-				.setDescription(new MsLocalizedTextToLocalizedTextConverter().createTo(msNode.getDescription(), factory))  
-				.setWriteMask(msNode.getWriteMask() == null ? UInteger.valueOf(Integer.MAX_VALUE) : UInteger.valueOf(msNode.getWriteMask())) 
-				.setUserWriteMask(msNode.getUserWriteMask() == null ? UInteger.valueOf(Integer.MAX_VALUE) : UInteger.valueOf(msNode.getUserWriteMask()))
-				.setValue(new DataValue(new Variant(msNode.getValue())))
-				.setDataType(new MsNodeIdToNodeIdConverter().createTo(msNode.getDataType(), factory))
-				.setAccessLevel(UByte.valueOf(msNode.getAccessLevel()))
-				.setUserAccessLevel(UByte.valueOf(msNode.getUserAccessLevel()))
-				//.setValueRank(msNode.getValueRank())
-				.setHistorizing(msNode.isHistorizing())
-				.build();
-		
-		if(msNode.getHasModellingRule() != null) {
-			uaPropertyNode.addReference(new Reference(uaPropertyNode.getNodeId(), Identifiers.HasModellingRule, new MsNodeIdToNodeIdConverter().createTo(msNode.getHasModellingRule(), factory).expanded(), true));
-		}
-		
-		
-		factory.getNodeContext().getNodeManager().addNode(uaPropertyNode);
+    /**
+     * Creates a {@link MsPropertyNode} from the given {@link VariableNode} by using an {@link IUaObjectAndBuilderProvider}.
+     * 
+     * @param object the <code>MsPropertyNode</code> which should be converted.
+     * @param factory the factory which is able to create the <code>VariableNode</code>.
+     * @return the corresponding <code>VariableNode</code> object from the given <code>MsPropertyNode</code> object.
+     * @throws ConvertionNotSupported if the conversion is not supported.
+     * @throws ConversionFailureException if an known incompatibility occurs.
+     */
+    @Override
+    public VariableNode createTarget(MsPropertyNode msNode, IUaObjectAndBuilderProvider factory) throws ConvertionNotSupportedException, ConversionFailureException {
+        UaVariableNode uaPropertyNode = factory.getUaVariableNodeBuilder()
+                .setNodeId(MsNodeIdToNodeIdConverter.getInstance().createTarget(msNode.getNodeId(), factory))
+                .setBrowseName(MsQualifiedNameToQualifiedName.getInstance().createTarget(msNode.getBrowseName(), factory)) 
+                .setDisplayName(MsLocalizedTextToLocalizedTextConverter.getInstance().createTarget(msNode.getDisplayName(), factory)) 
+                .setDescription(MsLocalizedTextToLocalizedTextConverter.getInstance().createTarget(msNode.getDescription(), factory))  
+                .setWriteMask(UInteger.valueOf(msNode.getWriteMask())) 
+                .setUserWriteMask(UInteger.valueOf(msNode.getUserWriteMask()))
+                .setValue(new DataValue(new Variant(msNode.getValue())))
+                .setDataType(MsNodeIdToNodeIdConverter.getInstance().createTarget(msNode.getDataType(), factory))
+                .setAccessLevel(UByte.valueOf(msNode.getAccessLevel()))
+                .setUserAccessLevel(UByte.valueOf(msNode.getUserAccessLevel()))
+                //.setValueRank(msNode.getValueRank())
+                .setHistorizing(msNode.isHistorizing())
+                .build();
+        
+        if(msNode.getHasModellingRule() != null) {
+            uaPropertyNode.addReference(new Reference(uaPropertyNode.getNodeId(), Identifiers.HasModellingRule, MsNodeIdToNodeIdConverter.getInstance().createTarget(msNode.getHasModellingRule(), factory).expanded(), true));
+        }
+        
+        
+        factory.getNodeContext().getNodeManager().addNode(uaPropertyNode);
         
         return uaPropertyNode;
-	}
+    }
 }

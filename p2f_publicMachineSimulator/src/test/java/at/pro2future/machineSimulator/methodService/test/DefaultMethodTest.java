@@ -3,6 +3,7 @@ package at.pro2future.machineSimulator.methodService.test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,44 +24,43 @@ public class DefaultMethodTest {
 
     @Test
     void invokePrivateMethod() {
-    	
-    	MsMethodNode methodNode = initializeMsMethodNode("NullMethod", "NullMethod", "NullMethod",
-				"Method",  true, new ArrayList<MsVariableNode>(),  new ArrayList<MsVariableNode>(),
-			"public Variant[] testMethod(Variant[] test){"
-			+ "     return new Variant[0]; "
-			+ "}");
-    
-		
-    	OpcUaMethodInvocationHandler methodInvokationHanlder = new OpcUaMethodInvocationHandler(null, methodNode);
-    	try {
-			methodInvokationHanlder.invoke(null, new Variant[0]);
-		} catch (UaException e) {
-			assertTrue(false);
-		}
+        
+        MsMethodNode methodNode = initializeMsMethodNode("NullMethod", "NullMethod", "NullMethod",
+                "Method",  true, new ArrayList<MsVariableNode>(),  new ArrayList<MsVariableNode>(),
+            "public Variant[] testMethod(Variant[] test){"
+            + "     return new Variant[0]; "
+            + "}");
+        
+        try {
+            OpcUaMethodInvocationHandler methodInvokationHanlder = new OpcUaMethodInvocationHandler(null, methodNode);
+            methodInvokationHanlder.invoke(null, new Variant[0]);
+        } catch (UaException | IOException e) {
+            assertTrue(false);
+        }
     }
     
-	private static MsMethodNode initializeMsMethodNode(String browseName, String displayName, String description, String nodeId, Boolean userExecutable, List<MsVariableNode> inputArguments, List<MsVariableNode> outputArguments,
-			String method) {
-		MsMethodNode msMethodNode = OpcUaDefinitionFactory.eINSTANCE.createMsMethodNode();
-		MsQualifiedName browseNameNode = OpcUaDefinitionFactory.eINSTANCE.createMsQualifiedName();
-		browseNameNode.setName(displayName);
-		MsLocalizedText displayNameNode = OpcUaDefinitionFactory.eINSTANCE.createMsLocalizedText();
-		displayNameNode.setText(displayName);
-		MsLocalizedText descriptionNode = OpcUaDefinitionFactory.eINSTANCE.createMsLocalizedText();
-		descriptionNode.setText(description);
-		MsNodeId nodeIdNode = OpcUaDefinitionFactory.eINSTANCE.createMsNodeId();
-		nodeIdNode.setIdentifier(nodeId);
-		
-		msMethodNode.setBrowseName(browseNameNode);
-		msMethodNode.setDisplayName(displayNameNode);
-		msMethodNode.setDescription(descriptionNode);
-		msMethodNode.setNodeId(nodeIdNode);
-		msMethodNode.setUserExecutalbe(userExecutable);
-		msMethodNode.getInputArguments().addAll(inputArguments);
-		msMethodNode.getOutputArguments().addAll(outputArguments);
-		msMethodNode.setMethod(method);
-		
-		return msMethodNode;
-	}
+    private static MsMethodNode initializeMsMethodNode(String browseName, String displayName, String description, String nodeId, boolean userExecutable, List<MsVariableNode> inputArguments, List<MsVariableNode> outputArguments,
+            String method) {
+        MsMethodNode msMethodNode = OpcUaDefinitionFactory.eINSTANCE.createMsMethodNode();
+        MsQualifiedName browseNameNode = OpcUaDefinitionFactory.eINSTANCE.createMsQualifiedName();
+        browseNameNode.setName(displayName);
+        MsLocalizedText displayNameNode = OpcUaDefinitionFactory.eINSTANCE.createMsLocalizedText();
+        displayNameNode.setText(displayName);
+        MsLocalizedText descriptionNode = OpcUaDefinitionFactory.eINSTANCE.createMsLocalizedText();
+        descriptionNode.setText(description);
+        MsNodeId nodeIdNode = OpcUaDefinitionFactory.eINSTANCE.createMsNodeId();
+        nodeIdNode.setIdentifier(nodeId);
+        
+        msMethodNode.setBrowseName(browseNameNode);
+        msMethodNode.setDisplayName(displayNameNode);
+        msMethodNode.setDescription(descriptionNode);
+        msMethodNode.setNodeId(nodeIdNode);
+        msMethodNode.setUserExecutalbe(userExecutable);
+        msMethodNode.getInputArguments().addAll(inputArguments);
+        msMethodNode.getOutputArguments().addAll(outputArguments);
+        msMethodNode.setMethod(method);
+        
+        return msMethodNode;
+    }
 
 }

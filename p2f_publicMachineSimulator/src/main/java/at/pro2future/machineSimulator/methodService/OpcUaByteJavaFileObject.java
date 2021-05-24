@@ -7,13 +7,23 @@ import java.net.URI;
 
 import javax.tools.SimpleJavaFileObject;
 
+/**
+ * This class represents an in memory file. It stores the content 
+ * of the file as an {@link ByteArrayOutputStream}.
+ *
+ */
 public class OpcUaByteJavaFileObject  extends SimpleJavaFileObject {
-	  final ByteArrayOutputStream byteArrayOutputStream;
-	
-	  public OpcUaByteJavaFileObject(String name) {
-		  super(URI.create("bytes:///"+name + name.replaceAll("\\.", "/")), Kind.CLASS);
-		  this.byteArrayOutputStream = new ByteArrayOutputStream();
-	  }
+    final ByteArrayOutputStream byteArrayOutputStream;
+    
+    /**
+     * This class represents an in memory file. It stores the content 
+     * of the file as an {@link ByteArrayOutputStream}.
+     * @param name the name of the in memory file.
+     */
+    public OpcUaByteJavaFileObject(String name) {
+        super(URI.create("bytes:///"+name + name.replaceAll("\\.", "/")), Kind.CLASS);
+        this.byteArrayOutputStream = new ByteArrayOutputStream();
+    }
 
     @Override
     public OutputStream openOutputStream() throws IOException {

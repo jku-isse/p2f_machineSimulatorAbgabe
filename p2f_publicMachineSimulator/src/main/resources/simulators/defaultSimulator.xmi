@@ -2,97 +2,90 @@
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:at.pro2future.shopfloors.opcUaDefinition="http://at.pro2future/shopfloors/opcUaDefinition" xmlns:at.pro2future.shopfloors.processcore="at.pro2future.shopfloors.processcore" xmlns:at.pro2future.shopfloors.simulator="http://at.pro2future/shopfloors/simulator">
   <at.pro2future.shopfloors.simulator:MachineSimulator name="DefaultSimulator">
     <opcUaServerInterface>
-      <nodes xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsObjectNode" hasTypeDefinition="/2">
-        <nodeId Identifier="ACED000574000A4E4F44455F49445F3134" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+      <nodes xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsObjectNode" hasTypeDefinition="/1">
+        <nodeId Identifier="ACED000574000A4E4F44455F49445F3134" allowOverrideNamespaceIndex="true"/>
         <description locale="en" text="BaseFolder"/>
         <displayName locale="en" text="BaseFolder"/>
-        <browseName namespaceIndex="0" name="BaseFolder"/>
-        <organizes xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsObjectNode" hasTypeDefinition="/12">
-          <nodeId Identifier="ACED000574000A4E4F44455F49445F3130" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+        <browseName name="BaseFolder"/>
+        <organizes xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsObjectNode" hasTypeDefinition="/11">
+          <nodeId Identifier="ACED000574000A4E4F44455F49445F3130" allowOverrideNamespaceIndex="true"/>
           <description locale="en" text="Root"/>
           <displayName locale="en" text="Root"/>
-          <browseName namespaceIndex="0" name="Root"/>
-          <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000" accessLevel="-1" userAccessLevel="-1" dataType="/5" hasModellingRule="/3">
-            <nodeId Identifier="ACED00057400094E4F44455F49445F37" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+          <browseName name="Root"/>
+          <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000" accessLevel="-1" userAccessLevel="-1" dataType="/4" hasModellingRule="/2">
+            <nodeId Identifier="ACED00057400094E4F44455F49445F37" allowOverrideNamespaceIndex="true"/>
             <description locale="en" text="Speed"/>
             <displayName locale="en" text="Speed"/>
-            <browseName namespaceIndex="0" name="Speed"/>
+            <browseName name="Speed"/>
           </hasComponent>
-          <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED00057400046E6F6E65" accessLevel="-1" userAccessLevel="-1" dataType="/4" hasModellingRule="/3">
-            <nodeId Identifier="ACED00057400094E4F44455F49445F38" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+          <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED00057400046E6F6E65" accessLevel="-1" userAccessLevel="-1" dataType="/3" hasModellingRule="/2">
+            <nodeId Identifier="ACED00057400094E4F44455F49445F38" allowOverrideNamespaceIndex="true"/>
             <description locale="en" text="Tool"/>
             <displayName locale="en" text="Tool"/>
-            <browseName namespaceIndex="0" name="Tool"/>
+            <browseName name="Tool"/>
           </hasComponent>
           <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsMethodNode" executable="true" userExecutalbe="true" method="public Variant[] testMethod(Variant[] test){     return new Variant[0]; }">
-            <nodeId Identifier="ACED00057400064D6574686F64" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+            <nodeId Identifier="ACED00057400064D6574686F64" allowOverrideNamespaceIndex="true"/>
             <description locale="en" text="NullMethod"/>
             <displayName locale="en" text="NullMethod"/>
-            <browseName namespaceIndex="0" name="NullMethod"/>
+            <browseName name="NullMethod"/>
           </hasComponent>
         </organizes>
       </nodes>
+      <instanceInformation displayName="Default Simulator" host="localhost" port="2000"/>
     </opcUaServerInterface>
-    <instanceInformation displayName="Default Simulator" host="localhost" port="2000"/>
-    <stateMachine ID="_VO5HMHoBEeuNxMPNQI86Vw" DisplayName="MainProcess">
-      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_VPC4MHoBEeuNxMPNQI86Vw" DisplayName="Sets a welding tool" ModifiedVariable="/14" rhs="/16"/>
-      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_VPC4MXoBEeuNxMPNQI86Vw" DisplayName="Start welding" ModifiedVariable="/17" rhs="/13"/>
-      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_VPC4MnoBEeuNxMPNQI86Vw" DisplayName="Stop welding" ModifiedVariable="/17" rhs="/18"/>
-      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_VPC4M3oBEeuNxMPNQI86Vw" DisplayName="To start position" ModifiedVariable="/14" rhs="/15"/>
+    <stateMachine ID="_Mea1YLzDEeuhx9xBnXNVhw" DisplayName="MainProcess">
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_Mel0gLzDEeuhx9xBnXNVhw" DisplayName="Sets a welding tool" ModifiedVariable="/13" rhs="/15"/>
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_Mel0gbzDEeuhx9xBnXNVhw" DisplayName="Start welding" ModifiedVariable="/16" rhs="/12"/>
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_Mel0grzDEeuhx9xBnXNVhw" DisplayName="Stop welding" ModifiedVariable="/16" rhs="/17"/>
+      <Steps xsi:type="at.pro2future.shopfloors.processcore:SetVariableStep" ID="_Mel0g7zDEeuhx9xBnXNVhw" DisplayName="To start position" ModifiedVariable="/13" rhs="/14"/>
     </stateMachine>
-    <actions xsi:type="at.pro2future.shopfloors.simulator:MsMethodAction" opcUaClientInterface="/23" refersTo="/19">
-      <callesMethod Identifier="ACED00057400555669727475616C496E70757453746174696F6E312F494F53544154494F4E2F48414E445348414B455F46555F44656661756C745365727665725369646548616E647368616B652F53544152545F48414E444F564552" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
-      <objectContainingMethod Identifier="ACED00057400465669727475616C496E70757453746174696F6E312F494F53544154494F4E2F48414E445348414B455F46555F44656661756C745365727665725369646548616E647368616B65" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
-    </actions>
-    <actions xsi:type="at.pro2future.shopfloors.simulator:MsWriteAction" opcUaClientInterface="/11" refersTo="/20">
-      <parameterMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/0/@opcUaServerInterface/@nodes.0/@organizes.0/@hasComponent.0" parameter="/17"/>
-    </actions>
-    <actions xsi:type="at.pro2future.shopfloors.simulator:MsReadAction" opcUaClientInterface="/11" refersTo="/21">
-      <parameterMappings xsi:type="at.pro2future.shopfloors.simulator:ProcessOpcUaVariableMapping" variableNode="/0/@opcUaServerInterface/@nodes.0/@organizes.0/@hasComponent.1" parameter="/14"/>
-    </actions>
-    <actions xsi:type="at.pro2future.shopfloors.simulator:MsMethodAction" opcUaClientInterface="/11" refersTo="/22">
-      <callesMethod Identifier="ACED000574000A4E4F44455F49445F3133" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
-      <objectContainingMethod Identifier="ACED000574000A4E4F44455F49445F3130" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
-    </actions>
+    <adressSpaceActions xsi:type="at.pro2future.shopfloors.simulator:MsMethodEventAdressSpaceAction" opcUaClientInterface="/24" refersTo="/22" callesMethod="/26" objectContainingMethod="/25" returnEvent="/21"/>
+    <adressSpaceActions xsi:type="at.pro2future.shopfloors.simulator:MsWriteEventAdressSpaceAction" opcUaClientInterface="/10" refersTo="/19">
+      <parameterMappings attributeNodeId="/4" parameter="/16"/>
+    </adressSpaceActions>
+    <adressSpaceActions xsi:type="at.pro2future.shopfloors.simulator:MsReadEventAdressSpaceAction" opcUaClientInterface="/10" refersTo="/20">
+      <parameterMappings attributeNodeId="/3" parameter="/13"/>
+    </adressSpaceActions>
+    <adressSpaceActions xsi:type="at.pro2future.shopfloors.simulator:MsMethodEventAdressSpaceAction" opcUaClientInterface="/10" refersTo="/18" callesMethod="/11/@hasComponent.2/@nodeId" objectContainingMethod="/0/@opcUaServerInterface/@nodes.0/@organizes.0/@nodeId"/>
   </at.pro2future.shopfloors.simulator:MachineSimulator>
-  <at.pro2future.shopfloors.simulator:MsInstanceInformation displayName="FIABiostation" host="localhost" port="4840" path="milo"/>
   <at.pro2future.shopfloors.opcUaDefinition:MsObjectTypeNode>
-    <nodeId Identifier="ACED0005737200416F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E55496E7465676572A156BE65D94722920200014A000576616C7565787200406F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E554E756D626572959C1BC3979AF2BD020000787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000000000003D" namespaceIndex="0" allowOverrideNamespaceIndex="false"/>
+    <nodeId Identifier="ACED0005737200416F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E55496E7465676572A156BE65D94722920200014A000576616C7565787200406F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E554E756D626572959C1BC3979AF2BD020000787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000000000003D"/>
     <description locale="en" text="FolderType"/>
     <displayName locale="en" text="FolderType"/>
-    <browseName namespaceIndex="0" name="FolderType"/>
+    <browseName name="FolderType"/>
   </at.pro2future.shopfloors.opcUaDefinition:MsObjectTypeNode>
-  <at.pro2future.shopfloors.opcUaDefinition:MsNodeId Identifier="ACED0005737200416F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E55496E7465676572A156BE65D94722920200014A000576616C7565787200406F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E554E756D626572959C1BC3979AF2BD020000787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000000000004E" namespaceIndex="0" allowOverrideNamespaceIndex="false"/>
-  <at.pro2future.shopfloors.opcUaDefinition:MsNodeId Identifier="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B02000078700000000C" namespaceIndex="0" allowOverrideNamespaceIndex="false"/>
-  <at.pro2future.shopfloors.opcUaDefinition:MsNodeId Identifier="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000006" namespaceIndex="0" allowOverrideNamespaceIndex="false"/>
-  <at.pro2future.shopfloors.opcUaDefinition:MsNodeId Identifier="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000001" namespaceIndex="0" allowOverrideNamespaceIndex="false"/>
+  <at.pro2future.shopfloors.opcUaDefinition:MsNodeId Identifier="ACED0005737200416F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E55496E7465676572A156BE65D94722920200014A000576616C7565787200406F72672E65636C697073652E6D696C6F2E6F706375612E737461636B2E636F72652E74797065732E6275696C74696E2E756E7369676E65642E554E756D626572959C1BC3979AF2BD020000787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000000000004E"/>
+  <at.pro2future.shopfloors.opcUaDefinition:MsNodeId Identifier="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B02000078700000000C"/>
+  <at.pro2future.shopfloors.opcUaDefinition:MsNodeId Identifier="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000006"/>
+  <at.pro2future.shopfloors.opcUaDefinition:MsNodeId Identifier="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000001"/>
   <at.pro2future.shopfloors.processcore:Assignment Name="DefaultAssignment"/>
   <at.pro2future.shopfloors.processcore:LocalVariable Type="Boolean" Name="true" Value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787001"/>
   <at.pro2future.shopfloors.processcore:LocalVariable Type="Boolean" Name="false" Value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787000"/>
   <at.pro2future.shopfloors.processcore:LocalVariable Type="String" Name="nullString"/>
-  <at.pro2future.shopfloors.simulator:MsClientInterface targetInstanceInformation="/0/@instanceInformation"/>
+  <at.pro2future.shopfloors.simulator:MsClientInterface instanceInformation="/0/@opcUaServerInterface/@instanceInformation"/>
   <at.pro2future.shopfloors.opcUaDefinition:MsObjectTypeNode>
-    <nodeId Identifier="ACED00057400094E4F44455F49445F36" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+    <nodeId Identifier="ACED00057400094E4F44455F49445F36" allowOverrideNamespaceIndex="true"/>
     <description locale="en" text="RootType"/>
     <displayName locale="en" text="RootType"/>
-    <browseName namespaceIndex="0" name="RootType"/>
-    <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000" accessLevel="-1" userAccessLevel="-1" dataType="/5" hasModellingRule="/3">
-      <nodeId Identifier="ACED000574000A4E4F44455F49445F3131" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+    <browseName name="RootType"/>
+    <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000" accessLevel="-1" userAccessLevel="-1" dataType="/4" hasModellingRule="/2">
+      <nodeId Identifier="ACED000574000A4E4F44455F49445F3131" allowOverrideNamespaceIndex="true"/>
       <description locale="en" text="Speed"/>
       <displayName locale="en" text="Speed"/>
-      <browseName namespaceIndex="0" name="Speed"/>
+      <browseName name="Speed"/>
     </hasComponent>
-    <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED00057400046E6F6E65" accessLevel="-1" userAccessLevel="-1" dataType="/4" hasModellingRule="/3">
-      <nodeId Identifier="ACED000574000A4E4F44455F49445F3132" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+    <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsPropertyNode" value="ACED00057400046E6F6E65" accessLevel="-1" userAccessLevel="-1" dataType="/3" hasModellingRule="/2">
+      <nodeId Identifier="ACED000574000A4E4F44455F49445F3132" allowOverrideNamespaceIndex="true"/>
       <description locale="en" text="Tool"/>
       <displayName locale="en" text="Tool"/>
-      <browseName namespaceIndex="0" name="Tool"/>
+      <browseName name="Tool"/>
     </hasComponent>
     <hasComponent xsi:type="at.pro2future.shopfloors.opcUaDefinition:MsMethodNode" executable="true" userExecutalbe="true" method="public Variant[] testMethod(Variant[] test){     return new Variant[0]; }">
-      <nodeId Identifier="ACED000574000A4E4F44455F49445F3133" namespaceIndex="0" allowOverrideNamespaceIndex="true"/>
+      <nodeId Identifier="ACED000574000A4E4F44455F49445F3133" allowOverrideNamespaceIndex="true"/>
       <description locale="en" text="NullMethod"/>
       <displayName locale="en" text="NullMethod"/>
-      <browseName namespaceIndex="0" name="NullMethod"/>
+      <browseName name="NullMethod"/>
     </hasComponent>
   </at.pro2future.shopfloors.opcUaDefinition:MsObjectTypeNode>
   <at.pro2future.shopfloors.processcore:Constant Type="Integer" Name="five" Value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000005"/>
@@ -101,9 +94,13 @@
   <at.pro2future.shopfloors.processcore:Constant Type="String" Name="_welding" Value="ACED000574000777656C64696E67"/>
   <at.pro2future.shopfloors.processcore:LocalVariable Type="Integer" Name="Speed" Value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000"/>
   <at.pro2future.shopfloors.processcore:Constant Type="Integer" Name="zero" Value="ACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000"/>
-  <at.pro2future.shopfloors.processcore:Event Name="Call Method Event2" Role="/7"/>
-  <at.pro2future.shopfloors.processcore:Event Name="Speed Changed Event" Role="/7"/>
-  <at.pro2future.shopfloors.processcore:Event Name="Tool Changed Event" Role="/7"/>
-  <at.pro2future.shopfloors.processcore:Event Name="Call Method Event" Role="/7"/>
-  <at.pro2future.shopfloors.simulator:MsClientInterface targetInstanceInformation="/1"/>
+  <at.pro2future.shopfloors.processcore:Event Name="Call Method Event" Role="/6"/>
+  <at.pro2future.shopfloors.processcore:Event Name="Speed Changed Event" Role="/6"/>
+  <at.pro2future.shopfloors.processcore:Event Name="Tool Changed Event" Role="/6"/>
+  <at.pro2future.shopfloors.processcore:Event Name="Send Event after method call" Role="/6"/>
+  <at.pro2future.shopfloors.processcore:Event Name="Call Method Event2" Role="/6"/>
+  <at.pro2future.shopfloors.simulator:MsInstanceInformation displayName="FIABiostation" host="localhost" port="4840" path="milo"/>
+  <at.pro2future.shopfloors.simulator:MsClientInterface instanceInformation="/23"/>
+  <at.pro2future.shopfloors.opcUaDefinition:MsNodeId Identifier="ACED00057400465669727475616C496E70757453746174696F6E312F494F53544154494F4E2F48414E445348414B455F46555F44656661756C745365727665725369646548616E647368616B65" allowOverrideNamespaceIndex="true"/>
+  <at.pro2future.shopfloors.opcUaDefinition:MsNodeId Identifier="ACED00057400555669727475616C496E70757453746174696F6E312F494F53544154494F4E2F48414E445348414B455F46555F44656661756C745365727665725369646548616E647368616B652F53544152545F48414E444F564552" allowOverrideNamespaceIndex="true"/>
 </xmi:XMI>

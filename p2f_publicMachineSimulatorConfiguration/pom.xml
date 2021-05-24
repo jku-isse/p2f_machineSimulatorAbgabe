@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>p2f_publicMachineSimulatorConfiguration</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>p2f_publicMachineSimulatorConfiguration</name>
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>p2f_publicMachineSimulatorConfiguration</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>p2f_publicMachineSimulatorConfiguration</name>
 
     <properties>
         <src.dir>src</src.dir>
@@ -13,37 +13,37 @@
         <sourceDirectory>${src.dir}</sourceDirectory>
     </build>
     
-	<!--The identifier of the parent POM -->
-	<parent>
-		<groupId>at.pro2future.shopfloors</groupId>
-		<artifactId>p2f_publicMavenParent</artifactId>
-		<version>1.0.0</version>
-	</parent>
+    <!--The identifier of the parent POM -->
+    <parent>
+        <groupId>at.pro2future.shopfloors</groupId>
+        <artifactId>p2f_publicMavenParent</artifactId>
+        <version>1.0.0</version>
+    </parent>
 
-	<dependencies>
-		<dependency>
-			<groupId>at.pro2future.shopfloors</groupId>
-			<artifactId>p2f_publicCoreModel</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>at.pro2future.shopfloors</groupId>
-			<artifactId>fileHandling</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.common</artifactId>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>at.pro2future.shopfloors</groupId>
+            <artifactId>p2f_publicCoreModel</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>at.pro2future.shopfloors</groupId>
+            <artifactId>fileHandling</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.common</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.ecore</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.ecore.xmi</artifactId>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.ecore</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+        </dependency>
+    </dependencies>
 </project>

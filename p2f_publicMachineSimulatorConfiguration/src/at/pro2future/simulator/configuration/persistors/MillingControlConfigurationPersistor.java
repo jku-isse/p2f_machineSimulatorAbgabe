@@ -7,24 +7,24 @@ import at.pro2future.simulator.configuration.ToolControlConfiguration;
 import at.pro2future.simulator.configuration.WorkpieceControlConfiguration;
 
 public class MillingControlConfigurationPersistor extends ConfigurationPersistor{
-	
-	private final MillingControlConfiguration sim;
-	
-	public MillingControlConfiguration getConfiguration() {
-		return this.sim;
-	}
-		
-	public MillingControlConfigurationPersistor(ToolControlConfiguration tcc, WorkpieceControlConfiguration mcc) {
-		this.sim = new MillingControlConfiguration(tcc, mcc);
-	}
-		
-	@Override
-	protected String getFileName() {
-		return "target/millingControl.xmi";
-	}
+    
+    private final MillingControlConfiguration sim;
+    
+    public MillingControlConfiguration getConfiguration() {
+        return this.sim;
+    }
+        
+    public MillingControlConfigurationPersistor(ToolControlConfiguration tcc, WorkpieceControlConfiguration mcc) {
+        this.sim = new MillingControlConfiguration(tcc, mcc);
+    }
+        
+    @Override
+    protected String getFileName() {
+        return "target/millingControl.xmi";
+    }
 
-	@Override
-	protected List<EObject> getUncontainedObjects() {
-		return this.sim.get();
-	}
+    @Override
+    protected List<EObject> getUncontainedObjects() {
+        return this.sim.get();
+    }
 }

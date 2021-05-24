@@ -1,5 +1,5 @@
 /**
- * This package contains the specific converters used for converting MachineSimulator Objects to OPC-UA objects.
+ * This package contains methods which send or receive events‚.
  *
  * @since 1.0
  * @author Johann Paul Stoebich

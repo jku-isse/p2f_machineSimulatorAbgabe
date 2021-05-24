@@ -11,52 +11,100 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UInteger;
 import OpcUaDefinition.MsNode;
 import OpcUaDefinition.MsObjectTypeNode;
 import OpcUaDefinition.OpcUaDefinitionFactory;
-import at.pro2future.machineSimulator.converter.Converter;
-import at.pro2future.machineSimulator.converter.UaBuilderFactory;
+import at.pro2future.machineSimulator.converter.ConversionFailureException;
+import at.pro2future.machineSimulator.converter.IConverter;
+import at.pro2future.machineSimulator.converter.IUaObjectAndBuilderProvider;
+import at.pro2future.machineSimulator.converter.ConvertionNotSupportedException;
+import at.pro2future.machineSimulator.converter.UaObjectAndBuilderProvider;
 
+/**
+ * Converts a {@link #MsObjectTypeNode} to a {@link #ObjectTypeNode} and vice versa. The class uses the given 
+ * factories, the {@link #OpcUaDefinitionFactory} and the {@link #IUaObjectAndBuilderProvider} to perform the transformation.
+ *
+ */
+public class MsObjectTypeNodeToObjectTypeNodeConverter implements IConverter<MsObjectTypeNode, ObjectTypeNode, OpcUaDefinitionFactory, IUaObjectAndBuilderProvider>{
 
-public class MsObjectTypeNodeToObjectTypeNodeConverter implements Converter<MsObjectTypeNode, ObjectTypeNode, OpcUaDefinitionFactory, UaBuilderFactory>{
+    /**
+     * The singleton instance <code>MsObjectTypeNodeToObjectTypeNodeConverter<code> of the converter.
+     */
+    private static MsObjectTypeNodeToObjectTypeNodeConverter instance;
+    
+    /**
+     * Returns the only instance of this class.
+     * 
+     * @return the singleton instance of this class.
+     */
+    public static MsObjectTypeNodeToObjectTypeNodeConverter getInstance() {
+        if(instance == null) {
+            instance = new MsObjectTypeNodeToObjectTypeNodeConverter();
+        }
+        return instance;
+    }
+    
+    /**
+     * The singleton instance <code>MsObjectTypeNodeToObjectTypeNodeConverter<code> of the converter.
+     */
+    private MsObjectTypeNodeToObjectTypeNodeConverter() {
+    }
+    
+    /**
+     * Creates a {@link MsObjectTypeNode} from the given {@link ObjectTypeNode} by using an {@link OpcUaDefinitionFactory}.
+     * 
+     * @param object the <code>ObjectTypeNode</code> which should be converted.
+     * @param factory the factory which is able to create the <code>MsObjectTypeNode</code>.
+     * @return the corresponding <code>MsObjectTypeNode</code> object from the given <code>ObjectTypeNode</code> object.
+     * @throws ConvertionNotSupported if the conversion is not supported.
+     * @throws ConversionFailureException if an known incompatibility occurs.
+     */
+    @Override
+    public MsObjectTypeNode createSource(ObjectTypeNode object, OpcUaDefinitionFactory factory) throws ConvertionNotSupportedException, ConversionFailureException {
+        throw new ConvertionNotSupportedException();
+    }
 
-	@Override
-	public MsObjectTypeNode createFrom(ObjectTypeNode object, OpcUaDefinitionFactory factory) throws ConvertionNotSupportedException {
-		throw new ConvertionNotSupportedException();
-	}
-
-	@Override
-	public ObjectTypeNode createTo(MsObjectTypeNode msNode, UaBuilderFactory factory) throws ConvertionNotSupportedException {
-		
-		UaObjectTypeNode uaObjectTypeNode = factory.getUaObjectTypeNodeBuilder()
-				.setNodeId(new MsNodeIdToNodeIdConverter().createTo(msNode.getNodeId(), factory))
-				.setBrowseName(new MsQualifiedNameToQualifiedName().createTo(msNode.getBrowseName(), factory)) 
-				.setDisplayName(new MsLocalizedTextToLocalizedTextConverter().createTo(msNode.getDisplayName(), factory)) 
-				.setDescription(new MsLocalizedTextToLocalizedTextConverter().createTo(msNode.getDescription(), factory))  
-				.setWriteMask(msNode.getWriteMask() == null ?  UInteger.valueOf(Integer.MAX_VALUE) : UInteger.valueOf(msNode.getWriteMask())) 
-				.setUserWriteMask(msNode.getUserWriteMask() == null ?  UInteger.valueOf(Integer.MAX_VALUE) : UInteger.valueOf(msNode.getUserWriteMask()))
-				.setIsAbstract(msNode.isIsAbstract())
-				.build();
-		
-		factory.getNodeContext().getServer().getObjectTypeManager().registerObjectType(
-			  	uaObjectTypeNode.getNodeId(),
-	            UaObjectNode.class,
-	            UaObjectNode::new
-	        );
-				
-		// Add the inverse HasSubtype relationship.
-		uaObjectTypeNode.addReference(new Reference(
-				uaObjectTypeNode.getNodeId(),
-				Identifiers.HasSubtype,
-				Identifiers.BaseObjectType.expanded(),
-				false
-			));
-		
-		for(MsNode component : msNode.getHasComponent()) {
-			UaNode uaNode = (UaNode) new MsNodeToNodeConverter().createTo(component, factory);
-			
-			uaObjectTypeNode.addComponent(uaNode);
-		}
-		
-		factory.getNodeContext().getNodeManager().addNode(uaObjectTypeNode);
+    /**
+     * Creates a {@link ObjectTypeNode} from the given {@link MsObjectTypeNode} by using an {@link UaObjectAndBuilderProvider}.
+     * 
+     * @param object the <code>MsObjectTypeNode</code> which should be converted.
+     * @param factory the factory which is able to create the <code>ObjectTypeNode</code>.
+     * @return the corresponding <code>ObjectTypeNode</code> object from the given <code>MsObjectTypeNode</code> object.
+     * @throws ConvertionNotSupported if the conversion is not supported.
+     * @throws ConversionFailureException if an known incompatibility occurs.
+     */
+    @Override
+    public ObjectTypeNode createTarget(MsObjectTypeNode msNode, IUaObjectAndBuilderProvider factory) throws ConvertionNotSupportedException, ConversionFailureException {
+        
+        UaObjectTypeNode uaObjectTypeNode = factory.getUaObjectTypeNodeBuilder()
+                .setNodeId(MsNodeIdToNodeIdConverter.getInstance().createTarget(msNode.getNodeId(), factory))
+                .setBrowseName(MsQualifiedNameToQualifiedName.getInstance().createTarget(msNode.getBrowseName(), factory)) 
+                .setDisplayName(MsLocalizedTextToLocalizedTextConverter.getInstance().createTarget(msNode.getDisplayName(), factory)) 
+                .setDescription(MsLocalizedTextToLocalizedTextConverter.getInstance().createTarget(msNode.getDescription(), factory))  
+                .setWriteMask(UInteger.valueOf(msNode.getWriteMask())) 
+                .setUserWriteMask(UInteger.valueOf(msNode.getUserWriteMask()))
+                .setIsAbstract(msNode.isIsAbstract())
+                .build();
+        
+        factory.getNodeContext().getServer().getObjectTypeManager().registerObjectType(
+                  uaObjectTypeNode.getNodeId(),
+                UaObjectNode.class,
+                UaObjectNode::new
+            );
+                
+        // Add the inverse HasSubtype relationship.
+        uaObjectTypeNode.addReference(new Reference(
+                uaObjectTypeNode.getNodeId(),
+                Identifiers.HasSubtype,
+                Identifiers.BaseObjectType.expanded(),
+                false
+            ));
+        
+        for(MsNode component : msNode.getHasComponent()) {
+            UaNode uaNode = (UaNode) MsNodeToNodeConverter.getInstance().createTarget(component, factory);
+            
+            uaObjectTypeNode.addComponent(uaNode);
+        }
+        
+        factory.getNodeContext().getNodeManager().addNode(uaObjectTypeNode);
         
         return uaObjectTypeNode;
-	}
+    }
 }
