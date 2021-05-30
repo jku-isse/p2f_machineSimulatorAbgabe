@@ -70,7 +70,7 @@ public class MillingControlConfiguration implements Supplier<List<EObject>> {
         Event toolEvent = ConfigurationUtil.initializeEvent("ToolEvent", CommonObjects.DefaultAssignment, defaultTool);
         Event startEvent = ConfigurationUtil.initializeEvent("StartEvent", CommonObjects.DefaultAssignment, _startEvent);
         Event stopEvent = ConfigurationUtil.initializeEvent("StopEvent", CommonObjects.DefaultAssignment, _stopEvent);
-        ProcessCore.Process mainProcess = setupMainProcess(_run, workpieceEvent, _workpiece, toolEvent, _tool, startEvent, stopEvent, defaultWorkpiece, defaultTool);
+        ProcessCore.Process mainProcess = setupMainProcess(runEvent, _run, workpieceEvent, _workpiece, toolEvent, _tool, startEvent, stopEvent, defaultWorkpiece, defaultTool);
         this.sim.setStateMachine(mainProcess);
         
 
@@ -136,14 +136,16 @@ public class MillingControlConfiguration implements Supplier<List<EObject>> {
         uncontainedObjects.add(objectType);
     }
 
-    private Process setupMainProcess(LocalVariable _run, Event workpieceEvent, LocalVariable _workpiece,
+    private Process setupMainProcess(Event runEvent, LocalVariable _run, Event workpieceEvent, LocalVariable _workpiece,
             Event toolEvent, LocalVariable _tool, Event startEvent, Event stopEvent, LocalVariable defaultWorkpiece, LocalVariable defaultTool) {
         
         Condition _runFalse  = ConfigurationUtil.initializeSimpleCondition(_run, Operator.EQ, CommonObjects.False);
-        AbstractLoop while_runFalse = ConfigurationUtil.initializeHeadLoop("while _run == false", ConfigurationUtil.initializeProcess("EmptyProcess"), _runFalse);
+        ProcessCore.Process waitRunEventProcess = ConfigurationUtil.initializeProcess("Wait Run Event Process");
+        waitRunEventProcess.getSteps().add(ConfigurationUtil.initializeEventSink("_run Event Sink", runEvent, Arrays.asList(_run)));
+        AbstractLoop while_runFalse = ConfigurationUtil.initializeHeadLoop("while _run == false", waitRunEventProcess, _runFalse);
         
         ProcessCore.ProcessStep sendWorkpieceEventWorkpiece = ConfigurationUtil.initializeEventSource("sendWorkpieceEvent Event Source", workpieceEvent, Arrays.asList(defaultWorkpiece));
-        ProcessCore.ProcessStep sendWorkpieceEventEmpty = ConfigurationUtil.initializeEventSource("sendWorkpieceEvent Event Source", toolEvent, Arrays.asList(CommonObjects.NullString));
+        ProcessCore.ProcessStep sendWorkpieceEventEmpty = ConfigurationUtil.initializeEventSource("sendWorkpieceEvent Event Source", workpieceEvent, Arrays.asList(CommonObjects.NullString));
         ProcessCore.ProcessStep sendToolEventTool = ConfigurationUtil.initializeEventSource("sendToolEvent Event Source", toolEvent, Arrays.asList(defaultTool));
         ProcessCore.ProcessStep sendToolEventEmpty = ConfigurationUtil.initializeEventSource("sendToolEvent Event Source", toolEvent, Arrays.asList(CommonObjects.NullString));
         ProcessCore.ProcessStep sendStartEvent = ConfigurationUtil.initializeEventSource("sendStartEvent Event Source", startEvent,  Arrays.asList(CommonObjects.True));
@@ -151,13 +153,16 @@ public class MillingControlConfiguration implements Supplier<List<EObject>> {
 
     
         ProcessCore.Process subProcess = ConfigurationUtil.initializeProcess("SubProcess");
+        // wait until the bgin flag is set
         subProcess.getSteps().add(while_runFalse); // wait until the bgin flag is set
         subProcess.getSteps().add(sendWorkpieceEventWorkpiece); 
         subProcess.getSteps().add(sendToolEventTool);
         subProcess.getSteps().add(sendStartEvent);
+        subProcess.getSteps().add(ConfigurationUtil.initializeHumanStep("Started", "Process started - confirm stop."));
         subProcess.getSteps().add(sendStopEvent);
         subProcess.getSteps().add(sendToolEventEmpty);
         subProcess.getSteps().add(sendWorkpieceEventEmpty);
+        subProcess.getSteps().add(ConfigurationUtil.initializeSetVariableStep("_run = false", _run, CommonObjects.False));
         
         ProcessCore.Process mainProcess = ConfigurationUtil.initializeProcess("MainProcess");
         Condition alwaysTrue  = ConfigurationUtil.initializeSimpleCondition(CommonObjects.True, Operator.EQ, CommonObjects.True);

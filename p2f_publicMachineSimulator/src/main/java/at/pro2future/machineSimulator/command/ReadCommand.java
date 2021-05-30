@@ -36,6 +36,10 @@ public class ReadCommand extends BaseCommand<ReadCommandParameters>{
         NodeId nodeId = MsNodeIdToNodeIdConverter.getInstance().createTarget(processOpcUaMapping.getAttributeNodeId(), getOpcUaClientManager().getUaObjectAndBuilderProvider());
         DataValue dataValue = getOpcUaClientManager().readValue(nodeId);
         
+        if(!dataValue.getStatusCode().isGood()) {
+            throw new ExecutionException(dataValue.getStatusCode().toString(), null);
+        }
+        
         Parameter parameterCopy = EcoreUtil.copy(processOpcUaMapping.getParameter());
         parameterCopy.setValue(dataValue.getValue().getValue());
         return parameterCopy;

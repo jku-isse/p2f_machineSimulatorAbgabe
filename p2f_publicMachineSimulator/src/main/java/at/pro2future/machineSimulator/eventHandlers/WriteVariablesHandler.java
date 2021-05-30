@@ -2,6 +2,8 @@ package at.pro2future.machineSimulator.eventHandlers;
 
 import java.util.concurrent.ExecutionException;
 
+import com.google.common.collect.Lists;
+
 import Simulator.MsWriteEventAdressSpaceAction;
 import at.pro2future.machineSimulator.OpcUaClientManager;
 import at.pro2future.machineSimulator.command.WriteCommand;
@@ -46,7 +48,7 @@ public class WriteVariablesHandler extends BaseEventHandler<MsWriteEventAdressSp
     public void handleEvent(EventInstance e)   {
         try {
             super.handleEvent(e);
-            getBaseCommand().execute(e.parameters);
+            getBaseCommand().execute(Lists.newArrayList(e.parameters));
         }
         catch(Exception exc) {
             throw new RuntimeException(exc);

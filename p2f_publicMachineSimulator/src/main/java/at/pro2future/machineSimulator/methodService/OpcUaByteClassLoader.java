@@ -7,7 +7,7 @@ package at.pro2future.machineSimulator.methodService;
  * @author johannstoebich
  *
  */
-public class OpcUaByteClassLoader extends ClassLoader {
+class OpcUaByteClassLoader extends ClassLoader {
 
 
     byte[] byteArray;
@@ -18,7 +18,7 @@ public class OpcUaByteClassLoader extends ClassLoader {
      * 
      * @param byteArray the byte array from which the classes should be loaded.
      */
-    public OpcUaByteClassLoader(byte[] byteArray) {
+    OpcUaByteClassLoader(byte[] byteArray) {
         this(byteArray, null);
     }
     
@@ -29,7 +29,7 @@ public class OpcUaByteClassLoader extends ClassLoader {
      * @param byteArray the byte array from which the classes should be loaded.
      * @param parent the parent class loader from which the resolved classes should be loaded.
      */
-    public OpcUaByteClassLoader(byte[] byteArray, ClassLoader parent) {
+    OpcUaByteClassLoader(byte[] byteArray, ClassLoader parent) {
         super(parent);
         this.byteArray = byteArray;
     }
@@ -38,7 +38,7 @@ public class OpcUaByteClassLoader extends ClassLoader {
      * Returns the ByteArray provided with this adapter.
      * @return
      */
-    public byte[] getByteArray() {
+    byte[] getByteArray() {
         return this.byteArray;
     }
 

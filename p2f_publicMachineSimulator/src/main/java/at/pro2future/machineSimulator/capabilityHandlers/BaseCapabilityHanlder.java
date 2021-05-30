@@ -1,5 +1,6 @@
 package at.pro2future.machineSimulator.capabilityHandlers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -15,7 +16,7 @@ import at.pro2future.shopfloors.adapters.EventInstance;
 
 /**
  * This {@link BaseCapabilityHanlder} provides the actions
- * to be executed whenever a capability arrises.
+ * to be executed whenever a capability arises.
  * 
  * @param <T>
  */
@@ -29,7 +30,7 @@ public abstract class BaseCapabilityHanlder<T extends MsCapabilityAdressSpaceAct
     * Returns the {@link OpcUaClientManager} for which the actions will be executed.
     * @return
     */
-    public OpcUaClientManager getOpcUaClientManager() {
+    OpcUaClientManager getOpcUaClientManager() {
         return this.opcUaClientManager;
     }
     
@@ -37,7 +38,7 @@ public abstract class BaseCapabilityHanlder<T extends MsCapabilityAdressSpaceAct
      * Returns the action for which the capability handler is defined.
      * @return
      */
-    public T getMsCapabilityAdressSpaceAction() {
+    T getMsCapabilityAdressSpaceAction() {
         return this.msCapabilityAdressSpaceAction;
     }
     
@@ -75,6 +76,9 @@ public abstract class BaseCapabilityHanlder<T extends MsCapabilityAdressSpaceAct
      * @throws ConvertionNotSupportedException 
      */
     public List<Parameter> invokeCapability(AbstractCapability capability, List<Parameter> parameterValues) throws ConvertionNotSupportedException, ConversionFailureException, InterruptedException, ExecutionException{
-       return this.baseCommand.execute(parameterValues);
+        if(this.msCapabilityAdressSpaceAction.getRefersTo().getID().equals(capability.getID())){
+            return this.baseCommand.execute(parameterValues);
+        }
+        return new ArrayList<>();
     }
 }

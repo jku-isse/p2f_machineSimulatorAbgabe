@@ -14,7 +14,7 @@ import at.pro2future.machineSimulator.converter.ConvertionNotSupportedException;
  * factories, the {@link #OpcUaDefinitionFactory} and the {@link #IUaObjectAndBuilderProvider} to perform the transformation.
  *
  */
-public class MsQualifiedNameToQualifiedName implements IConverter<MsQualifiedName, QualifiedName, OpcUaDefinitionFactory, IUaObjectAndBuilderProvider> {
+class MsQualifiedNameToQualifiedName implements IConverter<MsQualifiedName, QualifiedName, OpcUaDefinitionFactory, IUaObjectAndBuilderProvider> {
 
     /**
      * The singleton instance <code>MsQualifiedNameToQualifiedName<code> of the converter.
@@ -26,7 +26,7 @@ public class MsQualifiedNameToQualifiedName implements IConverter<MsQualifiedNam
      * 
      * @return the singleton instance of this class.
      */
-    public static MsQualifiedNameToQualifiedName getInstance() {
+    static MsQualifiedNameToQualifiedName getInstance() {
         if(instance == null) {
             instance = new MsQualifiedNameToQualifiedName();
         }

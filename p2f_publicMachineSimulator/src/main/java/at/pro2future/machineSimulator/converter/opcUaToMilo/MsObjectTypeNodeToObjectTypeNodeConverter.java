@@ -22,7 +22,7 @@ import at.pro2future.machineSimulator.converter.UaObjectAndBuilderProvider;
  * factories, the {@link #OpcUaDefinitionFactory} and the {@link #IUaObjectAndBuilderProvider} to perform the transformation.
  *
  */
-public class MsObjectTypeNodeToObjectTypeNodeConverter implements IConverter<MsObjectTypeNode, ObjectTypeNode, OpcUaDefinitionFactory, IUaObjectAndBuilderProvider>{
+class MsObjectTypeNodeToObjectTypeNodeConverter implements IConverter<MsObjectTypeNode, ObjectTypeNode, OpcUaDefinitionFactory, IUaObjectAndBuilderProvider>{
 
     /**
      * The singleton instance <code>MsObjectTypeNodeToObjectTypeNodeConverter<code> of the converter.
@@ -34,7 +34,7 @@ public class MsObjectTypeNodeToObjectTypeNodeConverter implements IConverter<MsO
      * 
      * @return the singleton instance of this class.
      */
-    public static MsObjectTypeNodeToObjectTypeNodeConverter getInstance() {
+    static MsObjectTypeNodeToObjectTypeNodeConverter getInstance() {
         if(instance == null) {
             instance = new MsObjectTypeNodeToObjectTypeNodeConverter();
         }

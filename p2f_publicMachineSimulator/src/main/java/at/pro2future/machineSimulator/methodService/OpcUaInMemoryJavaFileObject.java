@@ -8,7 +8,7 @@ import javax.tools.SimpleJavaFileObject;
  * This class provides an in memory java file. The name, the content and the type can be provided
  * by using the constructor.
  */
-public class OpcUaInMemoryJavaFileObject  extends SimpleJavaFileObject {
+class OpcUaInMemoryJavaFileObject  extends SimpleJavaFileObject {
       final String content;
 
       /**
@@ -18,7 +18,7 @@ public class OpcUaInMemoryJavaFileObject  extends SimpleJavaFileObject {
        * @param kind provides the file extension of the java file.
        * @param content the content of the file.
        */
-      public OpcUaInMemoryJavaFileObject(String name, Kind kind, String content) {
+      OpcUaInMemoryJavaFileObject(String name, Kind kind, String content) {
         super(URI.create("string:///" + name.replace('.','/') + kind.extension), kind);
         this.content = content;
       }

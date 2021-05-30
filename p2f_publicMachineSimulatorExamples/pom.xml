@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>p2f_publicMachineSimulatorExamples</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>p2f_publicMachineSimulatorExamples</name>
+    <description>This projects contains example startups for the P2f machine simulator.</description>
+    <packaging>jar</packaging>
+
+    <!--The identifier of the parent POM -->
+    <parent>
+        <groupId>at.pro2future.shopfloors</groupId>
+        <artifactId>p2f_publicMavenParent</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>at.pro2future.shopfloors</groupId>
+            <artifactId>p2f_publicMachineSimulator</artifactId>
+        </dependency>
+    </dependencies>
+</project>

@@ -24,7 +24,7 @@ import at.pro2future.machineSimulator.converter.ConvertionNotSupportedException;
  * factories, the {@link #OpcUaDefinitionFactory} and the {@link #IUaObjectAndBuilderProvider} to perform the transformation.
  *
  */
-public class MsObjectNodeToObjectNodeConverter implements IConverter<MsObjectNode, ObjectNode, OpcUaDefinitionFactory, IUaObjectAndBuilderProvider>{
+class MsObjectNodeToObjectNodeConverter implements IConverter<MsObjectNode, ObjectNode, OpcUaDefinitionFactory, IUaObjectAndBuilderProvider>{
 
     /**
      * The singleton instance <code>MsObjectNodeToObjectNodeConverter<code> of the converter.
@@ -36,7 +36,7 @@ public class MsObjectNodeToObjectNodeConverter implements IConverter<MsObjectNod
      * 
      * @return the singleton instance of this class.
      */
-    public static MsObjectNodeToObjectNodeConverter getInstance() {
+    static MsObjectNodeToObjectNodeConverter getInstance() {
         if(instance == null) {
             instance = new MsObjectNodeToObjectNodeConverter();
         }

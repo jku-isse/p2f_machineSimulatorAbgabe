@@ -26,7 +26,7 @@ public class MsLocalizedTextToLocalizedTextConverter implements IConverter<MsLoc
      * 
      * @return the singleton instance of this class.
      */
-    public static MsLocalizedTextToLocalizedTextConverter getInstance() {
+    static MsLocalizedTextToLocalizedTextConverter getInstance() {
         if(instance == null) {
             instance = new MsLocalizedTextToLocalizedTextConverter();
         }

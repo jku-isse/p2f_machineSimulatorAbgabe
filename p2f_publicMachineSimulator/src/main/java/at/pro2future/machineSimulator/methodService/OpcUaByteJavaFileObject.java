@@ -12,7 +12,7 @@ import javax.tools.SimpleJavaFileObject;
  * of the file as an {@link ByteArrayOutputStream}.
  *
  */
-public class OpcUaByteJavaFileObject  extends SimpleJavaFileObject {
+class OpcUaByteJavaFileObject  extends SimpleJavaFileObject {
     final ByteArrayOutputStream byteArrayOutputStream;
     
     /**
@@ -20,7 +20,7 @@ public class OpcUaByteJavaFileObject  extends SimpleJavaFileObject {
      * of the file as an {@link ByteArrayOutputStream}.
      * @param name the name of the in memory file.
      */
-    public OpcUaByteJavaFileObject(String name) {
+    OpcUaByteJavaFileObject(String name) {
         super(URI.create("bytes:///"+name + name.replaceAll("\\.", "/")), Kind.CLASS);
         this.byteArrayOutputStream = new ByteArrayOutputStream();
     }
@@ -30,7 +30,7 @@ public class OpcUaByteJavaFileObject  extends SimpleJavaFileObject {
         return this.byteArrayOutputStream;
     }
     
-    public byte[] getBytes() {
+    byte[] getBytes() {
         return this.byteArrayOutputStream.toByteArray();
     }
 }

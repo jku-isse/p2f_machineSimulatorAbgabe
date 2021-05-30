@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-        <listEntry value="/p2f_publicMachineSimulator/src/main/java/at/pro2future/machineSimulator/StartupSimulator.java"/>
+        <listEntry value="/p2f_publicMachineSimulatorExamples/src/main/java/at/pro2future/machineSimulator/P2fSimulatorMain.java"/>
     </listAttribute>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
         <listEntry value="1"/>
@@ -11,9 +11,9 @@
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_EXCLUDE_TEST_CODE" value="true"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
     <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
-    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="at.pro2future.machineSimulator.StartupSimulator"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="at.pro2future.machineSimulator.P2fSimulatorMain"/>
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="p2f_publicMachineSimulator"/>
-    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="millingControl"/>
-    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="p2f_publicMachineSimulator"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="defaultSimulator"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="p2f_publicMachineSimulatorExamples"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
 </launchConfiguration>

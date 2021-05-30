@@ -62,7 +62,7 @@ public class ToolControlConfiguration implements Supplier<List<EObject>> {
         Event startEvent = ConfigurationUtil.initializeEvent("StartEvent", CommonObjects.DefaultAssignment, _start);
         Event millingStartEvent = ConfigurationUtil.initializeEvent("MillingStartEvent", CommonObjects.DefaultAssignment, _millingStartEvent);
         Event millingStopEvent = ConfigurationUtil.initializeEvent("MillingStopEvent", CommonObjects.DefaultAssignment, _millingStopEvent);
-        ProcessCore.Process mainProcess = setupMainProcess(_tool, _start, millingStartEvent, millingStopEvent);
+        ProcessCore.Process mainProcess = setupMainProcess(toolChangedEvent, _tool, startEvent, _start, millingStartEvent, millingStopEvent);
         this.sim.setStateMachine(mainProcess);
         
 
@@ -116,21 +116,24 @@ public class ToolControlConfiguration implements Supplier<List<EObject>> {
         uncontainedObjects.add(objectType);
     }
 
-    private ProcessCore.Process setupMainProcess(LocalVariable _tool, LocalVariable _start, Event millingStartEvent, Event millingStopEvent) {    
+    private ProcessCore.Process setupMainProcess(Event toolChangedEvent, LocalVariable _tool, Event startEvent, LocalVariable _start, Event millingStartEvent, Event millingStopEvent) {    
         ProcessCore.Process milling = ConfigurationUtil.initializeProcess("Milling");
         //TODO: check if sending event works
         milling.getSteps().add(ConfigurationUtil.initializeEventSource("MillingStartEvent Event Source", millingStartEvent, Arrays.asList(CommonObjects.True)));
         //TODO: add delay
         milling.getSteps().add(ConfigurationUtil.initializeEventSource("MillingStopEvent Event Source", millingStopEvent, Arrays.asList(CommonObjects.True)));
         
-        
+        ProcessCore.Process waitStartEventProcess = ConfigurationUtil.initializeProcess("Wait Start event");
+        waitStartEventProcess.getSteps().add(ConfigurationUtil.initializeEventSink("start Event Sink", startEvent, Arrays.asList(_start)));
         Condition _startTrue  = ConfigurationUtil.initializeSimpleCondition(_start, Operator.EQ, CommonObjects.True);
-        Decision check_start = ConfigurationUtil.initializeDecision("Start", milling, ConfigurationUtil.initializeProcess("EmptyProcess"), _startTrue);
+        Decision check_start = ConfigurationUtil.initializeDecision("Start", milling, waitStartEventProcess, _startTrue);
         ProcessCore.Process check_startProcess = ConfigurationUtil.initializeProcess("check_startProcess");
         check_startProcess.getSteps().add(check_start); 
         
+        ProcessCore.Process waitToolChangedEventProcess = ConfigurationUtil.initializeProcess("Wait tool changed event");
+        waitToolChangedEventProcess.getSteps().add(ConfigurationUtil.initializeEventSink("tool changed event sink", toolChangedEvent, Arrays.asList( _tool)));
         Condition _toolNull  = ConfigurationUtil.initializeSimpleCondition(_tool, Operator.EQ, CommonObjects.NullString);
-        AbstractLoop while_toolNullDoNoting = ConfigurationUtil.initializeHeadLoop("while _tool null", ConfigurationUtil.initializeProcess("EmptyProcess"), _toolNull);
+        AbstractLoop while_toolNullDoNoting = ConfigurationUtil.initializeHeadLoop("while _tool null", waitToolChangedEventProcess, _toolNull);
         Condition _toolNotNull  = ConfigurationUtil.initializeSimpleCondition(_tool, Operator.NEQ, CommonObjects.NullString);
         AbstractLoop while_toolNotNullCheckStarted = ConfigurationUtil.initializeHeadLoop("while _tool not null check _start", check_startProcess, _toolNotNull);
     

@@ -13,7 +13,7 @@ import javax.tools.JavaFileObject.Kind;
  * object can be handed in by using constructor.
  * 
  */
-public final class OpcUaFileManager<M  extends JavaFileManager> extends ForwardingJavaFileManager<M> {
+final class OpcUaFileManager<M  extends JavaFileManager> extends ForwardingJavaFileManager<M> {
 
     private JavaFileObject outputJavaFileObject;
     

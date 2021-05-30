@@ -28,15 +28,15 @@ import at.pro2future.machineSimulator.converter.opcUaToMilo.MsNodeToNodeConverte
  * @author johannstoebich
  *
  */
-public class OpcUaNamespaceManager extends ManagedNamespace  {
+class OpcUaNamespaceManager extends ManagedNamespace  {
 
     private static Logger logger = LoggerFactory.getLogger(OpcUaNamespaceManager.class);
     
     private final MsServerInterface msServerInterface;
-    private final UaObjectAndBuilderProvider uaObjectAndBuilderProvider;
+    private final IUaObjectAndBuilderProvider uaObjectAndBuilderProvider;
     private final SubscriptionModel subscriptionModel;
     
-    public IUaObjectAndBuilderProvider getUaObjectAndBuilderProvider() {
+    IUaObjectAndBuilderProvider getUaObjectAndBuilderProvider() {
         return this.uaObjectAndBuilderProvider;
     }
     
@@ -47,7 +47,7 @@ public class OpcUaNamespaceManager extends ManagedNamespace  {
      * @param msServerInterface The interface definition of the machine simulator defined by the configuration.
      * @param actions The action which should be published.
      */
-    public OpcUaNamespaceManager(OpcUaServer opcUaServer, MsServerInterface msServerInterface) {
+    OpcUaNamespaceManager(OpcUaServer opcUaServer, MsServerInterface msServerInterface) {
         //super(opcUaServer, msServerInterface.getNamespaceUri());
         super(opcUaServer, "urn:eclipse:milo:hello-world");
         this.msServerInterface = msServerInterface;

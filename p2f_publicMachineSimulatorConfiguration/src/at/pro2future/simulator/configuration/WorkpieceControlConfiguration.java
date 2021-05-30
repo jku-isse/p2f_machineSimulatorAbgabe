@@ -13,7 +13,6 @@ import ProcessCore.Condition;
 import ProcessCore.Event;
 import ProcessCore.LocalVariable;
 import ProcessCore.Operator;
-import ProcessCore.ProcessCoreFactory;
 import Simulator.MachineSimulator;
 import Simulator.MsClientInterface;
 import OpcUaDefinition.MsObjectNode;
@@ -54,7 +53,7 @@ public class WorkpieceControlConfiguration implements Supplier<List<EObject>> {
         // setup process
         LocalVariable _workpiece = ConfigurationUtil.initializeLocalVariable("_workpiece", "String", "");
         Event workpieceChangedEvent = ConfigurationUtil.initializeEvent("WorkpiceChangedEvent", CommonObjects.DefaultAssignment, _workpiece);
-        ProcessCore.Process mainProcess = setupMainProcess(_workpiece);
+        ProcessCore.Process mainProcess = setupMainProcess(workpieceChangedEvent,_workpiece);
         this.sim.setStateMachine(mainProcess);
         
         // setup opcua interface
@@ -97,11 +96,17 @@ public class WorkpieceControlConfiguration implements Supplier<List<EObject>> {
     }
 
 
-    private ProcessCore.Process setupMainProcess(LocalVariable workp) {        
+    private ProcessCore.Process setupMainProcess(Event workpieceChangedEvent, LocalVariable workp) {        
+        ProcessCore.Process waitWorkpieceEventProcess = ConfigurationUtil.initializeProcess("Wait Workpiece event");
+        waitWorkpieceEventProcess.getSteps().add(ConfigurationUtil.initializeEventSink("workpiece Event Sink", workpieceChangedEvent, Arrays.asList(workp)));
         Condition _workpieceNull  = ConfigurationUtil.initializeSimpleCondition(workp, Operator.EQ, CommonObjects.NullString);
-        AbstractLoop while_workpieceNullDoNoting = ConfigurationUtil.initializeHeadLoop("while _workpiece null", ProcessCoreFactory.eINSTANCE.createProcess(), _workpieceNull);
+        AbstractLoop while_workpieceNullDoNoting = ConfigurationUtil.initializeHeadLoop("while _workpiece null", waitWorkpieceEventProcess, _workpieceNull);
+        
+        
+        ProcessCore.Process waitWorkpieceEventProcess2 = ConfigurationUtil.initializeProcess("Wait Workpiece event");
+        waitWorkpieceEventProcess2.getSteps().add(ConfigurationUtil.initializeEventSink("workpiece Event Sink", workpieceChangedEvent, Arrays.asList(workp)));
         Condition _workpieceNotNull  = ConfigurationUtil.initializeSimpleCondition(workp, Operator.NEQ, CommonObjects.NullString);
-        AbstractLoop while_workpieceNotNullDoNoting = ConfigurationUtil.initializeHeadLoop("while _workpiece not null", ProcessCoreFactory.eINSTANCE.createProcess(), _workpieceNotNull);
+        AbstractLoop while_workpieceNotNullDoNoting = ConfigurationUtil.initializeHeadLoop("while _workpiece not null", waitWorkpieceEventProcess2, _workpieceNotNull);
     
         ProcessCore.Process subProcess = ConfigurationUtil.initializeProcess("SubProcess");
         subProcess.getSteps().add(while_workpieceNullDoNoting); // wait until there is a workpiece

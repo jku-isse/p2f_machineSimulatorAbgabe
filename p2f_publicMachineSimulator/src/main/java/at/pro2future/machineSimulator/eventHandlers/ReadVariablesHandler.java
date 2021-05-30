@@ -25,7 +25,6 @@ import at.pro2future.machineSimulator.converter.ConversionFailureException;
 import at.pro2future.machineSimulator.converter.ConvertionNotSupportedException;
 import at.pro2future.machineSimulator.converter.IUaObjectAndBuilderProvider;
 import at.pro2future.machineSimulator.converter.opcUaToMilo.MsNodeIdToNodeIdConverter;
-import at.pro2future.shopfloors.adapters.AdapterEventProvider;
 
 /**
  *  This <code>EventHandler</code> fires and {@link EventInstance} whenever a variable was written to an OPC-UA Server.
@@ -36,26 +35,7 @@ public class ReadVariablesHandler extends BaseEventHandler<MsReadEventAdressSpac
     
     private final Map<ReadValueId, ProcessOpcUaMapping> readValueIdProcessOpcUaMappings = new HashMap<>();
     private final List<UaMonitoredItem> uaMonitoredItems = new ArrayList<>();
-    private AdapterEventProvider adapterEventProvider;
     
-    /**
-     * The {@link AdapterEventProvider} has to be provided to be able the send an event whenever
-     * a variable has changed.
-     */
-    @Override
-    public AdapterEventProvider getAdapterEventProvider() {
-        return this.adapterEventProvider;
-    }
-
-    /**
-     * The {@link AdapterEventProvider} has to be provided to be able the send an event whenever
-     * a variable has changed.
-     */
-    @Override
-    public void setAdapterEventProvider(AdapterEventProvider adapterEventProvider) {
-        this.adapterEventProvider = adapterEventProvider;
-    }
-
     /**
      * This <code>ReadVariableHandler</code> listens to changes on a specific OpcUa-Variable and will fire an {@link EventInstance} on changes.
      * 

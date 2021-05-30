@@ -68,7 +68,7 @@ public class OpcUaClientManager extends AbstractLifecycle  {
      * This method returns the configuration of the client manager. 
      * @return the configuration as {@link MsClientInterface}
      */
-    public MsClientInterface getOpcUaClientInterface() {
+    MsClientInterface getOpcUaClientInterface() {
         return this.opcUaClientInterface;
     }
     
@@ -87,7 +87,7 @@ public class OpcUaClientManager extends AbstractLifecycle  {
      * @param uaBuilderFactory
      * @throws UaException
      */
-    public OpcUaClientManager(MsClientInterface opcUaClientInterface, IUaObjectAndBuilderProvider uaObjectAndBuilderProvider) throws UaException {
+    OpcUaClientManager(MsClientInterface opcUaClientInterface, IUaObjectAndBuilderProvider uaObjectAndBuilderProvider) throws UaException {
         OpcUaClientConfig clientConfig = OpcUaClientConfig.builder()
                 //.setApplicationUri("")
                 //.setApplicationName(LocalizedText.english(opcUaClientInterface.getTargetInstanceInformation().getDisplayName()))
@@ -230,7 +230,7 @@ public class OpcUaClientManager extends AbstractLifecycle  {
      */
     public DataValue readValue(NodeId nodeId) throws InterruptedException, ExecutionException {
         waitForConnection();
-        return this.opcUaClient.readValue(0, null, nodeId).get();
+        return this.opcUaClient.readValue(0, TimestampsToReturn.Server, nodeId).get();
     }
 
     /**

@@ -11,20 +11,20 @@ public class CallMethodCommandParameters extends CommandParameters  {
     private final MsNodeId objectContainingMethod;
     private final List<ProcessOpcUaMapping> returnParameterMappings;
 
-    public MsNodeId getCallesMethod() {
+    MsNodeId getCallesMethod() {
         return this.callesMethod;
     }
 
-    public MsNodeId getObjectContainingMethod() {
+    MsNodeId getObjectContainingMethod() {
         return this.objectContainingMethod;
     }
     
-    public List<ProcessOpcUaMapping> getReturnParameterMappings() {
+    List<ProcessOpcUaMapping> getReturnParameterMappings() {
         return this.returnParameterMappings;
     }
 
     public CallMethodCommandParameters(List<ProcessOpcUaMapping> parameterMappings,
-            MsNodeId callesMethod,  MsNodeId objectContainingMethod, 
+            MsNodeId objectContainingMethod, MsNodeId callesMethod, 
             List<ProcessOpcUaMapping> returnParameterMappings) {
         super(parameterMappings);
         this.callesMethod = callesMethod;

@@ -29,7 +29,7 @@ public class MsDataTypeNodeToDataTypeNodeConverter implements IConverter<MsDataT
      * 
      * @return the singleton instance of this class.
      */
-    public static MsDataTypeNodeToDataTypeNodeConverter getInstance() {
+    static MsDataTypeNodeToDataTypeNodeConverter getInstance() {
         if(instance == null) {
             instance = new MsDataTypeNodeToDataTypeNodeConverter();
         }

@@ -34,7 +34,7 @@ public class MsMethodNodeToMethodNodeConverter implements IConverter<MsMethodNod
      * 
      * @return the singleton instance of this class.
      */
-    public static MsMethodNodeToMethodNodeConverter getInstance() {
+    static MsMethodNodeToMethodNodeConverter getInstance() {
         if(instance == null) {
             instance = new MsMethodNodeToMethodNodeConverter();
         }

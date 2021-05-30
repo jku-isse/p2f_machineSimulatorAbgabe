@@ -9,24 +9,27 @@ import org.eclipse.milo.opcua.stack.core.UaException;
 import Simulator.MsAdressSpaceAction;
 import at.pro2future.machineSimulator.converter.IUaObjectAndBuilderProvider;
 import at.pro2future.machineSimulator.eventHandlers.HandlerCanNotBeCreatedException;
-import at.pro2future.shopfloors.adapters.AdapterEventProvider;
+import at.pro2future.shopfloors.adapters.EngineAdapter;
 
 /***
  * This action manager can register the given actions on construction. It manages that the 
  * actions are correctly register and deregisterd during startup and shutdown.
  * 
  */
-public class P2fAdressSpaceActionManager extends AbstractLifecycle {
+class P2fAdressSpaceActionManager extends AbstractLifecycle {
     
     private final List<P2fAdressSpaceActionAdapter<?>> msAdressSpaceActionsAdapters;
-    
-    private final AdapterEventProvider adapterEventProvider;
     private final IUaObjectAndBuilderProvider uaObjectAndBuilderProvider;
-        
-    public AdapterEventProvider getAdapterEventProvider() {
-        return this.adapterEventProvider;
-    }
     
+    /**
+     * Returns all {@link EngineAdapter} contained in this project.
+     * 
+     * @return
+     */
+    List<EngineAdapter> getEngineAdapters() {
+        return new ArrayList<>(this.msAdressSpaceActionsAdapters);
+    }
+
     /**
      * Provides an action manager where a specific set of actions will be added.
      * 
@@ -35,8 +38,7 @@ public class P2fAdressSpaceActionManager extends AbstractLifecycle {
      * @throws UaException 
      * @throws HandlerCanNotBeCreatedException This exception is thrown when a {@link CallMethodHandler}, {@link ReadVariablesHandler} or {@link WriteVariablesHandler} cannot be instantiated.
      */
-    public P2fAdressSpaceActionManager(List<MsAdressSpaceAction> msAdressSpaceActions, IUaObjectAndBuilderProvider uaObjectAndBuilderProvider) throws UaException, HandlerCanNotBeCreatedException {
-        this.adapterEventProvider = new AdapterEventProvider();
+    P2fAdressSpaceActionManager(List<MsAdressSpaceAction> msAdressSpaceActions, IUaObjectAndBuilderProvider uaObjectAndBuilderProvider) throws UaException, HandlerCanNotBeCreatedException {
         this.uaObjectAndBuilderProvider = uaObjectAndBuilderProvider;
         this.msAdressSpaceActionsAdapters = new ArrayList<>();
         setMsAdressSpaceAction(msAdressSpaceActions);
@@ -48,29 +50,26 @@ public class P2fAdressSpaceActionManager extends AbstractLifecycle {
             this.msAdressSpaceActionsAdapters.add(new P2fAdressSpaceActionAdapter<>(msAdressSpaceAction, this.uaObjectAndBuilderProvider));
         }
     }
-
+    
     /**
      * Registers the actions correspondingly.
      */
     @Override
-    public void onStartup() {
+    protected void onStartup() {
         for(P2fAdressSpaceActionAdapter<?> msAdressSpaceActionsAdapter : this.msAdressSpaceActionsAdapters) {
             msAdressSpaceActionsAdapter.getOpcUaClientManager().startup();
-            this.adapterEventProvider.registerEngineAdapter(msAdressSpaceActionsAdapter);
             msAdressSpaceActionsAdapter.startup();
-        }        
-        
+        }
     }
 
     /**
      * Unregisters the actions correspondingly.
      */
     @Override
-    public void onShutdown() {
+    protected void onShutdown() {
         for(P2fAdressSpaceActionAdapter<?> msAdressSpaceActionsAdapter : this.msAdressSpaceActionsAdapters) {
             msAdressSpaceActionsAdapter.shutdown();
-            this.adapterEventProvider.deregisterEngineAdapter(msAdressSpaceActionsAdapter);
             msAdressSpaceActionsAdapter.getOpcUaClientManager().shutdown();
-        }        
+        }
     }
 }

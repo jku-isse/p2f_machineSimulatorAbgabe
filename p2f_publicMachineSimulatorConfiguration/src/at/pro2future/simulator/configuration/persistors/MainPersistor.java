@@ -5,12 +5,12 @@ public class MainPersistor {
     public static void main(String[] args) {
         DefaultSimulatorConfigurationPersistor dscp = new DefaultSimulatorConfigurationPersistor();
         dscp.run();
-        
+        HandshakeConfigurationPersistor hcp = new HandshakeConfigurationPersistor();
+        hcp.run();
         ToolControlConfigurationPersistor tccp = new ToolControlConfigurationPersistor();
         tccp.run();
         WorkpieceControlConfigurationPersistor wccp = new WorkpieceControlConfigurationPersistor();
         wccp.run();
-        
         MillingControlConfigurationPersistor mccp = new MillingControlConfigurationPersistor(tccp.getConfiguration(), wccp.getConfiguration());
         mccp.run();
     }

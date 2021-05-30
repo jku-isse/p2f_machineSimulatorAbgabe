@@ -29,7 +29,7 @@ public class MsDataVariableNodeToDataVariableNodeConverter implements IConverter
      * 
      * @return the singleton instance of this class.
      */
-    public static MsDataVariableNodeToDataVariableNodeConverter getInstance() {
+    static MsDataVariableNodeToDataVariableNodeConverter getInstance() {
         if(instance == null) {
             instance = new MsDataVariableNodeToDataVariableNodeConverter();
         }

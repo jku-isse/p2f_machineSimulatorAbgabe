@@ -24,16 +24,17 @@ public class CommonObjects {
     protected static final MsNodeId BooleanDataType = ConfigurationUtil.createMsNodeId(false, TypeUtil.getBuiltinTypeId(Boolean.class));
     
     protected static final MsInstanceInformation DefaultSimulatorInstanceInformation = SimulatorFactory.eINSTANCE.createMsInstanceInformation();
+    protected static final MsInstanceInformation HandshakeInstanceInformation = SimulatorFactory.eINSTANCE.createMsInstanceInformation();
     protected static final MsInstanceInformation MillingControlInstanceInformation = SimulatorFactory.eINSTANCE.createMsInstanceInformation();
     protected static final MsInstanceInformation ToolControlInstanceInformation = SimulatorFactory.eINSTANCE.createMsInstanceInformation();
     protected static final MsInstanceInformation WorkpieceControlInstanceInformation = SimulatorFactory.eINSTANCE.createMsInstanceInformation();
     
-    protected static final Assignment DefaultAssignment = ProcessCoreFactory.eINSTANCE.createAssignment();
+    public static final Assignment DefaultAssignment = ProcessCoreFactory.eINSTANCE.createAssignment();
     
     protected static final LocalVariable True = ConfigurationUtil.initializeLocalVariable("true", "Boolean", true);
     protected static final LocalVariable False = ConfigurationUtil.initializeLocalVariable("false", "Boolean", false);
     
-    protected static final LocalVariable NullString = ConfigurationUtil.initializeLocalVariable("nullString", "String", null);
+    protected static final LocalVariable NullString = ConfigurationUtil.initializeLocalVariable("nullString", "String", "");
 
     
     static {
@@ -42,7 +43,10 @@ public class CommonObjects {
         DefaultSimulatorInstanceInformation.setDisplayName("Default Simulator");
         DefaultSimulatorInstanceInformation.setHost("localhost");
         DefaultSimulatorInstanceInformation.setPort(2000);
-
+        
+        HandshakeInstanceInformation.setDisplayName("Handshake");
+        HandshakeInstanceInformation.setHost("localhost");
+        HandshakeInstanceInformation.setPort(2020);
         
         MillingControlInstanceInformation.setDisplayName("MillingControl");
         MillingControlInstanceInformation.setHost("localhost");

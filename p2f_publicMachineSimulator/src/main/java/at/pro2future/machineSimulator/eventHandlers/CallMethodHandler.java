@@ -5,7 +5,6 @@ import Simulator.MsMethodEventAdressSpaceAction;
 import at.pro2future.machineSimulator.OpcUaClientManager;
 import at.pro2future.machineSimulator.command.CallMethodCommand;
 import at.pro2future.machineSimulator.command.CallMethodCommandParameters;
-import at.pro2future.shopfloors.adapters.AdapterEventProvider;
 import at.pro2future.shopfloors.adapters.EventInstance;
 
 /**
@@ -14,18 +13,7 @@ import at.pro2future.shopfloors.adapters.EventInstance;
  *
  */
 public class CallMethodHandler extends  BaseEventHandler<MsMethodEventAdressSpaceAction> implements ISendEventHandler, IReceiveEventHandler<MsMethodEventAdressSpaceAction> {
-    private AdapterEventProvider adapterEventProvider;
     
-    
-    @Override
-    public void setAdapterEventProvider(AdapterEventProvider adapterEventProvider) {
-        this.adapterEventProvider = adapterEventProvider;
-    }
-    
-    @Override
-    public AdapterEventProvider getAdapterEventProvider() {
-        return this.adapterEventProvider;
-    }    
     
     /**
      * Creates a hander which can call on receive a method an can send a event on return.

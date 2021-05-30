@@ -31,7 +31,7 @@ public abstract class BaseEventHandler<T extends MsEventAdressSpaceAction> exten
     * Returns the {@link OpcUaClientManager} for which the actions will be executed.
     * @return
     */
-    public OpcUaClientManager getOpcUaClientManager() {
+    OpcUaClientManager getOpcUaClientManager() {
         return this.opcUaClientManager;
     }
     
@@ -74,7 +74,7 @@ public abstract class BaseEventHandler<T extends MsEventAdressSpaceAction> exten
      * @throws ConversionFailureException 
      * @throws ConvertionNotSupportedException 
      */
-    public void handleEvent(EventInstance e) throws ConvertionNotSupportedException, ConversionFailureException, InterruptedException, ExecutionException {
+    void handleEvent(EventInstance e) throws ConvertionNotSupportedException, ConversionFailureException, InterruptedException, ExecutionException {
         this.lastEvent = e; 
     }
 

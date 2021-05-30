@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
+import OpcUaDefinition.MsDataVariableNode;
 import OpcUaDefinition.MsLocalizedText;
 import OpcUaDefinition.MsMethodNode;
 import OpcUaDefinition.MsNodeId;
@@ -19,6 +20,7 @@ import OpcUaDefinition.MsQualifiedName;
 import OpcUaDefinition.MsVariableNode;
 import OpcUaDefinition.OpcUaDefinitionFactory;
 import OpcUaDefinition.OpcUaDefinitionPackage;
+import ProcessCore.AbstractCapability;
 import ProcessCore.Assignment;
 import ProcessCore.Condition;
 import ProcessCore.Constant;
@@ -32,8 +34,11 @@ import ProcessCore.ProcessCoreFactory;
 import ProcessCore.SetVariableStep;
 import ProcessCore.SimpleCondition;
 import ProcessCore.VariableMapping;
+import Simulator.MsCallMethodCapabilityAdressSpaceAction;
 import Simulator.MsClientInterface;
 import Simulator.MsEventAdressSpaceAction;
+import Simulator.MsReadCapabilityAdressSpaceAction;
+import Simulator.MsWriteCapabilityAdressSpaceAction;
 import Simulator.ProcessOpcUaMapping;
 import Simulator.SimulatorFactory;
 
@@ -57,7 +62,7 @@ public class ConfigurationUtil {
         return msMethodNode;
     }
     
-    protected static LocalVariable initializeLocalVariable(String name, String type, Object value) {
+    public static LocalVariable initializeLocalVariable(String name, String type, Object value) {
         LocalVariable localVariable = ProcessCoreFactory.eINSTANCE.createLocalVariable();
         localVariable.setName(name);
         localVariable.setType(type);
@@ -132,29 +137,69 @@ public class ConfigurationUtil {
         opcUaObject.setDisplayName(createMsLocalizedText(displayName));
         opcUaObject.setDescription(createMsLocalizedText(description));
         opcUaObject.setNodeId(createMsNodeId(true));
-
+        opcUaObject.setUserWriteMask(Integer.MAX_VALUE);
+        opcUaObject.setWriteMask(Integer.MAX_VALUE);
         return opcUaObject;
     }
     
     protected static ProcessCore.EventSource initializeEventSource(String displayName, Event event, List<ProcessCore.Parameter> parameters) {
-        //TODO: what is a SendEventCapability and what is a VariableMapping
-        //SendEventCapability sendEventCapability = ProcessCoreFactory.eINSTANCE.createSendEventCapability();
-        //sendEventCapability.getParameters().addAll(parameters);
-        
-        List<VariableMapping> variableMappings = new ArrayList<VariableMapping>();
-        for(int i = 0; i < event.getParameters().size(); i++) {
-            VariableMapping variableMapping = ProcessCoreFactory.eINSTANCE.createVariableMapping();
-            variableMapping.setLhs(parameters.get(i));
-            variableMapping.setRhs(event.getParameters().get(i));
-        }
+        List<VariableMapping> variableMappings = initilizeMappings(event.getParameters(), parameters);
         
         ProcessCore.EventSource eventSource = ProcessCoreFactory.eINSTANCE.createEventSource();
         eventSource.setDisplayName(displayName);
         eventSource.setEvent(event);
-        eventSource.getOutputMappings().addAll(variableMappings);
+        eventSource.getInputMappings().addAll(variableMappings);
         return eventSource;
     }
+    
+    protected static ProcessCore.EventSink initializeEventSink(String displayName, Event event, List<ProcessCore.Parameter> parameters) {
+        List<VariableMapping> variableMappings = initilizeMappings(event.getParameters(), parameters);
+        
+        ProcessCore.EventSink eventSink = ProcessCoreFactory.eINSTANCE.createEventSink();
+        eventSink.setDisplayName(displayName);
+        eventSink.setEvent(event);
+        eventSink.getOutputMappings().addAll(variableMappings);
+        return eventSink;
+    }
+    
+    protected static ProcessCore.ReadParameter initializeReadParameter(String displayName, AbstractCapability capability, List<ProcessCore.Parameter> parameters) {
+        List<VariableMapping> outputMappings = initilizeMappings(parameters, capability.getOutputs());
+        
+        ProcessCore.ReadParameter readParameter = ProcessCoreFactory.eINSTANCE.createReadParameter();
+        readParameter.setDisplayName(displayName);
+        readParameter.setInvokedCapability(capability);
+        readParameter.getOutputMappings().addAll(outputMappings);
+        return readParameter;
+    }
+    
+    protected static ProcessCore.WriteParameter initializeWriteParameter(String displayName, AbstractCapability capability, List<ProcessCore.Parameter> parameters) {
+        List<VariableMapping> inputMappings = initilizeMappings(capability.getInputs(), parameters);
+        
+        ProcessCore.WriteParameter writeParameter = ProcessCoreFactory.eINSTANCE.createWriteParameter();
+        writeParameter.setDisplayName(displayName);
+        writeParameter.setInvokedCapability(capability);
+        writeParameter.getInputMappings().addAll(inputMappings);
+        return writeParameter;
+    }
 
+    private static List<VariableMapping> initilizeMappings(List<ProcessCore.Parameter> parametersTo, List<ProcessCore.Parameter> parametersFrom) {
+        List<VariableMapping> variableMappings = new ArrayList<VariableMapping>();
+        for(int i = 0; i < parametersTo.size(); i++) {
+            VariableMapping variableMapping = ProcessCoreFactory.eINSTANCE.createVariableMapping();
+            variableMapping.setLhs(parametersTo.get(i));
+            variableMapping.setRhs(parametersFrom.get(i));
+            variableMappings.add(variableMapping);
+        }
+        return variableMappings;
+    }
+    
+    protected static ProcessCore.HumanStep initializeHumanStep(String name, String description) {
+        ProcessCore.Case humanStep = ProcessCoreFactory.eINSTANCE.createCase();
+        humanStep.setName(name);
+        humanStep.setDisplayName(name);
+        humanStep.setDescription(description);
+        return humanStep;
+    }
 
     protected static MsPropertyNode initializeMsPropertyNode(String browseName, String displayName, String description,
             String nodeClass, MsNodeId nodeId, Object value, MsNodeId dataType, MsNodeId modellingRule) {
@@ -184,9 +229,85 @@ public class ConfigurationUtil {
         for(int i = 0; i < reactsTo.getParameters().size(); i++) {
             ProcessOpcUaMapping processOpcUaVariableMapping = SimulatorFactory.eINSTANCE.createProcessOpcUaMapping();
             processOpcUaVariableMapping.setParameter(reactsTo.getParameters().get(i));
-            processOpcUaVariableMapping.setAttributeNodeId(variables.get(i).getDataType());
+            processOpcUaVariableMapping.setAttributeNodeId(variables.get(i).getNodeId());
             
             msAction.getParameterMappings().add(processOpcUaVariableMapping);
+        }
+        
+        return msAction;
+    }
+    
+    
+    public static <T extends MsReadCapabilityAdressSpaceAction> T msReadCapabilityAdressSpaceAction (MsClientInterface clientInterface, 
+            AbstractCapability abstractCapability, List<MsVariableNode> variables, T msAction) {
+
+        msAction.setOpcUaClientInterface(clientInterface);
+        msAction.setRefersTo(abstractCapability);
+        
+        if(abstractCapability.getOutputs().size() != variables.size()) {
+            throw new IllegalArgumentException("Cannot create mapping!");
+        }
+
+        for(int i = 0; i < abstractCapability.getOutputs().size(); i++) {
+            ProcessOpcUaMapping processOpcUaVariableMapping = SimulatorFactory.eINSTANCE.createProcessOpcUaMapping();
+            processOpcUaVariableMapping.setParameter(abstractCapability.getOutputs().get(i));
+            processOpcUaVariableMapping.setAttributeNodeId(variables.get(i).getNodeId());
+            
+            msAction.getParameterMappings().add(processOpcUaVariableMapping);
+        }
+        
+        return msAction;
+    }
+    
+    public static <T extends MsWriteCapabilityAdressSpaceAction> T msWriteCapabilityAdressSpaceAction (MsClientInterface clientInterface, 
+            AbstractCapability abstractCapability, List<MsVariableNode> variables, T msAction) {
+
+        msAction.setOpcUaClientInterface(clientInterface);
+        msAction.setRefersTo(abstractCapability);
+        
+        if(abstractCapability.getInputs().size() != variables.size()) {
+            throw new IllegalArgumentException("Cannot create mapping!");
+        }
+
+        for(int i = 0; i < abstractCapability.getInputs().size(); i++) {
+            ProcessOpcUaMapping processOpcUaVariableMapping = SimulatorFactory.eINSTANCE.createProcessOpcUaMapping();
+            processOpcUaVariableMapping.setParameter(abstractCapability.getInputs().get(i));
+            processOpcUaVariableMapping.setAttributeNodeId(variables.get(i).getNodeId());
+            
+            msAction.getParameterMappings().add(processOpcUaVariableMapping);
+        }
+        
+        return msAction;
+    }
+    
+    public static <T extends MsCallMethodCapabilityAdressSpaceAction> T msCallMethodCapabilityAdressSpaceAction (MsClientInterface clientInterface, 
+            AbstractCapability abstractCapability, List<MsVariableNode> inputVariables, List<MsVariableNode> outputVariables, T msAction) {
+
+        msAction.setOpcUaClientInterface(clientInterface);
+        msAction.setRefersTo(abstractCapability);
+        
+        if(abstractCapability.getInputs().size() != inputVariables.size()) {
+            throw new IllegalArgumentException("Cannot create mapping!");
+        }
+        
+        if(abstractCapability.getOutputs().size() != outputVariables.size()) {
+            throw new IllegalArgumentException("Cannot create mapping!");
+        }
+        
+        for(int i = 0; i < abstractCapability.getOutputs().size(); i++) {
+            ProcessOpcUaMapping processOpcUaVariableMapping = SimulatorFactory.eINSTANCE.createProcessOpcUaMapping();
+            processOpcUaVariableMapping.setParameter(abstractCapability.getInputs().get(i));
+            processOpcUaVariableMapping.setAttributeNodeId(inputVariables.get(i).getNodeId());
+            
+            msAction.getParameterMappings().add(processOpcUaVariableMapping);
+        }
+        
+        for(int i = 0; i < abstractCapability.getOutputs().size(); i++) {
+            ProcessOpcUaMapping processOpcUaVariableMapping = SimulatorFactory.eINSTANCE.createProcessOpcUaMapping();
+            processOpcUaVariableMapping.setParameter(abstractCapability.getOutputs().get(i));
+            processOpcUaVariableMapping.setAttributeNodeId(outputVariables.get(i).getNodeId());
+            
+            msAction.getReturnParameterMapping().add(processOpcUaVariableMapping);
         }
         
         return msAction;
@@ -228,6 +349,12 @@ public class ConfigurationUtil {
         return msNodeId;
     }
     
+    public static MsDataVariableNode createMsDataVariableNode(MsNodeId nodeId) {
+        MsDataVariableNode msDataVariableNode = OpcUaDefinitionFactory.eINSTANCE.createMsDataVariableNode();
+        msDataVariableNode.setNodeId(nodeId);
+        return msDataVariableNode;
+    }
+    
     protected static MsLocalizedText createMsLocalizedText(String text) {
         MsLocalizedText msLocalizedText = OpcUaDefinitionFactory.eINSTANCE.createMsLocalizedText();
         msLocalizedText.setLocale("en");
@@ -241,6 +368,8 @@ public class ConfigurationUtil {
         msQualifiedName.setName(text);
         return msQualifiedName;
     }    
+    
+      
     
 
     protected static Event initializeEvent(String name, Assignment assignment, Parameter parameter) {

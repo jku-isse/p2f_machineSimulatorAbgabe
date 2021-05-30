@@ -17,8 +17,8 @@ import org.eclipse.milo.opcua.stack.core.types.structured.BuildInfo;
 import org.eclipse.milo.opcua.stack.server.EndpointConfiguration;
 import org.eclipse.milo.opcua.stack.server.EndpointConfiguration.Builder;
 
-import Simulator.MachineSimulator;
 import Simulator.MsInstanceInformation;
+import Simulator.MsServerInterface;
 
 /**
  * The server manager maintains the simulators OPC-UA server. It configures the server 
@@ -28,10 +28,10 @@ import Simulator.MsInstanceInformation;
  * @author johannstoebich
  *
  */
-public class OpcUaServerManager extends AbstractLifecycle  {
+class OpcUaServerManager extends AbstractLifecycle  {
 
     //Configuration
-    private final MachineSimulator machineSimulator;
+    private final MsServerInterface opcUaServerInterface;
         
     //Milo infrasturucture;
     private final OpcUaServer opcUaServer;
@@ -42,7 +42,7 @@ public class OpcUaServerManager extends AbstractLifecycle  {
      * the server interface.
      * @return
      */
-    public OpcUaNamespaceManager getOpcUaNamespaceManager() {
+    OpcUaNamespaceManager getOpcUaNamespaceManager() {
         return this.opcUaNamespaceManager;
     }
 
@@ -53,13 +53,13 @@ public class OpcUaServerManager extends AbstractLifecycle  {
      * 
      * @param machineSimulator the configuration for initializing an OCP-UA server.
      */
-    public OpcUaServerManager(MachineSimulator machineSimulator) {
-        this.machineSimulator = machineSimulator;
+    OpcUaServerManager(MsServerInterface opcUaServerInterface) {
+        this.opcUaServerInterface = opcUaServerInterface;
 
         OpcUaServerConfig serverConfig = OpcUaServerConfig.builder()
                 .setApplicationUri("")
-                .setApplicationName(LocalizedText.english(machineSimulator.getOpcUaServerInterface().getInstanceInformation().getDisplayName()))
-                .setEndpoints(createEndpointConfigurations(machineSimulator.getOpcUaServerInterface().getInstanceInformation()))
+                .setApplicationName(LocalizedText.english(opcUaServerInterface.getInstanceInformation().getDisplayName()))
+                .setEndpoints(createEndpointConfigurations(opcUaServerInterface.getInstanceInformation()))
                 .setBuildInfo(
                     new BuildInfo(
                         "urn:eclipse:milo:example-server",
@@ -73,7 +73,7 @@ public class OpcUaServerManager extends AbstractLifecycle  {
         this.opcUaServer = new OpcUaServer(serverConfig);
 
         this.opcUaNamespaceManager = new OpcUaNamespaceManager(this.opcUaServer, 
-                machineSimulator.getOpcUaServerInterface());
+                opcUaServerInterface);
     }
     
     private Set<EndpointConfiguration> createEndpointConfigurations(MsInstanceInformation instanceInformation){
@@ -107,7 +107,7 @@ public class OpcUaServerManager extends AbstractLifecycle  {
      * {@link #getOpcUaNamespaceManager()}. 
      */
     @Override
-    public void onStartup() {
+    protected void onStartup() {
         try {
             this.opcUaNamespaceManager.startup();
             this.opcUaServer.startup().get();
@@ -122,7 +122,7 @@ public class OpcUaServerManager extends AbstractLifecycle  {
      * {@link #getOpcUaNamespaceManager()}. 
      */
     @Override
-    public void onShutdown() {
+    protected void onShutdown() {
         try {
             this.opcUaNamespaceManager.shutdown();
             this.opcUaServer.shutdown().get();

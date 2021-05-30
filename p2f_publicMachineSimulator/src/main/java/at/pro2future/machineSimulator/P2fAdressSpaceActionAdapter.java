@@ -27,6 +27,7 @@ import at.pro2future.machineSimulator.converter.IUaObjectAndBuilderProvider;
 import at.pro2future.machineSimulator.eventHandlers.BaseEventHandler;
 import at.pro2future.machineSimulator.eventHandlers.CallMethodHandler;
 import at.pro2future.machineSimulator.eventHandlers.HandlerCanNotBeCreatedException;
+import at.pro2future.machineSimulator.eventHandlers.IReceiveEventHandler;
 import at.pro2future.machineSimulator.eventHandlers.ISendEventHandler;
 import at.pro2future.machineSimulator.eventHandlers.ReadVariablesHandler;
 import at.pro2future.machineSimulator.eventHandlers.WriteVariablesHandler;
@@ -41,11 +42,11 @@ import at.pro2future.shopfloors.adapters.EventHandler;
  * 
  *
  */
-public class P2fAdressSpaceActionAdapter<T extends MsAdressSpaceAction> extends AbstractLifecycle implements EngineAdapter {
+class P2fAdressSpaceActionAdapter<T extends MsAdressSpaceAction> extends AbstractLifecycle implements EngineAdapter {
     
     private final MsAdressSpaceAction msAdressSpaceAction;
     private BaseEventHandler<?> eventAction;
-    private BaseCapabilityHanlder<?> baseCapabilityHanlder;
+    private BaseCapabilityHanlder<?> baseCapabilityHandler;
     private final OpcUaClientManager opcUaClientManager;
     
     /**
@@ -53,7 +54,7 @@ public class P2fAdressSpaceActionAdapter<T extends MsAdressSpaceAction> extends 
      * 
      * @return the OpcUaClientManager
      */
-    public OpcUaClientManager getOpcUaClientManager() {
+    OpcUaClientManager getOpcUaClientManager() {
         return this.opcUaClientManager;
     }
     
@@ -62,7 +63,7 @@ public class P2fAdressSpaceActionAdapter<T extends MsAdressSpaceAction> extends 
      * 
      * @return the action that is connected to the engine.
      */
-    public MsAdressSpaceAction getMsAdressSpaceAction() {
+    MsAdressSpaceAction getMsAdressSpaceAction() {
         return this.msAdressSpaceAction;
     }
 
@@ -76,7 +77,7 @@ public class P2fAdressSpaceActionAdapter<T extends MsAdressSpaceAction> extends 
      * @throws UaException The exception which is thrown when the connection cannot be established.
      * @throws HandlerCanNotBeCreatedException 
      */
-    public P2fAdressSpaceActionAdapter(T msAdressSpaceAction, IUaObjectAndBuilderProvider uaObjectAndBuilderProvider) throws UaException, HandlerCanNotBeCreatedException {
+    P2fAdressSpaceActionAdapter(T msAdressSpaceAction, IUaObjectAndBuilderProvider uaObjectAndBuilderProvider) throws UaException, HandlerCanNotBeCreatedException {
         this.msAdressSpaceAction = msAdressSpaceAction;
         this.opcUaClientManager = new OpcUaClientManager(msAdressSpaceAction.getOpcUaClientInterface(), uaObjectAndBuilderProvider);
         
@@ -90,13 +91,13 @@ public class P2fAdressSpaceActionAdapter<T extends MsAdressSpaceAction> extends 
             this.eventAction = new CallMethodHandler(this.opcUaClientManager, (MsMethodEventAdressSpaceAction)msAdressSpaceAction);
         }
         else if(msAdressSpaceAction instanceof MsReadCapabilityAdressSpaceAction) {
-            this.baseCapabilityHanlder = new ReadCapabilityHandler(this.opcUaClientManager, (MsReadCapabilityAdressSpaceAction)msAdressSpaceAction);
+            this.baseCapabilityHandler = new ReadCapabilityHandler(this.opcUaClientManager, (MsReadCapabilityAdressSpaceAction)msAdressSpaceAction);
         }
         else if(msAdressSpaceAction instanceof MsWriteCapabilityAdressSpaceAction) {
-            this.baseCapabilityHanlder = new WriteCapabilityHandler(this.opcUaClientManager, (MsWriteCapabilityAdressSpaceAction)msAdressSpaceAction);
+            this.baseCapabilityHandler = new WriteCapabilityHandler(this.opcUaClientManager, (MsWriteCapabilityAdressSpaceAction)msAdressSpaceAction);
         }
         else if(msAdressSpaceAction instanceof MsCallMethodCapabilityAdressSpaceAction) {
-            this.baseCapabilityHanlder = new CallMethodCapabilityHandler(this.opcUaClientManager, (MsCallMethodCapabilityAdressSpaceAction)msAdressSpaceAction);
+            this.baseCapabilityHandler = new CallMethodCapabilityHandler(this.opcUaClientManager, (MsCallMethodCapabilityAdressSpaceAction)msAdressSpaceAction);
         }
         else{
             throw new HandlerCanNotBeCreatedException("The action type of the action \"" + msAdressSpaceAction + "\" has not been defined.");
@@ -111,9 +112,9 @@ public class P2fAdressSpaceActionAdapter<T extends MsAdressSpaceAction> extends 
      */
     @Override
     public List<Parameter> invokeCapability(AbstractCapability capability, List<Parameter> parameterValues) {
-        if(this.baseCapabilityHanlder != null) {
+        if(this.baseCapabilityHandler != null) {
             try {
-                return this.baseCapabilityHanlder.invokeCapability(capability, parameterValues);
+                return this.baseCapabilityHandler.invokeCapability(capability, parameterValues);
             } catch (ConvertionNotSupportedException | ConversionFailureException | InterruptedException
                     | ExecutionException e) {
                 throw new RuntimeException(e);
@@ -129,9 +130,29 @@ public class P2fAdressSpaceActionAdapter<T extends MsAdressSpaceAction> extends 
 
     @Override
     public void registerWithEngine(AdapterEventProvider adapterEventProvider) {
+       //avoid using this method because it might be called from the AdapterEventProvider.
+    }
+    
+    public void registerWithEngineClean(AdapterEventProvider adapterEventProvider) {
         if(this.eventAction instanceof ISendEventHandler) {
             ISendEventHandler sendEventAction = (ISendEventHandler)this.eventAction;
-            sendEventAction.setAdapterEventProvider(adapterEventProvider);
+            sendEventAction.registerAdapterEventProvider(adapterEventProvider);
+        }
+        if(this.eventAction instanceof IReceiveEventHandler) {
+            IReceiveEventHandler<?> receiveEventHandler = (IReceiveEventHandler<?>)this.eventAction;
+            adapterEventProvider.registerEventHandler(receiveEventHandler);
+        }
+    }
+    
+
+    public void deregisterWithEngine(AdapterEventProvider adapterEventProvider) {
+        if(this.eventAction instanceof ISendEventHandler) {
+            ISendEventHandler sendEventAction = (ISendEventHandler)this.eventAction;
+            sendEventAction.deregisterEngineAdapter(adapterEventProvider);
+        }
+        if(this.eventAction instanceof IReceiveEventHandler) {
+            IReceiveEventHandler<?> receiveEventHandler = (IReceiveEventHandler<?>)this.eventAction;
+            adapterEventProvider.deregisterEventHandler(receiveEventHandler);
         }
     }
 
@@ -147,11 +168,16 @@ public class P2fAdressSpaceActionAdapter<T extends MsAdressSpaceAction> extends 
 
     @Override
     protected void onStartup() {
-        this.eventAction.startup();
+        if(this.eventAction != null) {
+            this.eventAction.startup();
+        }
     }
 
     @Override
     protected void onShutdown() {
+        if(this.eventAction != null) {
+            this.eventAction.startup();
+        }
         this.eventAction.shutdown();
     }
 }

@@ -21,7 +21,7 @@ public abstract class BaseCommand<T extends CommandParameters> {
     private final OpcUaClientManager opcUaClientManager;
     private final T commandParameters;
     
-    public OpcUaClientManager getOpcUaClientManager() {
+    OpcUaClientManager getOpcUaClientManager() {
         return this.opcUaClientManager;
     }
     
@@ -29,7 +29,7 @@ public abstract class BaseCommand<T extends CommandParameters> {
      * Returns a node id converter instance.
      * @return
      */
-    public MsNodeIdToNodeIdConverter getMsNodeIdToNodeIdConverter() {
+    MsNodeIdToNodeIdConverter getMsNodeIdToNodeIdConverter() {
         return this.msNodeIdToNodeIdConverter;
     }
     
@@ -37,7 +37,7 @@ public abstract class BaseCommand<T extends CommandParameters> {
      * Returns the current configuration of this command.
      * @return
      */
-    public T getCommandParameters() {
+    T getCommandParameters() {
         return this.commandParameters;
     }
     

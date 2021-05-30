@@ -17,7 +17,7 @@ import at.pro2future.machineSimulator.converter.ConvertionNotSupportedException;
  * factories, the {@link #OpcUaDefinitionFactory} and the {@link #UaBuilderFactory} to perform the transformation.
  *
  */
-public class MsViewNodeToViewNodeConverter implements IConverter<MsViewNode, ViewNode, OpcUaDefinitionFactory, IUaObjectAndBuilderProvider>{
+class MsViewNodeToViewNodeConverter implements IConverter<MsViewNode, ViewNode, OpcUaDefinitionFactory, IUaObjectAndBuilderProvider>{
 
     /**
      * The singleton instance <code>MsViewNodeToViewNodeConverter<code> of the converter.
@@ -29,7 +29,7 @@ public class MsViewNodeToViewNodeConverter implements IConverter<MsViewNode, Vie
      * 
      * @return the singleton instance of this class.
      */
-    public static MsViewNodeToViewNodeConverter getInstance() {
+    static MsViewNodeToViewNodeConverter getInstance() {
         if(instance == null) {
             instance = new MsViewNodeToViewNodeConverter();
         }
